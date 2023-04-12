@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExhibitionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,22 @@ class Exhibition
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $status;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Artwork::class, mappedBy="exhibition", orphanRemoval=true)
+     */
+    private $artwork;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="exhibition")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $artist;
+
+    public function __construct()
+    {
+        $this->artwork = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +121,48 @@ class Exhibition
     public function setStatus(?bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Artwork>
+     */
+    public function getArtwork(): Collection
+    {
+        return $this->artwork;
+    }
+
+    public function addArtwork(Artwork $artwork): self
+    {
+        if (!$this->artwork->contains($artwork)) {
+            $this->artwork[] = $artwork;
+            $artwork->setExhibition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArtwork(Artwork $artwork): self
+    {
+        if ($this->artwork->removeElement($artwork)) {
+            // set the owning side to null (unless already changed)
+            if ($artwork->getExhibition() === $this) {
+                $artwork->setExhibition(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getArtist(): ?User
+    {
+        return $this->artist;
+    }
+
+    public function setArtist(?User $artist): self
+    {
+        $this->artist = $artist;
 
         return $this;
     }

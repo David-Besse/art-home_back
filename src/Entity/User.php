@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -60,6 +62,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Exhibition::class, mappedBy="artist", orphanRemoval=true)
+     */
+    private $exhibition;
+
+    public function __construct()
+    {
+        $this->exhibition = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -206,6 +218,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Exhibition>
+     */
+    public function getExhibition(): Collection
+    {
+        return $this->exhibition;
+    }
+
+    public function addExhibition(Exhibition $exhibition): self
+    {
+        if (!$this->exhibition->contains($exhibition)) {
+            $this->exhibition[] = $exhibition;
+            $exhibition->setArtist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExhibition(Exhibition $exhibition): self
+    {
+        if ($this->exhibition->removeElement($exhibition)) {
+            // set the owning side to null (unless already changed)
+            if ($exhibition->getArtist() === $this) {
+                $exhibition->setArtist(null);
+            }
+        }
 
         return $this;
     }
