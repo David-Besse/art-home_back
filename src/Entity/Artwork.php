@@ -42,6 +42,12 @@ class Artwork
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Exhibition::class, inversedBy="artwork")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $exhibition;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +109,18 @@ class Artwork
     public function setStatus(?bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getExhibition(): ?Exhibition
+    {
+        return $this->exhibition;
+    }
+
+    public function setExhibition(?Exhibition $exhibition): self
+    {
+        $this->exhibition = $exhibition;
 
         return $this;
     }
