@@ -2,17 +2,45 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
+use App\Entity\User;
 use App\Entity\Artwork;
 use App\Entity\Exhibition;
-use App\Entity\User;
-use Faker\Factory;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
+ 
+    private $connection;
+
+    public function __construct(Connection $connection)
+    {
+
+        $this->connection = $connection;
+    }
+
+    /**
+     * Permet de TRUNCATE les tables et de remettre les AI à 1
+     */
+    private function truncate()
+    {
+        // On passe en mode SQL ! On cause avec MySQL
+        // Désactivation la vérification des contraintes FK
+        $this->connection->executeQuery('SET foreign_key_checks = 0');
+        // On tronque
+        $this->connection->executeQuery('TRUNCATE TABLE user');
+        $this->connection->executeQuery('TRUNCATE TABLE artwork');
+        $this->connection->executeQuery('TRUNCATE TABLE exhibition');
+ 
+        // On peut réactiver la vérfication ensuite
+        $this->connection->executeQuery('SET foreign_key_checks = 1');
+    }
+
     public function load(ObjectManager $manager): void
     {
+        $this->truncate();
         $faker = Factory::create('fr_FR');
         $faker->seed(22);
         
@@ -66,6 +94,7 @@ class AppFixtures extends Fixture
             // unique exhib.
             $exhibition->setTitle($faker->word());
             $exhibition->setStartDate($faker->dateTimeBetween('-1 week'));
+            $exhibition->setDescription($faker->paragraph());
             
             $exhibition->setEndDate(date_modify($exhibition->getStartDate(),'+4 month'));
             // slug method to verify
