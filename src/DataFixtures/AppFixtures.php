@@ -15,6 +15,7 @@ class AppFixtures extends Fixture
  
     private $connection;
 
+    // Injection od the DB Connection
     public function __construct(Connection $connection)
     {
 
@@ -22,31 +23,34 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * Permet de TRUNCATE les tables et de remettre les AI à 1
+     * Reboot the id of  each table to 1
      */
     private function truncate()
     {
-        // On passe en mode SQL ! On cause avec MySQL
-        // Désactivation la vérification des contraintes FK
+        
+        // Checking of FK (foreign key) desactivated
         $this->connection->executeQuery('SET foreign_key_checks = 0');
-        // On tronque
+        // truncate of each table
         $this->connection->executeQuery('TRUNCATE TABLE user');
         $this->connection->executeQuery('TRUNCATE TABLE artwork');
         $this->connection->executeQuery('TRUNCATE TABLE exhibition');
  
-        // On peut réactiver la vérfication ensuite
+        // Checking of FK (foreign key) reactivated
         $this->connection->executeQuery('SET foreign_key_checks = 1');
     }
 
     public function load(ObjectManager $manager): void
     {
+        //Using the truncate method
         $this->truncate();
+        // importing Faker
         $faker = Factory::create('fr_FR');
+        // injection of a seed to keep the same data when reload the fixtures
         $faker->seed(22);
         
 
-        //Users
-            //admin
+        //Creating users
+            //Admin
             $admin = new User();
             $admin->setEmail('admin@admin.com');
             $admin->setPassword('$2y$13$Ov7uQzlJShWEfQoKfKiM8uCh0jQHhHU/XkfQ7J/4xroi5VcAEF7wu');
@@ -56,7 +60,7 @@ class AppFixtures extends Fixture
             
             $manager->persist($admin);
 
-            //moderator
+            //Moderator
             $moderator =new User();
             $moderator->setEmail('moderator@moderator.com');
             $moderator->setPassword('$2y$13$/oyU5SMCpjo6Q1jXSV0D4OZT6i4kKyiIiRuf3jdxGDvr4d9P6bbwG');
@@ -66,9 +70,12 @@ class AppFixtures extends Fixture
 
             $manager->persist($moderator);
 
-            //artist
+            //Artists
 
+            //creation of an array to push each artist into it
             $artistList = []; 
+
+            // loop to create 8 artist
             for($a = 1 ; $a < 8; $a++ )
             {
                 $artist = new User();
@@ -87,20 +94,20 @@ class AppFixtures extends Fixture
             }
 
         //Exhibitions
+
+        //creation of an array to push each exhibtion into it
         $exhibitionsList = [];
 
         for ($e = 1; $e<=10; $e++) {
             $exhibition = new Exhibition();
-            // unique exhib.
+            // unique exhibition
             $exhibition->setTitle($faker->word());
             $exhibition->setStartDate($faker->dateTimeBetween('-1 week'));
-            $exhibition->setDescription($faker->paragraph());
-            
+            $exhibition->setDescription($faker->paragraph());   
             $exhibition->setEndDate(date_modify($exhibition->getStartDate(),'+4 month'));
-            // slug method to verify
-            // $exhibition->setSlug($exhibition->getTitle());
             $exhibition->setStatus('1');
 
+            // association of an artist to the exhibiton thanks to the artists array
             for ($g = 1; $g <= mt_rand(1, 2); $g++) {
                 $randomArtist = $artistList[mt_rand(0, count($artistList) - 1)];
                 $exhibition->setArtist($randomArtist);
@@ -121,6 +128,7 @@ class AppFixtures extends Fixture
             $artwork->setDescription($faker->paragraph());
             $artwork->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 300) . '/300/300');
 
+            //association of an exhibition thanks to the exhibition array
             $randomExhibition = $exhibitionsList[mt_rand(0, count($exhibitionsList) - 1)];
             $artwork->setExhibition($randomExhibition);
             // think about change this when we will progress in our work for back experience
@@ -129,6 +137,7 @@ class AppFixtures extends Fixture
             $manager->persist($artwork);
         }
 
+        // push in database 
         $manager->flush();
     }
 }
