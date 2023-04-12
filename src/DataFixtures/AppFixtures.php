@@ -39,6 +39,12 @@ class AppFixtures extends Fixture
         $this->connection->executeQuery('SET foreign_key_checks = 1');
     }
 
+    /**
+     * Loading all fixtures
+     *
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
         //Using the truncate method
@@ -108,11 +114,9 @@ class AppFixtures extends Fixture
             $exhibition->setStatus('1');
 
             // association of an artist to the exhibiton thanks to the artists array
-            for ($g = 1; $g <= mt_rand(1, 2); $g++) {
-                $randomArtist = $artistList[mt_rand(0, count($artistList) - 1)];
-                $exhibition->setArtist($randomArtist);
-            }
-            
+            $randomArtist = $artistList[mt_rand(0, count($artistList) - 1)];
+            $exhibition->setArtist($randomArtist);
+
             $exhibitionsList[] = $exhibition;
             
             $manager->persist($exhibition);
