@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ArtworkRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,21 +20,25 @@ class Artwork
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_artworks_collection", "get_artwork"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"get_artworks_collection", "get_artwork"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_artworks_collection", "get_artwork"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_artworks_collection", "get_artwork"})
      */
     private $slug;
 
@@ -45,6 +50,7 @@ class Artwork
     /**
      * @ORM\ManyToOne(targetEntity=Exhibition::class, inversedBy="artwork")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_artwork"})
      */
     private $exhibition;
 

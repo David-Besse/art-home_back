@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ExhibitionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ExhibitionRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ExhibitionRepository::class)
@@ -21,6 +22,7 @@ class Exhibition
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_artwork"})
      */
     private $title;
 
@@ -31,11 +33,13 @@ class Exhibition
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"get_artwork"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"get_artwork"})
      */
     private $endDate;
 
