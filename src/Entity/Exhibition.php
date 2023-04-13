@@ -6,6 +6,7 @@ use App\Repository\ExhibitionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ExhibitionRepository::class)
@@ -16,47 +17,56 @@ class Exhibition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $endDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $status;
 
     /**
      * @ORM\OneToMany(targetEntity=Artwork::class, mappedBy="exhibition", orphanRemoval=true)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $artwork;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="exhibition")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $artist;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $description;
 
