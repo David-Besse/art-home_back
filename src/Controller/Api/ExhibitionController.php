@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Exhibition;
 use App\Repository\ExhibitionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -146,8 +147,7 @@ class ExhibitionController extends AbstractController
         return $this->json(
         
         $exhibitionToEdit,
-        // status code : 200 HTTP_OK
-        
+        // status code : 200 HTTP_OK        
         Response::HTTP_OK,
         // REST ask an header Location + URL 
         [
@@ -158,5 +158,26 @@ class ExhibitionController extends AbstractController
         ['groups' => 'get_exhibition_by_id']
         );        
 
+
+        
     }
+
+    /**
+         * Delete an exhibition item
+         * @Route("/api/exhibitions/{id<\d+>}/delete", name="api_exhibition_delete", methods={"DELETE"})
+         */
+        public function deleteExhibition(Exhibition $exhibitionToDelete, EntityManagerInterface $entityManager ) : Response
+        {
+            $entityManager->remove($exhibitionToDelete);
+            $entityManager->flush();
+
+            return $this->json(
+        
+                [],
+                // status code : 204 HTTP_OK        
+                Response::HTTP_NO_CONTENT
+                // REST ask an header Location + URL 
+                
+                );
+        }
 }
