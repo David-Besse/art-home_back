@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ArtworkRepository;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
