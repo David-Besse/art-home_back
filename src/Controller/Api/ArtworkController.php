@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Artwork;
 use App\Repository\ArtworkRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,7 +67,7 @@ class ArtworkController extends AbstractController
         // Checking if json format is respected
         //if not, throw an error
         try{
-            //On déserialise le json en entité
+            //Transforming json Content into entity
             $artwork = $serializer->deserialize($jsonContent, Artwork::class, 'json');
             
 
@@ -84,12 +85,16 @@ class ArtworkController extends AbstractController
 
         //Checking if there is any error
         // If yes, then throw an error
-        if(count($errors) > 0)
-        {
-            return $this->json(
-                $errors,
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+        if (count($errors) > 0) {
+            // return array
+            $errorsClean = [];
+            // @Clean error messages
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
+            };
+
+            return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         //Saving the entity and saving in DBB
@@ -109,11 +114,85 @@ class ArtworkController extends AbstractController
     /**
      * Edit artwork entity
      *
-     * @Route("api/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"POST"})
+     * @Route("api/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PUT"})
      */
-    public function editArtwork() : Response
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit) : Response
     {
 
+         //Fetch the json content
+         $jsonContent = $request->getContent();
+
+        
+         // Checking if json format is respected
+         //if not, throw an error
+         try{
+             //Transforming json Content into entity
+             $artwork = $serializer->deserialize($jsonContent, Artwork::class, 'json');
+ 
+         }catch(NotEncodableValueException $e) {
+ 
+             return $this->json(
+                 ['error' => 'JSON INVALIDE'],
+                 Response::HTTP_UNPROCESSABLE_ENTITY
+             );
+         }
+ 
+         // Checking the entity : if all fields are well fill
+         
+         $errors = $validator->validate($artwork);
+ 
+         //Checking if there is any error
+         // If yes, then throw an error
+         if (count($errors) > 0) {
+            // return array
+            $errorsClean = [];
+            // Clean error messages
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
+            };
+
+            return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+ 
+         
+         //Saving the entity and saving in DBB
+         $entityManager = $doctrine->getManager();
+
+         $artworkToEdit->setTitle($artwork->getTitle());
+         $artworkToEdit->setDescription($artwork->getDescription());
+         $artworkToEdit->setPicture($artwork->getPicture());
+         $artworkToEdit->setExhibition($artwork->getExhibition());
+
+         $entityManager->persist($artworkToEdit);
+         $entityManager->flush();
+ 
+         //Return response if created
+         return $this->json(
+             $artwork, 
+             Response::HTTP_OK,
+             [],
+             ['groups' => 'get_artwork']
+         );
+        
+    }
+
+    /**
+     * Remove an entity
+     *
+     * @Route("api/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
+     */
+    public function deleteArtwork(Artwork $artwork, EntityManagerInterface $entityManager) : Response
+    {
+        // remove entity artwork
+        $entityManager->remove($artwork);
+        $entityManager->flush();
+
+        // return status 200
+        return $this->json(
+            [],
+            Response::HTTP_OK
+        );
         
     }
 
