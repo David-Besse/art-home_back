@@ -1,4 +1,5 @@
-<?php 
+<?php  
+
 namespace App\Normalizer;
 
 use Doctrine\ORM\EntityManagerInterface;
