@@ -182,8 +182,14 @@ class ArtworkController extends AbstractController
      *
      * @Route("api/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
      */
-    public function deleteArtwork(Artwork $artwork, EntityManagerInterface $entityManager) : Response
+    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager) : Response
     {
+
+        if($artwork === null)
+        {
+            return $this->json(['error' => 'Film non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
         // remove entity artwork
         $entityManager->remove($artwork);
         $entityManager->flush();
@@ -191,7 +197,7 @@ class ArtworkController extends AbstractController
         // return status 200
         return $this->json(
             [],
-            Response::HTTP_OK
+            Response::HTTP_NO_CONTENT
         );
         
     }
