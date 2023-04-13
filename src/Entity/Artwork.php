@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ArtworkRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -20,25 +21,26 @@ class Artwork
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $slug;
 
@@ -51,6 +53,7 @@ class Artwork
     /**
      * @ORM\ManyToOne(targetEntity=Exhibition::class, inversedBy="artwork")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_artwork"})
      */
     private $exhibition;
 
