@@ -86,13 +86,77 @@ class ExhibitionController extends AbstractController
         // Le status code : 201 CREATED
         // utilisons les constantes de classes !
         Response::HTTP_CREATED,
-        // REST demande un header Location + URL de la ressource
+        // REST ask an header Location + URL 
         [
-            // Nom de l'en-tête + URL
-            'Location' => $this->generateUrl('api_exhibition_by_id', ['id' => $exhibition->getId()])
+            // if we need header location uncomment this :
+            // 'Location' => $this->generateUrl('api_exhibition_by_id', ['id' => $exhibition->getId()])
         ],
         // Groups
         ['groups' => 'get_exhibition_by_id']
-    );
+        );
+    }
+
+    /**
+     * Edit exhibition item
+     * @Route("/api/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PUT"})
+     */
+    public function editExhibition(Exhibition $exhibitionToEdit, Request $request, SerializerInterface $serializer,ManagerRegistry $doctrine, ValidatorInterface $validator)
+    {
+              //Get Json content
+              $jsonContent = $request->getContent();
+
+              try {
+                   // Convert Json in doctrine entity
+                   $exhibition = $serializer->deserialize($jsonContent, Exhibition::class, 'json');
+              } catch (NotEncodableValueException $e) {
+                   // if json getted isn't right, make an alert for client
+                   return $this->json(
+                       ['error' => 'JSON invalide'],
+                       Response::HTTP_UNPROCESSABLE_ENTITY
+                   );
+              }
+       
+              //Validate entity
+              $errors = $validator->validate($exhibition);
+       
+              // Is there some errors ?
+              if (count($errors) > 0) {
+                  //returned array
+                  $errorsClean = [];
+                  // @get back validation errors clean
+                   /** @var ConstraintViolation $error */
+                   foreach ($errors as $error) {
+                       $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
+                   };
+       
+                   return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
+       
+              } 
+
+        $exhibitionToEdit->setTitle($exhibition->getTitle());
+        $exhibitionToEdit->setDescription($exhibition->getDescription());
+        $exhibitionToEdit->setArtist($exhibition->getArtist());
+        
+        // Save entity
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($exhibitionToEdit);
+        $entityManager->flush();
+
+        
+        return $this->json(
+        
+        $exhibitionToEdit,
+        // status code : 200 HTTP_OK
+        
+        Response::HTTP_OK,
+        // REST ask an header Location + URL 
+        [
+            // if we need header location uncomment this :
+            // 'Location' => $this->generateUrl('api_exhibition_by_id', ['id' => $exhibition->getId()])
+        ],
+        // Groups
+        ['groups' => 'get_exhibition_by_id']
+        );        
+
     }
 }
