@@ -25,7 +25,9 @@ class ArtworkController extends AbstractController
     {
         // fetch all artworks
         $artworks = $artworkRepository->findAll();
-
+    // /** @var \App\Entity\User $user */
+    // $user = $this->getUser();
+    // dd($user);  
         // transform data in json format
         return $this->json(
             $artworks, 
