@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exhibition index{% endblock %}
+
+{% block body %}
+    <h1>Exhibition index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exhibition in exhibitions %}
+            <tr>
+                <td>{{ exhibition.id }}</td>
+                <td>{{ exhibition.title }}</td>
+                <td>{{ exhibition.slug }}</td>
+                <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
+                <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
+                <td>{{ exhibition.status ? 'Yes' : 'No' }}</td>
+                <td>{{ exhibition.description }}</td>
+                <td>
+                    <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}">show</a>
+                    <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_exhibition_new') }}">Create new</a>
+{% endblock %}
