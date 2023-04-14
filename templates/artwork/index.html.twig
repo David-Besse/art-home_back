@@ -1,43 +1,39 @@
 {% extends 'main.html.twig' %}
 
-{% block title %}Artwork index{% endblock %}
+{% block title %}Liste des oeuvres{% endblock %}
 
 {% block sub_body %}
-    <h1>Artwork index</h1>
-
+    <h1>Liste des oeuvres</h1>
+    <a href="{{ path('app_artwork_new') }}" class="btn btn-success mb-4 mt-4">Ajouter une oeuvre</a>
     <table class="table">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th>Id</th>
-                <th>Title</th>
+                <th>Titre</th>
                 <th>Description</th>
-                <th>Picture</th>
-                <th>Slug</th>
+                <th>Image</th>
                 <th>Status</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for artwork in artworks %}
-            <tr>
+            <tr class="text-center">
                 <td>{{ artwork.id }}</td>
                 <td>{{ artwork.title }}</td>
                 <td>{{ artwork.description }}</td>
                 <td>{{ artwork.picture }}</td>
-                <td>{{ artwork.slug }}</td>
-                <td>{{ artwork.status ? 'Yes' : 'No' }}</td>
+                <td>{{ artwork.status ? 'Validé' : 'Non validé' }}</td>
                 <td>
-                    <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}">show</a>
-                    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}">edit</a>
+                    <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-primary">Voir plus en détails</a>
+                    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}" class="btn btn-warning">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="7">Aucune oeuvre pour le moment</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_artwork_new') }}">Create new</a>
 {% endblock %}
