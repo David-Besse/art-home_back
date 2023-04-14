@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Artwork;
 use App\Entity\Exhibition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,46 @@ class ExhibitionRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    /**
+     * Get exhibition and first picture for carrousel in home page
+     * @return Exhibition[]
+     */
+    public function findAllForHomeDql(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture` 
+            FROM `exhibition`
+            INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
+            GROUP BY `id`'
+        );
+
+        // 'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture` 
+        //     FROM `exhibition`
+        //     INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
+        //     GROUP BY `id`'
+
+        return $query->getResult();        
+    }
+
+    /**
+     * querying test with SQL
+     */
+    public function findAllForHomeSQL(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture` 
+                FROM `exhibition`
+                INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
+                GROUP BY `id`';
+        
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
     }
 
 //    /**

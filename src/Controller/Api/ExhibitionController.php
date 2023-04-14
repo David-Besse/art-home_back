@@ -180,4 +180,17 @@ class ExhibitionController extends AbstractController
                 
                 );
         }
+
+        /**
+         * Get exhibitions infos and principal picture for homepage
+         * @Route("api/exhibitions/homepage", name="api_exhibitions_homepage", methods={"GET"})
+         */
+        public function getExhibitionsInfosAndPrincipalPicture(ExhibitionRepository $exhibitionRepository): Response
+        {
+            $exhibitionsList = $exhibitionRepository->findAllForHomeSQL();
+
+            return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
+
+        }
+
 }
