@@ -9,5 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
-   
+    // /** @var \App\Entity\User $user */
+    // $user = $this->getUser();
+    // dd($user);  
 }
