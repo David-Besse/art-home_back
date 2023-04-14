@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Exhibition;
+use App\Entity\User;
 use App\Repository\ExhibitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -185,7 +186,7 @@ class ExhibitionController extends AbstractController
          * Get exhibitions infos and principal picture for homepage
          * @Route("api/exhibitions/homepage", name="api_exhibitions_homepage", methods={"GET"})
          */
-        public function getExhibitionsInfosAndPrincipalPicture(ExhibitionRepository $exhibitionRepository): Response
+        public function getExhibitionsForHomepage(ExhibitionRepository $exhibitionRepository): Response
         {
             $exhibitionsList = $exhibitionRepository->findAllForHomeSQL();
 
@@ -193,4 +194,18 @@ class ExhibitionController extends AbstractController
 
         }
 
+
+        
+        /**
+         * Get exhibitions by artist
+         * @Route("api/exhibitions/artist/{id<\d+>}", name="api_exhibitions_artist", methods={"GET"})
+         */
+        public function getExhibitionsByArtist(ExhibitionRepository $exhibitionRepository, User $artist)
+        {
+            $exhibitionsList = $exhibitionRepository->findAllByArtist($artist);
+
+            return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
+        }
+
+        
 }

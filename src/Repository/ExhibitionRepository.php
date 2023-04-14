@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Artwork;
 use App\Entity\Exhibition;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Exhibition>
@@ -40,30 +41,19 @@ class ExhibitionRepository extends ServiceEntityRepository
         }
     }
     /**
-     * Get exhibition and first picture for carrousel in home page
-     * @return Exhibition[]
+     * Get exhibition by artist
      */
-    public function findAllForHomeDql(): array
+    public function findAllByArtist(User $artist): array
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture` 
-            FROM `exhibition`
-            INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
-            GROUP BY `id`'
-        );
-
-        // 'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture` 
-        //     FROM `exhibition`
-        //     INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
-        //     GROUP BY `id`'
-
-        return $query->getResult();        
+    return $this->createQueryBuilder('e')
+        ->where('e.artist = :artist')
+        ->setParameter('artist', $artist)
+        ->getQuery()
+        ->getResult();
     }
 
     /**
-     * querying test with SQL
+     * Get exhibition infos and first picture for carrousel in home page
      */
     public function findAllForHomeSQL(): array
     {
