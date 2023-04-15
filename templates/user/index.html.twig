@@ -3,8 +3,10 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% block sub_body %}
-    <h1>Liste des utilisateurs</h1>
-    <a href="{{ path('app_user_new') }}" class="btn btn-success">Ajouter un utilisateur</a>
+    <h1 class="text-center">Liste des utilisateurs</h1>
+    <div class="text-center">
+        <a href="{{ path('app_user_new') }}" class="btn btn-success mb-4 mt-4">Ajouter un utilisateur</a>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr class="text-center">
