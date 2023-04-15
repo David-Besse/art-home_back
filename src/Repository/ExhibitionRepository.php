@@ -40,10 +40,31 @@ class ExhibitionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * get exhibitions title and id by artist
+     */
+    public function findTitleAndIdForFormSQL(User $artist)
+    {
+        $id = $artist->getId();
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`
+                FROM `exhibition`
+                WHERE `exhibition`.`artist_id` = "'.$id.'"';
+               
+        
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+
     /**
      * Get exhibition by artist
      */
-    public function findAllByArtist(User $artist): array
+    public function findAllByArtistQB(User $artist): array
     {
     return $this->createQueryBuilder('e')
         ->where('e.artist = :artist')
@@ -51,6 +72,20 @@ class ExhibitionRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+
+    /**
+     * Get active exhibition by artist
+     */
+    public function findActiveExhibitionByArtistQB(User $artist): array
+    {
+    return $this->createQueryBuilder('e')
+        ->where('e.artist = :artist', 'e.status = 1')
+        ->setParameter('artist', $artist)
+        ->getQuery()
+        ->getResult();
+    }
+
+    
 
     /**
      * Get exhibition infos and first picture for carrousel in home page
