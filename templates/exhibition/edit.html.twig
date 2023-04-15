@@ -1,11 +1,11 @@
 {% extends 'main.html.twig' %}
 
-{% block title %}Edit Exhibition{% endblock %}
+{% block title %}Modifier une exposition{% endblock %}
 
 {% block sub_body %}
-    <h1>Edit Exhibition</h1>
+    <h1>Modifier une exposition</h1>
 
-    {{ include('exhibition/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('exhibition/_form.html.twig', {'button_label': 'Modifier'}) }}
 
     <a href="{{ path('app_exhibition_index') }}" class="btn btn-warning">Retour à la liste des oeuvres</a>
 

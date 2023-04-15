@@ -1,9 +1,9 @@
 {% extends 'main.html.twig' %}
 
-{% block title %}Artwork{% endblock %}
+{% block title %}Oeuvres{% endblock %}
 
 {% block sub_body %}
-    <h1>Artwork</h1>
+    <h1>Oeuvre</h1>
 
     <table class="table">
         <tbody>
@@ -12,7 +12,7 @@
                 <td>{{ artwork.id }}</td>
             </tr>
             <tr>
-                <th>Title</th>
+                <th>Titre</th>
                 <td>{{ artwork.title }}</td>
             </tr>
             <tr>
@@ -20,23 +20,19 @@
                 <td>{{ artwork.description }}</td>
             </tr>
             <tr>
-                <th>Picture</th>
+                <th>Image</th>
                 <td>{{ artwork.picture }}</td>
             </tr>
             <tr>
-                <th>Slug</th>
-                <td>{{ artwork.slug }}</td>
-            </tr>
-            <tr>
                 <th>Status</th>
-                <td>{{ artwork.status ? 'Yes' : 'No' }}</td>
+                <td>{{ artwork.status ? 'Validé' : 'Non Validé' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_artwork_index') }}">back to list</a>
+    <a href="{{ path('app_artwork_index') }}" class="btn btn-primary">Retour à la liste des oeuvres</a>
 
-    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}">edit</a>
+    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}" class="btn btn-warning">Modifier</a>
 
     {{ include('artwork/_delete_form.html.twig') }}
 {% endblock %}

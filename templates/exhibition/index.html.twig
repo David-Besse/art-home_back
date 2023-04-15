@@ -1,45 +1,45 @@
 {% extends 'main.html.twig' %}
 
-{% block title %}Exhibition index{% endblock %}
+{% block title %}Liste des expositions{% endblock %}
 
 {% block sub_body %}
-    <h1>Exhibition index</h1>
-
-    <table class="table">
+    <h1>Liste des expositions</h1>
+    <a href="{{ path('app_exhibition_new') }}" class="btn btn-success">Ajouter une exposition</a>
+    <table class="table table-striped">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th>Id</th>
                 <th>Title</th>
                 <th>Slug</th>
-                <th>StartDate</th>
-                <th>EndDate</th>
-                <th>Status</th>
+                <th>Début de l'exposition</th>
+                <th>Fin de l'exposition</th>
+                <th>Statut</th>
                 <th>Description</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for exhibition in exhibitions %}
-            <tr>
+            <tr class="text-center">
                 <td>{{ exhibition.id }}</td>
                 <td>{{ exhibition.title }}</td>
                 <td>{{ exhibition.slug }}</td>
                 <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
-                <td>{{ exhibition.status ? 'Yes' : 'No' }}</td>
+                <td>{{ exhibition.status ? 'En cours' : 'ARchivée' }}</td>
                 <td>{{ exhibition.description }}</td>
                 <td>
-                    <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}">show</a>
-                    <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}">edit</a>
+                    <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}" class="btn btn-primary">En savoir plus</a>
+                    <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}" class="btn btn-warning">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">Aucune exposition pour le moment</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_exhibition_new') }}">Create new</a>
+    
 {% endblock %}

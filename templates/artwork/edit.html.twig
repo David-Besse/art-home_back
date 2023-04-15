@@ -5,9 +5,9 @@
 {% block sub_body %}
     <h1>Modifier les oeuvres</h1>
 
-    {{ include('artwork/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('artwork/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('app_artwork_index') }}" class="btn btn-warning">Retour à la liste des oeuvres</a>
+    <a href="{{ path('app_artwork_index') }}" class="btn btn-primary">Retour à la liste des oeuvres</a>
 
     {{ include('artwork/_delete_form.html.twig') }}
 {% endblock %}
