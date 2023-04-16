@@ -8,9 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
-    // /** @var \App\Entity\User $user */
-    // $user = $this->getUser();
-    // dd($user); 
     /**
      * Get all artworks from logged user
      * 
@@ -18,9 +15,14 @@ class UserController extends AbstractController
      */
     public function getArtworksFromUser()
     {
+        // getting the logged user
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
+
+        //fetching exhibitons depending on the user
         $exhibitions = $user->getExhibition();
+
+        //returning response with data
         return $this->json(
             $exhibitions,
             Response::HTTP_OK,
@@ -36,13 +38,18 @@ class UserController extends AbstractController
      */
     public function getInformationsFromUser()
     {
+        // getting the logged user
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
+        // setting an empty array
         $data = [];
+
+        //fetching information about logged user
         $nickname = $user->getNickname();
         $roles = $user->getRoles();
         
+        // setting a string depending on the role and return this string
         if(implode(',', $roles) == 'ROLE_ARTIST')
         {
             $role = 'Artiste';
@@ -55,11 +62,13 @@ class UserController extends AbstractController
             $role = 'Modérateur';
         }
 
+        // putting the informations in the empty array
         $data = [
             'nickname' => $nickname,
             'roles' => $role
         ];
 
+        //sending the response with all data
         return $this->json(
             $data,
             Response::HTTP_OK,
