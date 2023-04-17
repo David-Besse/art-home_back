@@ -5,10 +5,11 @@ namespace App\Controller\Back;
 use App\Entity\Artwork;
 use App\Form\ArtworkType;
 use App\Repository\ArtworkRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/artwork")
@@ -86,5 +87,18 @@ class ArtworkController extends AbstractController
         }
 
         return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * validate an artwork
+     * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"GET"})
+     */
+    public function validate(EntityManagerInterface $entityManager, Artwork $artwork) : Response
+    {
+        
+        $artwork->setStatus(1);
+        $entityManager->persist($artwork);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_artwork_index');
     }
 }
