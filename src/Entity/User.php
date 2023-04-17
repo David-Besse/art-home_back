@@ -77,6 +77,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $exhibition;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateOfBirth;
+
     public function __construct()
     {
         $this->exhibition = new ArrayCollection();
@@ -257,6 +262,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $exhibition->setArtist(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateOfBirth(): ?\DateTimeInterface
+    {
+        return $this->dateOfBirth;
+    }
+
+    public function setDateOfBirth(?\DateTimeInterface $dateOfBirth): self
+    {
+        $this->dateOfBirth = $dateOfBirth;
 
         return $this;
     }

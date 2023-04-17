@@ -61,17 +61,7 @@ class ExhibitionRepository extends ServiceEntityRepository
     }
 
 
-    /**
-     * Get exhibition by artist
-     */
-    public function findTitleAndIdForProfileQB(User $artist): array
-    {
-    return $this->createQueryBuilder('e')
-        ->where('e.artist = :artist')
-        ->setParameter('artist', $artist)
-        ->getQuery()
-        ->getResult();
-    }
+
 
     // /**
     //  * Get active exhibition by artist

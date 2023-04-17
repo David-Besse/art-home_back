@@ -3,6 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use App\Entity\Exhibition;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +25,11 @@ class UserController extends AbstractController
      */
     public function getInformationsFromUser()
     {
+       
         // getting the logged user
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
-
+        
         // setting an empty array
         $data = [];
 
@@ -60,6 +63,60 @@ class UserController extends AbstractController
             [],
             ['groups' => 'get_user_data']
         );
+    }
+          
+    /**
+     * Get information artist and exhibitions for profile page
+     * @Route("api/users/profile", name="app_api_users_profile", methods={"GET"})
+     */
+    public function getInformationForProfile()
+    {
+        // getting the logged user
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        // setting an empty array
+        $data = [];
+
+        //fetching information about logged user
+        $nickname = $user->getNickname();
+        $firstname = $user->getFirstname();
+        $lastname = $user->getLastname();
+        $email = $user->getEmail();
+        $birthday = $user->getDateOfBirth();
+        $avatar = $user->getAvatar();
+        
+        $exhibitions = $user->getExhibition();
+        $Exhibition = [];
+        foreach ($exhibitions as $exhibition){
+            $id = $exhibition->getId();
+
+            $title = $exhibition->getTitle();
+            $Exhibition [] = [
+                'id' => $id,
+                'title' => $title
+            ];
+
+        }
+        // putting the informations in the empty array
+        $data = [
+            'nickname' => $nickname,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+            'birthday' => $birthday,
+            'avatar' => $avatar,
+            'Exhibition' => $Exhibition,
+        ];
+        
+
+        //sending the response with all data
+        return $this->json(
+            $data,
+            Response::HTTP_OK
+            
+        );
+        
     }
 
     /**
