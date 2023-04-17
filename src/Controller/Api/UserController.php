@@ -15,28 +15,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
-    /**
-     * Get all artworks from logged user
-     * 
-     * @Route("api/users/exhibitions", name="app_api_users_exhibitions", methods={"GET"})
-     */
-    public function getArtworksFromUser()
-    {
-        // getting the logged user
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
-
-        //fetching exhibitons depending on the user
-        $exhibitions = $user->getExhibition();
-
-        //returning response with data
-        return $this->json(
-            $exhibitions,
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'get_exhibitions_collection']
-        );
-    }
 
     /**
      * Get informations from logged user
@@ -88,7 +66,7 @@ class UserController extends AbstractController
      * Create a new user
      *
      * @param Request $request
-     * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
+     * @Route ("/users/new", name="app_api_users_create", methods={"POST"})
      */
     public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher) : Response
     {
