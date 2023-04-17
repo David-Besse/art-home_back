@@ -38,7 +38,6 @@ class ExhibitionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
 //    /**
 //     * @return Exhibition[] Returns an array of Exhibition objects
 //     */
