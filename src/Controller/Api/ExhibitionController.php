@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Exhibition;
+use App\Entity\User;
 use App\Repository\ExhibitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -180,4 +181,51 @@ class ExhibitionController extends AbstractController
                 
                 );
         }
+
+        /**
+         * Get exhibitions infos and principal picture for homepage
+         * @Route("api/exhibitions/homepage", name="api_exhibitions_homepage", methods={"GET"})
+         */
+        public function getExhibitionsForHomepage(ExhibitionRepository $exhibitionRepository): Response
+        {
+            $exhibitionsList = $exhibitionRepository->findAllForHomeSQL();
+
+            return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
+
+        }
+
+
+        
+        /**
+         * Get exhibitions by artist for profile page
+         * @Route("api/exhibitions/artist/{id<\d+>}/profile", name="api_exhibitions_artist_profile", methods={"GET"})
+         */
+        public function getExhibitionsForProfile(ExhibitionRepository $exhibitionRepository, User $artist)
+        {
+            $exhibitionsList = $exhibitionRepository->findTitleAndIdForProfileQB($artist);
+
+            return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_by_artist']);
+        }
+
+        /**
+         * Get active exhibitions infos by artist to submit artwork form
+         * @Route("api/exhibitions/artist/{id<\d+>}/form", name="api_exhibitions_artist_form", methods={"GET"})
+         */
+        public function getActiveExhibitionsForArtworkForm(ExhibitionRepository $exhibitionRepository, User $artist)
+        {
+            $exhibitionsList = $exhibitionRepository->findTitleAndIdForFormSQL($artist);
+
+            return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
+        }
+
+        // /**
+        //  * Get active exhibitions
+        //  *@Route("/api/exhibitions/artist/{id<\d+>}/active", name="api_exhibitions_artist_active", methods={"GET"})
+        //  */
+        // public function getActiveExhibitionsByArtist(ExhibitionRepository $exhibitionRepository, User $artist)
+        // {
+        //     $exhibitionsList = $exhibitionRepository->findActiveExhibitionByArtistQB($artist);
+
+        //     return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
+        // }
 }
