@@ -14,9 +14,30 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        #on place nos firewalls de lexikjwt avant main !
+        login:
+            # on définit la config de tous les endpoints qui commencent par /api/login
+            pattern: ^/api/login
+            # stateless indique que la sécurité du firewall sera sans état (le server ne stock pas l'état de l'utilisateur authentifié)
+            stateless: true
+            json_login: 
+                # le chemin pour obtenir le token
+                check_path: /api/login_check
+                # on gère le cas, en cas de réussite
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                # on gère le cas, en cas d'erreur
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern:   ^/api
+            stateless: true
+            jwt: ~
         main:
             lazy: true
             provider: app_user_provider
+            logout:
+                path: app_logout
+            
+            
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -27,6 +48,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
