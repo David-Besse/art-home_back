@@ -25,42 +25,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"get_user"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"get_user_data"})
+     * @Groups({"get_user_data", "get_user"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     *  @Groups({"get_user"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user_data"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user_data", "get_user"})
      */
     private $nickname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $avatar;
 
