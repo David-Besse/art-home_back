@@ -28,7 +28,7 @@
                 <td>{{ exhibition.slug }}</td>
                 <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
-                <td>{{ exhibition.status ? 'En cours' : 'ARchivée' }}</td>
+                <td>{{ exhibition.status ? 'En cours' : 'Archivée' }}</td>
                 <td>{{ exhibition.description }}</td>
                 <td>
                     <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}" class="btn btn-primary">En savoir plus</a>

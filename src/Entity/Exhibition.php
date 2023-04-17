@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ExhibitionRepository;
+use DateInterval;
+use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -24,6 +27,7 @@ class Exhibition
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork"})
+     * @Assert\NotBlank
      */
     private $title;
 
@@ -61,6 +65,7 @@ class Exhibition
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="exhibition")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Assert\NotBlank
      */
     private $artist;
 
@@ -73,6 +78,9 @@ class Exhibition
     public function __construct()
     {
         $this->artwork = new ArrayCollection();
+        $this->startDate  = new DateTime();
+        $this->status = 1;
+        $this->endDate = date_add(new DateTime(), date_interval_create_from_date_string("122 days"));
     }
 
     public function getId(): ?int
