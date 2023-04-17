@@ -196,16 +196,7 @@ class ExhibitionController extends AbstractController
 
 
         
-        /**
-         * Get exhibitions by artist for profile page
-         * @Route("api/exhibitions/artist/{id<\d+>}/profile", name="api_exhibitions_artist_profile", methods={"GET"})
-         */
-        public function getExhibitionsForProfile(ExhibitionRepository $exhibitionRepository, User $artist)
-        {
-            $exhibitionsList = $exhibitionRepository->findTitleAndIdForProfileQB($artist);
 
-            return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_by_artist']);
-        }
 
         /**
          * Get active exhibitions infos by artist to submit artwork form

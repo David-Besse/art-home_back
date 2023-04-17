@@ -17,13 +17,13 @@ class Exhibition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_exhibitions_by_artist"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork", "get_exhibitions_by_artist"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork"})
      */
     private $title;
 
