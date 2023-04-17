@@ -16,16 +16,33 @@ class ArtworkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
-            ->add('description', TextType::class)
-            ->add('picture', UrlType::class)
+            ->add('title', TextType::class,
+            [
+                'label' => 'Titre de l\'oeuvre'
+            ])
+            ->add('description', TextType::class,
+            [
+                'label' => 'Description de l\'oeuvre'
+            ])
+            ->add('picture', UrlType::class,
+            [
+                'label' => 'Lien de l\'oeuvre',
+                'attr' => [
+                    'placeholder' => 'par ex: https://...'
+
+                ]
+            ])
             // ->add('status')
             ->add('exhibition', EntityType::class,
             [
+                'label' => 'A quelle exposition voulez-vous lier cette oeuvre ?',
                 'class' => Exhibition::class,
                 'expanded' => true,
                 'multiple' => false,
-                'choice_label' => 'title'
+                'choice_label' => 'title',
+                'label_attr' => [
+                    'class' => 'radio-inline'
+                ],
             ])
         ;
     }

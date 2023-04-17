@@ -56,16 +56,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
-    public function getArtistUser()
-    {
-        return $this->createQueryBuilder('u')
-        ->andWhere("u.roles LIKE 'ROLE_ARTIST'")
-        ->orderBy('u.lastname', 'ASC')
-        ->getQuery()
-        ->getResult()
-        ;
-    }
-
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

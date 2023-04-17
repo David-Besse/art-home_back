@@ -17,9 +17,13 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class,
+            [
+                'label' => 'Adresse email'
+            ])
             ->add('roles', ChoiceType::class,
             [
+                'label' => 'Quel rôle voulez-vous attribuer à cet utilisateur ?',
                 'choices' => [
                     'Artiste' => 'ROLE_ARTIST',
                     'Modérateur' => 'ROLE_MODERATOR',
@@ -27,14 +31,35 @@ class UserType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => true,
+                'label_attr' => [
+                    'class' => 'checkbox-inline'
+                ],
 
             ])
-            ->add('password', PasswordType::class)
-            ->add('lastname', TextType::class)
-            ->add('firstname', TextType::class)
-            ->add('nickname', TextType::class)
-            ->add('avatar', UrlType::class)
-            // ->add('slug')
+            ->add('password', PasswordType::class,
+            [
+                'label' => 'Mot de passe'
+            ])
+            ->add('lastname', TextType::class,
+            [
+                'label'=> 'Nom'
+            ])
+            ->add('firstname', TextType::class,
+            [
+                'label' => 'Prénom'
+            ])
+            ->add('nickname', TextType::class,
+            [
+                'label'=> 'Pseudo'
+            ])
+            ->add('avatar', UrlType::class,
+            [
+                'label' => 'Photo de profil',
+                'attr' => [
+                    'placeholder' => 'par ex: https://...'
+
+                ]
+            ])
         ;
     }
 
