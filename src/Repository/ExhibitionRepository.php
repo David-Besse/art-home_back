@@ -50,7 +50,7 @@ class ExhibitionRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`
                 FROM `exhibition`
-                WHERE `exhibition`.`artist_id` = "'.$id.'"';
+                WHERE `exhibition`.`status` = 1 AND`exhibition`.`artist_id` = "'.$id.'"';
                
         
         $stmt = $conn->prepare($sql);
@@ -64,7 +64,7 @@ class ExhibitionRepository extends ServiceEntityRepository
     /**
      * Get exhibition by artist
      */
-    public function findAllByArtistQB(User $artist): array
+    public function findTitleAndIdForProfileQB(User $artist): array
     {
     return $this->createQueryBuilder('e')
         ->where('e.artist = :artist')
@@ -73,17 +73,17 @@ class ExhibitionRepository extends ServiceEntityRepository
         ->getResult();
     }
 
-    /**
-     * Get active exhibition by artist
-     */
-    public function findActiveExhibitionByArtistQB(User $artist): array
-    {
-    return $this->createQueryBuilder('e')
-        ->where('e.artist = :artist', 'e.status = 1')
-        ->setParameter('artist', $artist)
-        ->getQuery()
-        ->getResult();
-    }
+    // /**
+    //  * Get active exhibition by artist
+    //  */
+    // public function findActiveExhibitionByArtistQB(User $artist): array
+    // {
+    // return $this->createQueryBuilder('e')
+    //     ->where('e.artist = :artist', 'e.status = 1')
+    //     ->setParameter('artist', $artist)
+    //     ->getQuery()
+    //     ->getResult();
+    // }
 
     
 
@@ -96,6 +96,7 @@ class ExhibitionRepository extends ServiceEntityRepository
         $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture` 
                 FROM `exhibition`
                 INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
+                WHERE `exhibition`.`status` = 1
                 GROUP BY `id`';
         
         $stmt = $conn->prepare($sql);

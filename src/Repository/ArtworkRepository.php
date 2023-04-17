@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Artwork;
+use App\Entity\Exhibition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,6 +40,18 @@ class ArtworkRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Get artworks by Exhibibitions
+     */
+    public function findArtworksByExhibitionForProfilePageQB(Exhibition $exhibition)
+    {
+        return $this->createQueryBuilder('a')
+        ->where('a.exhibition = :exhibition')
+        ->groupBy('a.id')
+        ->setParameter('exhibition', $exhibition)
+        ->getQuery()
+        ->getResult();
+    }
 //    /**
 //     * @return Artwork[] Returns an array of Artwork objects
 //     */
