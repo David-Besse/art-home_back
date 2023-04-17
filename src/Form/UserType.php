@@ -3,14 +3,16 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UserType extends AbstractType
 {
@@ -36,10 +38,31 @@ class UserType extends AbstractType
                 ],
 
             ])
-            ->add('password', PasswordType::class,
-            [
-                'label' => 'Mot de passe'
-            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+                // Fetch user with the event
+                $user = $event->getData();
+                // Fetch the form thanks to the event
+                $form = $event->getForm();
+                // Preparing password field
+                //If user exist then his id is not null
+                if ($user->getId() !== null) {
+                    //  for edit form
+                    $form->add('password', PasswordType::class, 
+                    [
+                        'label' => 'Mot de passe',
+                        'mapped' => false,
+                        'attr' => [
+                            'placeholder' => 'Laissez vide si inchangé'
+                        ]
+                    ]);
+                } else {
+                    //for create form
+                    $form->add('password', PasswordType::class, 
+                    [
+                        'label' => 'Mot de passe'
+                    ]);
+                }
+            })
             ->add('lastname', TextType::class,
             [
                 'label'=> 'Nom'
