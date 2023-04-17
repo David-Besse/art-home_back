@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Exhibition;
 use App\Entity\User;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,22 +19,41 @@ class ExhibitionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
+            ->add('title', TextType::class,
+            [
+                'label' => 'Titre de l\'exposition',
+                'help' => 'Le titre ne doit pas dépasser 255 caractères'
+            ]
+            )
             // ->add('slug')
-            ->add('startDate', DateType::class)
-            ->add('endDate', DateType::class)
+            ->add('startDate', DateType::class,
+            [
+                'label' => 'Début de l\'exposition',
+                'widget' => 'single_text',
+            ])
+            ->add('endDate', DateType::class,
+            [
+                'label' => 'Fin de l\'exposition',
+                'widget' => 'single_text',
+            ])
             // ->add('status')
-            ->add('description', TextType::class)
+            ->add('description', TextType::class,
+            [
+                'label' => 'Description de l\'exposition'
+            ])
             ->add('artist', EntityType::class,
             [
+                'label' => 'Artiste :',
                 'class' => User::class,
                 'query_builder' => function(EntityRepository $er){
-                    return $er->getArtistUser();
-
+                    return $er->createQueryBuilder('u')
+                    ->where('u.roles LIKE :role')
+                    ->setParameter('role', '%"'.'ROLE_ARTIST'.'"%');
                 },
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false,
-                'choice_label' => 'email'
+                'choice_label' => 'email',
+                'placeholder' => 'Choisissez un artiste',
             ])
         ;
     }
