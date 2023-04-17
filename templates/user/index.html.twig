@@ -1,0 +1,47 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block sub_body %}
+    <h1 class="text-center">Liste des utilisateurs</h1>
+    <div class="text-center">
+        <a href="{{ path('app_user_new') }}" class="btn btn-success mb-4 mt-4">Ajouter un utilisateur</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Pseudo</th>
+                <th>Avatar</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr class="text-center">
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.nickname }}</td>
+                <td>{{ user.avatar }}</td>
+                <td>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-primary">En savoir plus</a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">Aucun utilisateurs</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

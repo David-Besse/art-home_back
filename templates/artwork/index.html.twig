@@ -1,0 +1,42 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Liste des oeuvres{% endblock %}
+
+{% block sub_body %}
+    <h1 class="text-center">Liste des oeuvres</h1>
+    <div class="text-center">
+        <a href="{{ path('app_artwork_new') }}" class="btn btn-success mb-4 mt-4">Ajouter une oeuvre</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for artwork in artworks %}
+            <tr class="text-center">
+                <td>{{ artwork.id }}</td>
+                <td>{{ artwork.title }}</td>
+                <td>{{ artwork.description }}</td>
+                <td><img src="{{ artwork.picture }}" height="50px"></td>
+                <td>{{ artwork.status ? 'Validé' : 'Non validé' }}</td>
+                <td>
+                    <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-primary">En savoir plus</a>
+                    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path('app_artwork_validate', {'id': artwork.id}) }}" class="btn btn-success">Valider</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Aucune oeuvre pour le moment</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

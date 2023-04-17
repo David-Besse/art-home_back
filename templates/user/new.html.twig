@@ -1,0 +1,11 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Ajouter un utilisateur{% endblock %}
+
+{% block sub_body %}
+    <h1 class="text-center">Ajouter un utilisateur</h1>
+
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('app_user_index') }}" class="btn btn-primary">Retour à la liste des utilsateurs</a>
+{% endblock %}

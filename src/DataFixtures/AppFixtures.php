@@ -6,6 +6,7 @@ use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Artwork;
 use App\Entity\Exhibition;
+use DateTime;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -108,9 +109,9 @@ class AppFixtures extends Fixture
             $exhibition = new Exhibition();
             // unique exhibition
             $exhibition->setTitle($faker->word());
-            $exhibition->setStartDate($faker->dateTimeBetween('-1 week'));
-            $exhibition->setDescription($faker->paragraph());   
-            $exhibition->setEndDate(date_modify($exhibition->getStartDate(),'+4 month'));
+            $exhibition->setStartDate(new DateTime());
+            $exhibition->setDescription($faker->paragraph());
+            $exhibition->setEndDate(date_add(new DateTime(),date_interval_create_from_date_string("122 days")));
             $exhibition->setStatus('1');
 
             // association of an artist to the exhibiton thanks to the artists array
@@ -136,7 +137,7 @@ class AppFixtures extends Fixture
             $randomExhibition = $exhibitionsList[mt_rand(0, count($exhibitionsList) - 1)];
             $artwork->setExhibition($randomExhibition);
             // think about change this when we will progress in our work for back experience
-            $artwork->setStatus('1');
+            $artwork->setStatus(1);
 
             $manager->persist($artwork);
         }

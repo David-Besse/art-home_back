@@ -1,0 +1,44 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Exposition{% endblock %}
+
+{% block sub_body %}
+    <h1 class="text-center">Exposition</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ exhibition.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ exhibition.title }}</td>
+            </tr>
+            <tr>
+                <th>Début de l'exposition</th>
+                <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>FIn de l'exposition</th>
+                <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ exhibition.status ? 'EN cours' : 'Archivée' }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ exhibition.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+<div class="d-flex justify-content-between">
+
+    <a href="{{ path('app_exhibition_index') }}" class="btn btn-primary">Retour à la liste des expositions</a>
+
+    <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}" class="btn btn-warning">Modifier</a>
+
+    {{ include('exhibition/_delete_form.html.twig') }}
+</div>
+{% endblock %}

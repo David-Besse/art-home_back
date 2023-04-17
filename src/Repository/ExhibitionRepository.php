@@ -96,6 +96,7 @@ class ExhibitionRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 
+
 //    /**
 //     * @return Exhibition[] Returns an array of Exhibition objects
 //     */
