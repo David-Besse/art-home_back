@@ -27,12 +27,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
+     * @Groups({"get_user"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
      * @Assert\NotBlank
+     * @Groups({"get_user_data", "get_user"})
+
      */
     private $roles = [];
 
@@ -40,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     *  @Groups({"get_user"})
      */
     private $password;
 
@@ -47,25 +51,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      * @Assert\NotBlank
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      * @Assert\NotBlank
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user_data", "get_user"})
      */
     private $nickname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $avatar;
 
@@ -79,6 +84,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Exhibition::class, mappedBy="artist", orphanRemoval=true)
      */
     private $exhibition;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateOfBirth;
 
     public function __construct()
     {
@@ -127,7 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // $roles[] = "ROLE_ARTIST";
 
         return array_unique($roles);
     }
@@ -260,6 +270,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $exhibition->setArtist(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateOfBirth(): ?\DateTimeInterface
+    {
+        return $this->dateOfBirth;
+    }
+
+    public function setDateOfBirth(?\DateTimeInterface $dateOfBirth): self
+    {
+        $this->dateOfBirth = $dateOfBirth;
 
         return $this;
     }

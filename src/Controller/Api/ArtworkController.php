@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Artwork;
+use App\Entity\Exhibition;
 use App\Repository\ArtworkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -25,7 +26,7 @@ class ArtworkController extends AbstractController
     {
         // fetch all artworks
         $artworks = $artworkRepository->findAll();
-
+   
         // transform data in json format
         return $this->json(
             $artworks, 
@@ -202,7 +203,17 @@ class ArtworkController extends AbstractController
         
     }
 
-    
+    /**
+     * Get artworks by exhibition for profile page
+     * @Route("api/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function getArtworksByExhibition(Exhibition $exhibition, ArtworkRepository $artworkRepository)
+    {
+        $artworksList = $artworkRepository->findArtworksByExhibitionForProfilePageQB($exhibition);
+
+        return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition'] );
+    }
+
 
 
 }

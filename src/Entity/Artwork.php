@@ -16,26 +16,27 @@ class Artwork
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"get_artwork_by_exhibition"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
      * @Assert\NotBlank
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
      * @Assert\NotBlank
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition"})
      */
     private $picture;
 
