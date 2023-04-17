@@ -91,7 +91,7 @@ class ArtworkController extends AbstractController
 
     /**
      * validate an artwork
-     * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"GET"})
+     * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"POST"})
      */
     public function validate(EntityManagerInterface $entityManager, Artwork $artwork) : Response
     {

@@ -27,9 +27,13 @@
                 <td><img src="{{ artwork.picture }}" height="50px"></td>
                 <td>{{ artwork.status ? 'Validé' : 'Non validé' }}</td>
                 <td>
+                   
                     <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-primary">En savoir plus</a>
                     <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}" class="btn btn-warning">Modifier</a>
-                    <a href="{{ path('app_artwork_validate', {'id': artwork.id}) }}" class="btn btn-success">Valider</a>
+                    <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
+                        <button class="btn btn-success">Valider l'oeuvre</button>
+                    </form>
+                    {# <a href="{{ path('app_artwork_validate', {'id': artwork.id}) }}" class="btn btn-success">Valider</a> #}
                 </td>
             </tr>
         {% else %}
