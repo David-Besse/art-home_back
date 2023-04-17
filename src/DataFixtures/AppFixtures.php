@@ -137,7 +137,7 @@ class AppFixtures extends Fixture
             $randomExhibition = $exhibitionsList[mt_rand(0, count($exhibitionsList) - 1)];
             $artwork->setExhibition($randomExhibition);
             // think about change this when we will progress in our work for back experience
-            $artwork->setStatus('1');
+            $artwork->setStatus(1);
 
             $manager->persist($artwork);
         }

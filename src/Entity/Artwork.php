@@ -60,6 +60,11 @@ class Artwork
      */
     private $exhibition;
 
+    public function __construct()
+    {
+        $this->status = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
