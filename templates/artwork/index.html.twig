@@ -24,7 +24,7 @@
                 <td>{{ artwork.id }}</td>
                 <td>{{ artwork.title }}</td>
                 <td>{{ artwork.description }}</td>
-                <td>{{ artwork.picture }}</td>
+                <td><img src="{{ artwork.picture }}" height="50px"></td>
                 <td>{{ artwork.status ? 'Validé' : 'Non validé' }}</td>
                 <td>
                     <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-primary">En savoir plus</a>
