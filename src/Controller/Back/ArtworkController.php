@@ -5,6 +5,7 @@ namespace App\Controller\Back;
 use App\Entity\Artwork;
 use App\Form\ArtworkType;
 use App\Repository\ArtworkRepository;
+use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,13 +30,16 @@ class ArtworkController extends AbstractController
     /**
      * @Route("/new", name="app_artwork_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ArtworkRepository $artworkRepository): Response
+    public function new(Request $request, ArtworkRepository $artworkRepository, MySlugger $slugger): Response
     {
         $artwork = new Artwork();
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $slug = $slugger->slugify($artwork->getTitle());
+            $artwork->setSlug($slug);
             $artworkRepository->add($artwork, true);
 
             return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
