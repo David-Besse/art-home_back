@@ -129,7 +129,8 @@ class UserController extends AbstractController
             'avatar' => $avatar,
             'presentation' => $presentation,
             'role' => $role,
-            'Exhibition' => $Exhibition,
+            'Exhibition' => $exhibition
+
         ];
         
 
