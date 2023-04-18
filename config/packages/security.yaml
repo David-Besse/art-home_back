@@ -27,6 +27,11 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 # on gère le cas, en cas d'erreur
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
         api:
             pattern:   ^/api
             stateless: true
@@ -34,8 +39,12 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
+
+
+        
             
             
 
