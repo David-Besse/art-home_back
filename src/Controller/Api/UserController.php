@@ -83,6 +83,20 @@ class UserController extends AbstractController
         // setting an empty array
         $data = [];
 
+        // setting a string depending on the role and return this string
+        if(implode(',', $user->getRoles()) == 'ROLE_ARTIST')
+        {
+            $role = 'Artiste';
+        }
+        else if(implode(',', $user->getRoles()) == 'ROLE_ADMIN')
+        {
+            $role = 'Administrateur';
+        }else 
+        {
+            $role = 'Modérateur';
+        }
+
+
         //fetching information about logged user
         $nickname = $user->getNickname();
         $firstname = $user->getFirstname();
@@ -90,7 +104,9 @@ class UserController extends AbstractController
         $email = $user->getEmail();
         $birthday = $user->getDateOfBirth();
         $avatar = $user->getAvatar();
+        $presentation = $user->getPresentation();
         
+
         $exhibitions = $user->getExhibition();
         $Exhibition = [];
         foreach ($exhibitions as $exhibition){
@@ -111,6 +127,8 @@ class UserController extends AbstractController
             'email' => $email,
             'birthday' => $birthday,
             'avatar' => $avatar,
+            'presentation' => $presentation,
+            'role' => $role,
             'Exhibition' => $Exhibition,
         ];
         
