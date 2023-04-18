@@ -41,7 +41,7 @@ class ExhibitionController extends AbstractController
 
     /**
      * Create  exhibition item
-     * @Route("/api/exhibitions/new", name="api_exhibition_new", methods={"PUT"})
+     * @Route("/api/secure/exhibitions/new", name="api_exhibition_new", methods={"PUT"})
      */
     public function createExhibition(Request $request, SerializerInterface $serializer,ManagerRegistry $doctrine, ValidatorInterface $validator)
     {
@@ -100,7 +100,7 @@ class ExhibitionController extends AbstractController
 
     /**
      * Edit exhibition item
-     * @Route("/api/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PUT"})
+     * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PUT"})
      */
     public function editExhibition(Exhibition $exhibitionToEdit, Request $request, SerializerInterface $serializer,ManagerRegistry $doctrine, ValidatorInterface $validator)
     {
@@ -165,7 +165,7 @@ class ExhibitionController extends AbstractController
 
     /**
          * Delete an exhibition item
-         * @Route("/api/exhibitions/{id<\d+>}/delete", name="api_exhibition_delete", methods={"DELETE"})
+         * @Route("/api/secure/exhibitions/{id<\d+>}/delete", name="api_exhibition_delete", methods={"DELETE"})
          */
         public function deleteExhibition(Exhibition $exhibitionToDelete, EntityManagerInterface $entityManager ) : Response
         {

@@ -21,7 +21,7 @@ class UserController extends AbstractController
     /**
      * Get informations from logged user
      *
-     * @Route("api/users/informations", name="app_api_users_informations", methods={"GET"})
+     * @Route("api/secure/users/informations", name="app_api_users_informations", methods={"GET"})
      */
     public function getInformationsFromUser()
     {
@@ -72,7 +72,7 @@ class UserController extends AbstractController
           
     /**
      * Get information artist and exhibitions for profile page
-     * @Route("api/users/profile", name="app_api_users_profile", methods={"GET"})
+     * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})
      */
     public function getInformationForProfile()
     {
@@ -128,7 +128,7 @@ class UserController extends AbstractController
      * Create a new user
      *
      * @param Request $request
-     * @Route ("/users/new", name="app_api_users_create", methods={"POST"})
+     * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
      */
     public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher) : Response
     {
