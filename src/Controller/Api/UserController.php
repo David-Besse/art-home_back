@@ -46,10 +46,18 @@ class UserController extends AbstractController
             $role = 'Modérateur';
         }
 
+        if($user->getDateOfBirth() !== null){
+            // modifying date format 
+            $dateofBirth = date_format($user->getDateOfBirth(), 'd-m-Y');
+        }else{
+            $dateofBirth = $user->getDateOfBirth();
+        }
+
         // putting the informations in the empty array
         $data = [
             'user' => $user,
-            'role' => $role
+            'role' => $role,
+            'date' => $dateofBirth
         ];
 
         

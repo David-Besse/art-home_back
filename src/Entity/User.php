@@ -87,7 +87,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"get_user"})
      */
     private $dateOfBirth;
 
