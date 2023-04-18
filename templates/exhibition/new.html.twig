@@ -1,0 +1,11 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Nouvelle exposition{% endblock %}
+
+{% block sub_body %}
+    <h1 class="text-center">Ajouter une exposition</h1>
+
+    {{ include('exhibition/_form.html.twig') }}
+
+    <a href="{{ path('app_exhibition_index') }}" class="btn btn-primary">Retour à la liste des expositions</a>
+{% endblock %}

@@ -21,7 +21,7 @@ class UserController extends AbstractController
     /**
      * Get informations from logged user
      *
-     * @Route("api/users/informations", name="app_api_users_informations", methods={"GET"})
+     * @Route("api/secure/users/informations", name="app_api_users_informations", methods={"GET"})
      */
     public function getInformationsFromUser()
     {
@@ -32,17 +32,13 @@ class UserController extends AbstractController
         
         // setting an empty array
         $data = [];
-
-        //fetching information about logged user
-        $nickname = $user->getNickname();
-        $roles = $user->getRoles();
-        
+  
         // setting a string depending on the role and return this string
-        if(implode(',', $roles) == 'ROLE_ARTIST')
+        if(implode(',', $user->getRoles()) == 'ROLE_ARTIST')
         {
             $role = 'Artiste';
         }
-        else if(implode(',', $roles) == 'ROLE_ADMIN')
+        else if(implode(',', $user->getRoles()) == 'ROLE_ADMIN')
         {
             $role = 'Administrateur';
         }else 
@@ -50,24 +46,33 @@ class UserController extends AbstractController
             $role = 'Modérateur';
         }
 
+        if($user->getDateOfBirth() !== null){
+            // modifying date format 
+            $dateofBirth = date_format($user->getDateOfBirth(), 'd-m-Y');
+        }else{
+            $dateofBirth = $user->getDateOfBirth();
+        }
+
         // putting the informations in the empty array
         $data = [
-            'nickname' => $nickname,
-            'roles' => $role
+            'user' => $user,
+            'role' => $role,
+            'date' => $dateofBirth
         ];
 
+        
         //sending the response with all data
         return $this->json(
             $data,
             Response::HTTP_OK,
             [],
-            ['groups' => 'get_user_data']
+            ['groups' => 'get_user']
         );
     }
           
     /**
      * Get information artist and exhibitions for profile page
-     * @Route("api/users/profile", name="app_api_users_profile", methods={"GET"})
+     * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})
      */
     public function getInformationForProfile()
     {
@@ -78,6 +83,20 @@ class UserController extends AbstractController
         // setting an empty array
         $data = [];
 
+        // setting a string depending on the role and return this string
+        if(implode(',', $user->getRoles()) == 'ROLE_ARTIST')
+        {
+            $role = 'Artiste';
+        }
+        else if(implode(',', $user->getRoles()) == 'ROLE_ADMIN')
+        {
+            $role = 'Administrateur';
+        }else 
+        {
+            $role = 'Modérateur';
+        }
+
+
         //fetching information about logged user
         $nickname = $user->getNickname();
         $firstname = $user->getFirstname();
@@ -85,7 +104,9 @@ class UserController extends AbstractController
         $email = $user->getEmail();
         $birthday = $user->getDateOfBirth();
         $avatar = $user->getAvatar();
+        $presentation = $user->getPresentation();
         
+
         $exhibitions = $user->getExhibition();
         $Exhibition = [];
         foreach ($exhibitions as $exhibition){
@@ -106,7 +127,10 @@ class UserController extends AbstractController
             'email' => $email,
             'birthday' => $birthday,
             'avatar' => $avatar,
-            'exhibitions' => $Exhibition,
+            'presentation' => $presentation,
+            'role' => $role,
+            'Exhibition' => $exhibition
+
         ];
         
 
@@ -123,7 +147,7 @@ class UserController extends AbstractController
      * Create a new user
      *
      * @param Request $request
-     * @Route ("/users/new", name="app_api_users_create", methods={"POST"})
+     * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
      */
     public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher) : Response
     {
@@ -175,7 +199,7 @@ class UserController extends AbstractController
 
         //Return response if created
         return $this->json(
-            $user, 
+            [], 
             Response::HTTP_CREATED,
             [],
             ['groups' => 'get_user']

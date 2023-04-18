@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="{{ path('app_home_backoffice')}}">Art@home</a>
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+            <ul class="nav nav-underline">
+                <li class="nav-item ">
+                    <a class="nav-link text-white" href="{{ path('app_exhibition_index')}}">Expositions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('app_artwork_index')}}">Oeuvres</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('app_user_index')}}">Utilisateurs</a>
+                </li>
+            </ul>
+            {# menu user #}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            
+
+                    {# possibilité avec un tableau assoc. #}
+                    {# {% set roles = {"ROLE_USER" : "Utilisateur","ROLE_MANAGER" : "Manager","ROLE_ADMIN" : "Administrateur"} %} #}
+
+                    <ul class="nav nav-underline d-flex align-items-center ">
+                        <li><h6 class="nav-item text-white mr-4 mt-1 ">
+                            {# possibilité avec un tableau assoc. #}
+                            {# {{ roles[app.user.roles[0]] }} #}
+                            {% if is_granted("ROLE_ADMIN") %}
+                            Administrateur
+                            {% elseif is_granted("ROLE_MODERATOR") %}
+                            Modérateur                        
+                            {% endif %}
+                        </h6></li>
+                        
+                        <li><a class="btn btn-danger me-2" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    </ul>
+             
+            {# /menu user #}
+            {% else %}
+            {# on convertit le "button" en "a" #}
+            <a href="{{ path('app_login') }}" class="btn btn-danger me-2">Connexion</a>
+            {% endif %}
+        </div>
+        
+    </div>
+</nav>
+<div class="container-xl p-5 border-top">
+    {% block sub_body %}
+    <div class="bg-light d-flex flex-column align-items-center justify-content-center" style="height: 600px">
+    
+   <h1>Bienvenue sur le backoffice</h1>
+   <h2>Art@home</h2>
+</div>
+   {% endblock %}
+</div>
+
+{% endblock %}

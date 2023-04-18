@@ -1,0 +1,47 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Liste des expositions{% endblock %}
+
+{% block sub_body %}
+    <h1 class="text-center">Liste des expositions</h1>
+    <div class="text-center">
+        <a href="{{ path('app_exhibition_new') }}" class="btn btn-success mb-4 mt-4">Ajouter une exposition</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>Début de l'exposition</th>
+                <th>Fin de l'exposition</th>
+                <th>Statut</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exhibition in exhibitions %}
+            <tr class="text-center">
+                <td>{{ exhibition.id }}</td>
+                <td>{{ exhibition.title }}</td>
+                <td>{{ exhibition.slug }}</td>
+                <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
+                <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
+                <td>{{ exhibition.status ? 'En cours' : 'Archivée' }}</td>
+                <td>{{ exhibition.description }}</td>
+                <td>
+                    <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}" class="btn btn-primary">En savoir plus</a>
+                    <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}" class="btn btn-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Aucune exposition pour le moment</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

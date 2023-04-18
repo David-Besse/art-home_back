@@ -74,6 +74,7 @@
             "config/packages/nelmio_cors.yaml"
         ]
     },
+
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
