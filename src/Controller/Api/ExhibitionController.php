@@ -29,7 +29,7 @@ class ExhibitionController extends AbstractController
     }
 
     /**
-     * Get one exhibition
+     * Get one exhibition and related artworks and related artist
      * @Route("/api/exhibitions/{id<\d+>}", name="api_exhibition_by_id", methods={"GET"})
      */
     public function getExhibitionById(Exhibition $exhibition): Response

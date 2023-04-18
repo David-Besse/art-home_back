@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12b8fa05123b8633f514cb7297689607",
-
+    "content-hash": "002a0916320a5b55c201c434f9f39b2d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2145,7 +2144,6 @@
             "time": "2023-02-16T08:49:29+00:00"
         },
         {
-
             "name": "phpdocumentor/reflection-common",
             "version": "2.2.0",
             "source": {
