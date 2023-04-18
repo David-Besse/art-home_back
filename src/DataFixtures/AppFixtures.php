@@ -6,21 +6,25 @@ use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Artwork;
 use App\Entity\Exhibition;
+use App\Service\MySlugger;
 use DateTime;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 class AppFixtures extends Fixture
 {
  
     private $connection;
-
+    private $slugger;
     // Injection od the DB Connection
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, MySlugger $slugger)
     {
 
         $this->connection = $connection;
+        $this->slugger = $slugger;
     }
 
     /**
@@ -64,7 +68,7 @@ class AppFixtures extends Fixture
             $admin->setFirstname($faker->firstName());
             $admin->setLastname($faker->lastName());
             $admin->setRoles(["ROLE_ADMIN"]);
-            
+                        
             $manager->persist($admin);
 
             //Moderator
@@ -93,6 +97,10 @@ class AppFixtures extends Fixture
                 $artist->setNickname($faker->userName());
                 $artist->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 50) . '/50/50');
                 $artist->setRoles(["ROLE_ARTIST"]);
+                $fullname = $artist->getFirstname().' '. $artist->getLastname();
+                $slug = $this->slugger->slugify($fullname);
+                $artist->setSlug($slug);
+
 
                 $artistList[] = $artist;
 
@@ -113,6 +121,8 @@ class AppFixtures extends Fixture
             $exhibition->setDescription($faker->paragraph());
             $exhibition->setEndDate(date_add(new DateTime(),date_interval_create_from_date_string("122 days")));
             $exhibition->setStatus('1');
+            $slug = $this->slugger->slugify($exhibition->getTitle());
+            $exhibition->setSlug($slug);
 
             // association of an artist to the exhibiton thanks to the artists array
             $randomArtist = $artistList[mt_rand(0, count($artistList) - 1)];
@@ -138,6 +148,8 @@ class AppFixtures extends Fixture
             $artwork->setExhibition($randomExhibition);
             // think about change this when we will progress in our work for back experience
             $artwork->setStatus(1);
+            $slug = $this->slugger->slugify($artwork->getTitle());
+            $artwork->setSlug($slug);
 
             $manager->persist($artwork);
         }
