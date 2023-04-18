@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Artwork;
 use App\Entity\Exhibition;
 use App\Repository\ArtworkRepository;
+use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +60,7 @@ class ArtworkController extends AbstractController
      *
      * @Route("/api/secure/artworks/new", name="app_api_artwork_new", methods={"POST"})
      */
-    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator) : Response
+    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, MySlugger $slugger) : Response
     {
         //Fetch the json content
         $jsonContent = $request->getContent();
@@ -97,7 +98,10 @@ class ArtworkController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+        //slugify
+        $slug = $slugger->slugify($artwork->getTitle());
+        $artwork->setSlug($slug);
+            
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($artwork);
