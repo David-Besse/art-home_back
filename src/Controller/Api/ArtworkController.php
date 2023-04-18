@@ -57,7 +57,7 @@ class ArtworkController extends AbstractController
     /**
      * Create an artwork entity
      *
-     * @Route("/api/artworks/new", name="app_api_artwork_new", methods={"POST"})
+     * @Route("/api/secure/artworks/new", name="app_api_artwork_new", methods={"POST"})
      */
     public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator) : Response
     {
@@ -115,7 +115,7 @@ class ArtworkController extends AbstractController
     /**
      * Edit artwork entity
      *
-     * @Route("api/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PUT"})
+     * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PUT"})
      */
     public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit) : Response
     {
@@ -181,7 +181,7 @@ class ArtworkController extends AbstractController
     /**
      * Remove an entity
      *
-     * @Route("api/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
+     * @Route("api/secure/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
      */
     public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager) : Response
     {
@@ -205,7 +205,7 @@ class ArtworkController extends AbstractController
 
     /**
      * Get artworks by exhibition for profile page
-     * @Route("api/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("api/secure/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
      */
     public function getArtworksByExhibition(Exhibition $exhibition, ArtworkRepository $artworkRepository)
     {
