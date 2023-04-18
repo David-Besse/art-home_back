@@ -106,7 +106,7 @@ class UserController extends AbstractController
             'email' => $email,
             'birthday' => $birthday,
             'avatar' => $avatar,
-            'Exhibition' => $Exhibition,
+            'exhibitions' => $Exhibition,
         ];
         
 
