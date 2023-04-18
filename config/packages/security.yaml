@@ -43,6 +43,9 @@ security:
             logout:
                 path: app_logout
 
+    role_hierarchy:
+        ROLE_MODERATOR: ROLE_ARTIST
+        ROLE_ADMIN: [ROLE_MODERATOR, ROLE_ARTIST]
 
         
             
@@ -62,6 +65,11 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
+        # security for route /artwork, /exhibition and /user
+        - { path: ^/artwork, roles: ROLE_MODERATOR }
+        - { path: ^/exhibition, roles: ROLE_MODERATOR }
+        - { path: ^/user, roles: ROLE_ADMIN }
+        
 when@test:
     security:
         password_hashers:
