@@ -42,7 +42,12 @@ security:
             custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
+
+
         
+            
+            
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -57,6 +62,11 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
+        # security for route /artwork, /exhibition and /user
+        - { path: ^/artwork, roles: ROLE_MODERATOR }
+        - { path: ^/exhibition, roles: ROLE_MODERATOR }
+        - { path: ^/user, roles: ROLE_ADMIN }
+        
 when@test:
     security:
         password_hashers:
