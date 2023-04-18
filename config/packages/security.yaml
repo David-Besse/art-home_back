@@ -27,13 +27,10 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 # on gère le cas, en cas d'erreur
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
-        api:
-            pattern:   ^/api
+
+
+        api_secure:
+            pattern:   ^/api/secure
             stateless: true
             jwt: ~
         main:
@@ -43,14 +40,10 @@ security:
             logout:
                 path: app_logout
 
+       
     role_hierarchy:
         ROLE_MODERATOR: ROLE_ARTIST
         ROLE_ADMIN: [ROLE_MODERATOR, ROLE_ARTIST]
-
-        
-            
-            
-
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -61,9 +54,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api/secure, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: PUBLIC_ACCESS }
 
         # security for route /artwork, /exhibition and /user
         - { path: ^/artwork, roles: ROLE_MODERATOR }

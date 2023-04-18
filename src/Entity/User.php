@@ -34,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      * @Assert\NotBlank
-     * @Groups({"get_user_data", "get_user"})
+     * @Groups({"get_user"})
 
      */
     private $roles = [];
@@ -89,6 +89,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateOfBirth;
+
+    /**
+     * @ORM\Column(type="string", length=800, nullable=true)
+     * @Groups({"get_user"})
+     */
+    private $presentation;
 
     public function __construct()
     {
@@ -282,6 +288,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDateOfBirth(?\DateTimeInterface $dateOfBirth): self
     {
         $this->dateOfBirth = $dateOfBirth;
+
+        return $this;
+    }
+
+    public function getPresentation(): ?string
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation(?string $presentation): self
+    {
+        $this->presentation = $presentation;
 
         return $this;
     }
