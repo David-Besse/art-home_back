@@ -28,3 +28,9 @@ services:
         autowire: true
         autoconfigure: true
         tags: [serializer.normalizer]
+
+    App\Service\MySlugger:
+    # Arguments given to service
+        arguments:
+        # parameters name
+            $toLower: true
