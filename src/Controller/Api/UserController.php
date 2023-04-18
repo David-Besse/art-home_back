@@ -102,7 +102,14 @@ class UserController extends AbstractController
         $firstname = $user->getFirstname();
         $lastname = $user->getLastname();
         $email = $user->getEmail();
-        $birthday = $user->getDateOfBirth();
+
+        if($user->getDateOfBirth() !== null){
+            // modifying date format 
+            $birthday = date_format($user->getDateOfBirth(), 'd-m-Y');
+        }else{
+            $birthday = $user->getDateOfBirth();
+        }
+        
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
         
