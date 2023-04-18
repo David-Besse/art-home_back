@@ -107,13 +107,13 @@ class UserController extends AbstractController
         $presentation = $user->getPresentation();
         
 
-        $exhibitions = $user->getExhibition();
-        $Exhibition = [];
-        foreach ($exhibitions as $exhibition){
+        $exhibitionFetch = $user->getExhibition();
+        $exhibitions = [];
+        foreach ($exhibitionFetch as $exhibition){
             $id = $exhibition->getId();
 
             $title = $exhibition->getTitle();
-            $Exhibition [] = [
+            $exhibitions [] = [
                 'id' => $id,
                 'title' => $title
             ];
@@ -129,7 +129,7 @@ class UserController extends AbstractController
             'avatar' => $avatar,
             'presentation' => $presentation,
             'role' => $role,
-            'Exhibition' => $exhibition
+            'exhibitions' => $exhibitions
 
         ];
         
