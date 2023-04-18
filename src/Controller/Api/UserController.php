@@ -32,17 +32,13 @@ class UserController extends AbstractController
         
         // setting an empty array
         $data = [];
-
-        //fetching information about logged user
-        $nickname = $user->getNickname();
-        $roles = $user->getRoles();
-        
+  
         // setting a string depending on the role and return this string
-        if(implode(',', $roles) == 'ROLE_ARTIST')
+        if(implode(',', $user->getRoles()) == 'ROLE_ARTIST')
         {
             $role = 'Artiste';
         }
-        else if(implode(',', $roles) == 'ROLE_ADMIN')
+        else if(implode(',', $user->getRoles()) == 'ROLE_ADMIN')
         {
             $role = 'Administrateur';
         }else 
@@ -52,16 +48,17 @@ class UserController extends AbstractController
 
         // putting the informations in the empty array
         $data = [
-            'nickname' => $nickname,
-            'roles' => $role
+            'user' => $user,
+            'role' => $role
         ];
 
+        
         //sending the response with all data
         return $this->json(
             $data,
             Response::HTTP_OK,
             [],
-            ['groups' => 'get_user_data']
+            ['groups' => 'get_user']
         );
     }
           
@@ -175,7 +172,7 @@ class UserController extends AbstractController
 
         //Return response if created
         return $this->json(
-            $user, 
+            [], 
             Response::HTTP_CREATED,
             [],
             ['groups' => 'get_user']
