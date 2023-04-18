@@ -21,7 +21,8 @@ class ExhibitionType extends AbstractType
             ->add('title', TextType::class,
             [
                 'label' => 'Titre de l\'exposition',
-                'help' => 'Le titre ne doit pas dépasser 255 caractères'
+                'help' => 'Le titre ne doit pas dépasser 255 caractères',
+                'empty_data' => ''
             ]
             )
             ->add('description', TextType::class,

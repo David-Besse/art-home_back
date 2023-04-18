@@ -21,7 +21,8 @@ class UserType extends AbstractType
         $builder
             ->add('email', EmailType::class,
             [
-                'label' => 'Adresse email'
+                'label' => 'Adresse email',
+                'empty_data' => ''
             ])
             ->add('roles', ChoiceType::class,
             [
@@ -65,11 +66,13 @@ class UserType extends AbstractType
             })
             ->add('lastname', TextType::class,
             [
-                'label'=> 'Nom'
+                'label'=> 'Nom',
+                'empty_data' => ''
             ])
             ->add('firstname', TextType::class,
             [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
+                'empty_data' => ''
             ])
             ->add('nickname', TextType::class,
             [

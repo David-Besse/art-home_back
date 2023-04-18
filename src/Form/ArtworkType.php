@@ -19,7 +19,9 @@ class ArtworkType extends AbstractType
         $builder
             ->add('title', TextType::class,
             [
-                'label' => 'Titre de l\'oeuvre'
+                'label' => 'Titre de l\'oeuvre',
+                'empty_data' => ''
+               
             ])
             ->add('description', TextareaType::class,
             [
@@ -31,7 +33,9 @@ class ArtworkType extends AbstractType
                 'attr' => [
                     'placeholder' => 'par ex: https://...'
 
-                ]
+                ],
+                'empty_data' => ''
+               
             ])
             // ->add('status')
             ->add('exhibition', EntityType::class,
