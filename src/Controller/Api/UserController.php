@@ -51,9 +51,9 @@ class UserController extends AbstractController
 
         if ($user->getDateOfBirth() !== null) {
             // modifying date format 
-            $birthday = date_format($user->getDateOfBirth(), 'd-m-Y');
+            $dateOfBirth = date_format($user->getDateOfBirth(), 'Y-m-d');
         } else {
-            $birthday = $user->getDateOfBirth();
+            $dateOfBirth = $user->getDateOfBirth();
         }
 
 
@@ -74,7 +74,7 @@ class UserController extends AbstractController
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,
-            'birthday' => $birthday,
+            'dateOfBirth' => $dateOfBirth,
             'avatar' => $avatar,
             'presentation' => $presentation,
             'role' => $role,
