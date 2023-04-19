@@ -42,8 +42,13 @@ class ArtworkController extends AbstractController
      *
      * @Route("/api/artworks/{id}", name="app_api_artwork_by_id", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function getArtworkById(Artwork $artwork): Response
+    public function getArtworkById(Artwork $artwork = null): Response
     {
+
+        // 404 ?
+        if ($artwork === null) {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
 
         // transform entity Artwork into json 
         return $this->json(
@@ -121,9 +126,13 @@ class ArtworkController extends AbstractController
      *
      * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PUT"})
      */
-    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit) : Response
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null) : Response
     {
 
+        // 404 ?
+        if ($artworkToEdit === null) {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
          //Fetch the json content
          $jsonContent = $request->getContent();
 
@@ -189,10 +198,10 @@ class ArtworkController extends AbstractController
      */
     public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager) : Response
     {
-
+        //404?
         if($artwork === null)
         {
-            return $this->json(['error' => 'Film non trouvé.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
         // remove entity artwork
@@ -211,8 +220,13 @@ class ArtworkController extends AbstractController
      * Get artworks by exhibition for profile page
      * @Route("api/secure/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function getArtworksByExhibition(Exhibition $exhibition, ArtworkRepository $artworkRepository)
+    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository)
     {
+        //404
+        if($exhibition === null)
+        {
+            return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
         $artworksList = $artworkRepository->findArtworksByExhibitionForProfilePageQB($exhibition);
 
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition'] );
