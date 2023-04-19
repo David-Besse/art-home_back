@@ -5,6 +5,7 @@ namespace App\Controller\Back;
 use App\Entity\Exhibition;
 use App\Form\ExhibitionType;
 use App\Repository\ExhibitionRepository;
+use App\Service\MySlugger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,13 +29,16 @@ class ExhibitionController extends AbstractController
     /**
      * @Route("/new", name="app_exhibition_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ExhibitionRepository $exhibitionRepository): Response
+    public function new(Request $request, ExhibitionRepository $exhibitionRepository, MySlugger $slugger): Response
     {
         $exhibition = new Exhibition();
         $form = $this->createForm(ExhibitionType::class, $exhibition);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $slug = $slugger->slugify($exhibition->getTitle());
+            $exhibition->setSlug($slug);
             $exhibitionRepository->add($exhibition, true);
 
             return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);

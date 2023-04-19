@@ -148,7 +148,15 @@ class UserController extends AbstractController
         $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
 
         if ($user->getNickname() !== Null ) {
+            
+            $slug = $slugger->slugify($user->getNickname());
+            $user->setSlug($slug);
+        } else {
 
+            $fullname = $user->getFirstname().' '. $user->getLastname();
+            $slug = $slugger->slugify($fullname);
+            $user->setSlug($slug);
+            
         }
 
         //Saving the entity and saving in DBB

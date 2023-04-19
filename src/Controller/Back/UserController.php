@@ -5,6 +5,7 @@ namespace App\Controller\Back;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\MySlugger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,13 +29,24 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="app_user_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, UserRepository $userRepository): Response
+    public function new(Request $request, UserRepository $userRepository, MySlugger $slugger): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($user->getNickname() !== Null ) {
+            
+                $slug = $slugger->slugify($user->getNickname());
+                $user->setSlug($slug);
+            } else {
+    
+                $fullname = $user->getFirstname().' '. $user->getLastname();
+                $slug = $slugger->slugify($fullname);
+                $user->setSlug($slug);                
+            }
             $userRepository->add($user, true);
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
