@@ -18,48 +18,57 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArtworkController extends AbstractController
 {
     /**
+     * Displaying all validate artworks
+     * 
      * @Route("/", name="app_artwork_index", methods={"GET"})
      */
     public function index(ArtworkRepository $artworkRepository): Response
     {
         return $this->render('artwork/index.html.twig', [
-            'artworks' => $artworkRepository->findBy(['status' => true],['id' => 'DESC']),
+            'artworks' => $artworkRepository->findBy(['status' => true], ['id' => 'DESC']),
         ]);
     }
 
     /**
      * Displaying artworks with status false
      *
-     * @Route ("/validation-waiting", name="app_validation_waiting")
+     * @Route ("/validation-waiting", name="app_validation_waiting", methods={"GET"})
      */
-    public function validatePage(ArtworkRepository $artworkRepository) : Response
+    public function validatePage(ArtworkRepository $artworkRepository): Response
     {
-        return $this->render('artwork/validation.html.twig',
-        [
+        return $this->render('artwork/validation.html.twig', [
             'artworks' => $artworkRepository->findBy(['status' => false])
         ]);
     }
 
     /**
+     * Display create form and form process
+     * 
      * @Route("/new", name="app_artwork_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ArtworkRepository $artworkRepository, MySlugger $slugger): Response
     {
+        // create a new artwork entity and form
         $artwork = new Artwork();
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
 
+        // if form is submitted
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //slugify the title
             $slug = $slugger->slugify($artwork->getTitle());
             $artwork->setSlug($slug);
             $artworkRepository->add($artwork, true);
 
+            // add flash messages
             $this->addFlash('warning', 'L\'oeuvre a été ajoutée et est en attente de validation');
 
+            // redirection
             return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        //else return twig with the form
         return $this->renderForm('artwork/new.html.twig', [
             'artwork' => $artwork,
             'form' => $form,
@@ -67,13 +76,14 @@ class ArtworkController extends AbstractController
     }
 
     /**
+     * Display an artwork
+     * 
      * @Route("/{id}", name="app_artwork_show", methods={"GET"})
      */
     public function show(Artwork $artwork = null): Response
     {
         //404?
-        if($artwork === null)
-        {
+        if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
         return $this->render('artwork/show.html.twig', [
@@ -82,27 +92,33 @@ class ArtworkController extends AbstractController
     }
 
     /**
+     * Display edit form and form process
+     * 
      * @Route("/{id}/edit", name="app_artwork_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
     {
         //404?
-        if($artwork === null)
-        {
+        if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
+        // create edit form
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
 
+        //if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
             $artworkRepository->add($artwork, true);
 
+            //adding flash messages
             $this->addFlash('success', 'L\'oeuvre a été modifiée');
 
+            //redirection
             return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        //else return twig with edit form
         return $this->renderForm('artwork/edit.html.twig', [
             'artwork' => $artwork,
             'form' => $form,
@@ -110,42 +126,53 @@ class ArtworkController extends AbstractController
     }
 
     /**
+     * Process delete form
+     * 
      * @Route("/{id}", name="app_artwork_delete", methods={"POST"})
      */
     public function delete(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
     {
         //404?
-        if($artwork === null)
-        {
+        if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
-        if ($this->isCsrfTokenValid('delete'.$artwork->getId(), $request->request->get('_token'))) {
+        // if token is valid
+        if ($this->isCsrfTokenValid('delete' . $artwork->getId(), $request->request->get('_token'))) {
+
+            //removing the entity
             $artworkRepository->remove($artwork, true);
         }
 
+        // flash messages
         $this->addFlash('danger', 'L\'oeuvre a été supprimée');
+
+        //redirection
         return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
     }
 
     /**
-     * validate an artwork
+     * Validate an artwork
+     * 
      * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"POST"})
      */
-    public function validate(EntityManagerInterface $entityManager, Artwork $artwork = null) : Response
+    public function validate(EntityManagerInterface $entityManager, Artwork $artwork = null): Response
     {
         //404?
-        if($artwork === null)
-        {
+        if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
-        
+        //if form is submited
+        //ten set new status to true
         $artwork->setStatus(1);
         $entityManager->persist($artwork);
         $entityManager->flush();
 
+        //flash messages
         $this->addFlash('success', 'L\'oeuvre a été validée');
+
+        //redirection
         return $this->redirectToRoute('app_validation_waiting');
     }
 }

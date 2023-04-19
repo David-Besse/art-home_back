@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
-{         
+{
     /**
      * Get information artist and exhibitions for profile page
      * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})
@@ -32,15 +32,11 @@ class UserController extends AbstractController
         $data = [];
 
         // setting a string depending on the role and return this string
-        if(implode(',', $user->getRoles()) == 'ROLE_ARTIST')
-        {
+        if (implode(',', $user->getRoles()) == 'ROLE_ARTIST') {
             $role = 'Artiste';
-        }
-        else if(implode(',', $user->getRoles()) == 'ROLE_ADMIN')
-        {
+        } else if (implode(',', $user->getRoles()) == 'ROLE_ADMIN') {
             $role = 'Administrateur';
-        }else 
-        {
+        } else {
             $role = 'Modérateur';
         }
 
@@ -50,29 +46,27 @@ class UserController extends AbstractController
         $firstname = $user->getFirstname();
         $lastname = $user->getLastname();
         $email = $user->getEmail();
-
-        if($user->getDateOfBirth() !== null){
-            // modifying date format 
-            $birthday = date_format($user->getDateOfBirth(), 'd-m-Y');
-        }else{
-            $birthday = $user->getDateOfBirth();
-        }
-        
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
-        
 
-        $exhibitionFetch = $user->getExhibition();
+        if ($user->getDateOfBirth() !== null) {
+            // modifying date format 
+            $birthday = date_format($user->getDateOfBirth(), 'd-m-Y');
+        } else {
+            $birthday = $user->getDateOfBirth();
+        }
+
+
+        $exhibitionFetched = $user->getExhibition();
         $exhibitions = [];
-        foreach ($exhibitionFetch as $exhibition){
+        foreach ($exhibitionFetched as $exhibition) {
             $id = $exhibition->getId();
 
             $title = $exhibition->getTitle();
-            $exhibitions [] = [
+            $exhibitions[] = [
                 'id' => $id,
                 'title' => $title
             ];
-
         }
         // putting the informations in the empty array
         $data = [
@@ -87,15 +81,13 @@ class UserController extends AbstractController
             'exhibitions' => $exhibitions
 
         ];
-        
 
         //sending the response with all data
         return $this->json(
             $data,
             Response::HTTP_OK
-            
+
         );
-        
     }
 
     /**
@@ -104,21 +96,19 @@ class UserController extends AbstractController
      * @param Request $request
      * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
      */
-    public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger) : Response
+    public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger): Response
     {
 
         //Fetch the json content
         $jsonContent = $request->getContent();
 
-        
+
         // Checking if json format is respected
         //if not, throw an error
-        try{
+        try {
             //Transforming json Content into entity
             $user = $serializer->deserialize($jsonContent, User::class, 'json');
-            
-
-        }catch(NotEncodableValueException $e) {
+        } catch (NotEncodableValueException $e) {
 
             return $this->json(
                 ['error' => 'JSON INVALIDE'],
@@ -127,7 +117,7 @@ class UserController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
-        
+
         $errors = $validator->validate($user);
 
         //Checking if there is any error
@@ -147,16 +137,18 @@ class UserController extends AbstractController
         //hashing the password
         $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
 
-        if ($user->getNickname() !== Null ) {
-            
+        //if nickname is not null
+        // then slugify nickname
+        if ($user->getNickname() !== Null) {
+
             $slug = $slugger->slugify($user->getNickname());
             $user->setSlug($slug);
         } else {
 
-            $fullname = $user->getFirstname().' '. $user->getLastname();
+            //slugifying firstname and lastname
+            $fullname = $user->getFirstname() . ' ' . $user->getLastname();
             $slug = $slugger->slugify($fullname);
             $user->setSlug($slug);
-            
         }
 
         //Saving the entity and saving in DBB
@@ -164,9 +156,9 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        //Return response if created
+        //Return response 201 if created
         return $this->json(
-            [], 
+            [],
             Response::HTTP_CREATED,
             [],
             ['groups' => 'get_user']
