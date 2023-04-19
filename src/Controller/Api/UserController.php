@@ -103,18 +103,25 @@ class UserController extends AbstractController
         $firstname = $user->getFirstname();
         $lastname = $user->getLastname();
         $email = $user->getEmail();
-        $birthday = $user->getDateOfBirth();
+
+        if($user->getDateOfBirth() !== null){
+            // modifying date format 
+            $birthday = date_format($user->getDateOfBirth(), 'd-m-Y');
+        }else{
+            $birthday = $user->getDateOfBirth();
+        }
+        
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
         
 
-        $exhibitions = $user->getExhibition();
-        $Exhibition = [];
-        foreach ($exhibitions as $exhibition){
+        $exhibitionFetch = $user->getExhibition();
+        $exhibitions = [];
+        foreach ($exhibitionFetch as $exhibition){
             $id = $exhibition->getId();
 
             $title = $exhibition->getTitle();
-            $Exhibition [] = [
+            $exhibitions [] = [
                 'id' => $id,
                 'title' => $title
             ];
@@ -130,7 +137,8 @@ class UserController extends AbstractController
             'avatar' => $avatar,
             'presentation' => $presentation,
             'role' => $role,
-            'Exhibition' => $Exhibition,
+            'exhibitions' => $exhibitions
+
         ];
         
 
