@@ -17,60 +17,7 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
-{
-
-    /**
-     * Get informations from logged user
-     *
-     * @Route("api/secure/users/informations", name="app_api_users_informations", methods={"GET"})
-     */
-    // public function getInformationsFromUser()
-    // {
-       
-    //     // getting the logged user
-    //     /** @var \App\Entity\User $user */
-    //     $user = $this->getUser();
-        
-    //     // setting an empty array
-    //     $data = [];
-  
-    //     // setting a string depending on the role and return this string
-    //     if(implode(',', $user->getRoles()) == 'ROLE_ARTIST')
-    //     {
-    //         $role = 'Artiste';
-    //     }
-    //     else if(implode(',', $user->getRoles()) == 'ROLE_ADMIN')
-    //     {
-    //         $role = 'Administrateur';
-    //     }else 
-    //     {
-    //         $role = 'Modérateur';
-    //     }
-
-    //     if($user->getDateOfBirth() !== null){
-    //         // modifying date format 
-    //         $dateofBirth = date_format($user->getDateOfBirth(), 'd-m-Y');
-    //     }else{
-    //         $dateofBirth = $user->getDateOfBirth();
-    //     }
-
-    //     // putting the informations in the empty array
-    //     $data = [
-    //         'user' => $user,
-    //         'role' => $role,
-    //         'date' => $dateofBirth
-    //     ];
-
-        
-    //     //sending the response with all data
-    //     return $this->json(
-    //         $data,
-    //         Response::HTTP_OK,
-    //         [],
-    //         ['groups' => 'get_user']
-    //     );
-    // }
-          
+{         
     /**
      * Get information artist and exhibitions for profile page
      * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})

@@ -21,7 +21,7 @@ class ExhibitionController extends AbstractController
     public function index(ExhibitionRepository $exhibitionRepository): Response
     {
         return $this->render('exhibition/index.html.twig', [
-            'exhibitions' => $exhibitionRepository->findAll(),
+            'exhibitions' => $exhibitionRepository->findBy([],['title' => 'ASC']),
         ]);
     }
 
