@@ -55,6 +55,8 @@ class ArtworkController extends AbstractController
             $artwork->setSlug($slug);
             $artworkRepository->add($artwork, true);
 
+            $this->addFlash('warning', 'L\'oeuvre a été ajoutée et est en attente de validation');
+
             return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -96,6 +98,8 @@ class ArtworkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $artworkRepository->add($artwork, true);
 
+            $this->addFlash('success', 'L\'oeuvre a été modifiée');
+
             return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -120,6 +124,7 @@ class ArtworkController extends AbstractController
             $artworkRepository->remove($artwork, true);
         }
 
+        $this->addFlash('danger', 'L\'oeuvre a été supprimée');
         return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -132,12 +137,15 @@ class ArtworkController extends AbstractController
         //404?
         if($artwork === null)
         {
-            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
+        
         $artwork->setStatus(1);
         $entityManager->persist($artwork);
         $entityManager->flush();
+
+        $this->addFlash('success', 'L\'oeuvre a été validée');
         return $this->redirectToRoute('app_validation_waiting');
     }
 }

@@ -4,6 +4,7 @@
 
 {% block sub_body %}
     <h1 class="text-center">Liste des oeuvres validés</h1>
+    {{ include('_flash_messages.html.twig')}}
     <div class="text-center d-flex justify-content-around">
         <a href="{{ path('app_artwork_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une oeuvre</a>
         <a href="{{ path('app_validation_waiting')}}" class="btn btn-outline-warning mb-4 mt-4" >Oeuvres en attente de validation</a>
