@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Entity\Exhibition;
+use App\Service\MySlugger;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -156,7 +157,7 @@ class UserController extends AbstractController
      * @param Request $request
      * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
      */
-    public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher) : Response
+    public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger) : Response
     {
 
         //Fetch the json content
@@ -198,6 +199,10 @@ class UserController extends AbstractController
 
         //hashing the password
         $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
+
+        if ($user->getNickname() !== Null ) {
+
+        }
 
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();

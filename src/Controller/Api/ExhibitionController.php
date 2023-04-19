@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Exhibition;
 use App\Entity\User;
 use App\Repository\ExhibitionRepository;
+use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,7 @@ class ExhibitionController extends AbstractController
      * Create  exhibition item
      * @Route("/api/secure/exhibitions/new", name="api_exhibition_new", methods={"PUT"})
      */
-    public function createExhibition(Request $request, SerializerInterface $serializer,ManagerRegistry $doctrine, ValidatorInterface $validator)
+    public function createExhibition(Request $request, SerializerInterface $serializer,ManagerRegistry $doctrine, ValidatorInterface $validator, MySlugger $slugger)
     {
        //Get Json content
        $jsonContent = $request->getContent();
@@ -75,6 +76,9 @@ class ExhibitionController extends AbstractController
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
 
        }
+       //slugify
+       $slug = $slugger->slugify($exhibition->getTitle());
+       $exhibition->setSlug($slug);
 
        // Save entity
        $entityManager = $doctrine->getManager();
