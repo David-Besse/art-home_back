@@ -40,6 +40,7 @@ class ExhibitionController extends AbstractController
             $slug = $slugger->slugify($exhibition->getTitle());
             $exhibition->setSlug($slug);
             $exhibitionRepository->add($exhibition, true);
+            $this->addFlash('success', 'L\'exposition a été ajoutée');
 
             return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -84,6 +85,8 @@ class ExhibitionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $exhibitionRepository->add($exhibition, true);
 
+            $this->addFlash('success', 'L\'exposition a été modifiée');
+
             return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -107,6 +110,8 @@ class ExhibitionController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$exhibition->getId(), $request->request->get('_token'))) {
             $exhibitionRepository->remove($exhibition, true);
         }
+
+        $this->addFlash('danger', 'L\'exposition a été supprimée');
 
         return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);
     }
