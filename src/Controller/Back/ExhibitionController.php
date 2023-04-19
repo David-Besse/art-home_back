@@ -24,7 +24,7 @@ class ExhibitionController extends AbstractController
     public function index(ExhibitionRepository $exhibitionRepository): Response
     {
         return $this->render('exhibition/index.html.twig', [
-            'exhibitions' => $exhibitionRepository->findBy([],['title' => 'ASC']),
+            'exhibitions' => $exhibitionRepository->findBy([], ['title' => 'ASC']),
         ]);
     }
 
@@ -70,8 +70,7 @@ class ExhibitionController extends AbstractController
     public function show(Exhibition $exhibition = null): Response
     {
         //404?
-        if($exhibition === null)
-        {
+        if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
@@ -89,8 +88,7 @@ class ExhibitionController extends AbstractController
     {
 
         //404?
-        if($exhibition === null)
-        {
+        if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
@@ -124,13 +122,12 @@ class ExhibitionController extends AbstractController
     public function delete(Request $request, Exhibition $exhibition = null, ExhibitionRepository $exhibitionRepository): Response
     {
         //404?
-        if($exhibition === null)
-        {
+        if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-        
+
         // if token is valid
-        if ($this->isCsrfTokenValid('delete'.$exhibition->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $exhibition->getId(), $request->request->get('_token'))) {
 
             //then remove item
             $exhibitionRepository->remove($exhibition, true);

@@ -44,15 +44,15 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             //slugify nickname or firstname/lastname
-            if ($user->getNickname() !== Null ) {
-            
+            if ($user->getNickname() !== Null) {
+
                 $slug = $slugger->slugify($user->getNickname());
                 $user->setSlug($slug);
             } else {
-    
-                $fullname = $user->getFirstname().' '. $user->getLastname();
+
+                $fullname = $user->getFirstname() . ' ' . $user->getLastname();
                 $slug = $slugger->slugify($fullname);
-                $user->setSlug($slug);                
+                $user->setSlug($slug);
             }
             $userRepository->add($user, true);
 
@@ -78,8 +78,7 @@ class UserController extends AbstractController
     public function show(User $user = null): Response
     {
         //404?
-        if($user === null)
-        {
+        if ($user === null) {
             return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
@@ -96,8 +95,7 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user = null, UserRepository $userRepository): Response
     {
         //404?
-        if($user === null)
-        {
+        if ($user === null) {
             return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
@@ -131,13 +129,12 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user = null, UserRepository $userRepository): Response
     {
         //404?
-        if($user === null)
-        {
+        if ($user === null) {
             return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
         //if token is valid
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             //then remove entity
             $userRepository->remove($user, true);
         }
