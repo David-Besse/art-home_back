@@ -2,7 +2,7 @@
 {% block sub_body %}
 <h1 class="text-center">Oeuvres en attente de validation</h1>
 <div class="text-center">
-    <a href="{{ path('app_artwork_index') }}" class="btn btn-primary mb-4 mt-4">Retour à la liste des oeuvres</a>
+    <a href="{{ path('app_artwork_index') }}" class="btn btn-outline-primary mb-4 mt-4">Retour à la liste des oeuvres</a>
 </div>
 <table class="table table-striped">
     <thead>
@@ -23,7 +23,7 @@
             <td><img src="{{ artwork.picture }}" height="300px"></td>
             <td>
             <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
-                <button class="btn btn-success">Valider l'oeuvre</button>
+                <button class="btn btn-outline-success">Valider l'oeuvre</button>
             </form>
             </td>
         </tr>

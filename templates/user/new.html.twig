@@ -6,6 +6,8 @@
     <h1 class="text-center">Ajouter un utilisateur</h1>
 
     {{ include('user/_form.html.twig') }}
+<div class="text-center">
 
-    <a href="{{ path('app_user_index') }}" class="btn btn-primary">Retour à la liste des utilsateurs</a>
+    <a href="{{ path('app_user_index') }}" class="btn btn-outline-primary">Retour à la liste des utilsateurs</a>
+</div>
 {% endblock %}

@@ -6,6 +6,8 @@
     <h1 class="text-center">Ajouter une exposition</h1>
 
     {{ include('exhibition/_form.html.twig') }}
+<div class="text-center">
 
-    <a href="{{ path('app_exhibition_index') }}" class="btn btn-primary">Retour à la liste des expositions</a>
+    <a href="{{ path('app_exhibition_index') }}" class="btn btn-outline-primary">Retour à la liste des expositions</a>
+</div>
 {% endblock %}
