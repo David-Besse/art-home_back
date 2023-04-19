@@ -67,8 +67,13 @@ class ArtworkController extends AbstractController
     /**
      * @Route("/{id}", name="app_artwork_show", methods={"GET"})
      */
-    public function show(Artwork $artwork): Response
+    public function show(Artwork $artwork = null): Response
     {
+        //404?
+        if($artwork === null)
+        {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
         return $this->render('artwork/show.html.twig', [
             'artwork' => $artwork,
         ]);
@@ -77,8 +82,14 @@ class ArtworkController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_artwork_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Artwork $artwork, ArtworkRepository $artworkRepository): Response
+    public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
     {
+        //404?
+        if($artwork === null)
+        {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
 
@@ -97,8 +108,14 @@ class ArtworkController extends AbstractController
     /**
      * @Route("/{id}", name="app_artwork_delete", methods={"POST"})
      */
-    public function delete(Request $request, Artwork $artwork, ArtworkRepository $artworkRepository): Response
+    public function delete(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
     {
+        //404?
+        if($artwork === null)
+        {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
         if ($this->isCsrfTokenValid('delete'.$artwork->getId(), $request->request->get('_token'))) {
             $artworkRepository->remove($artwork, true);
         }
@@ -110,9 +127,14 @@ class ArtworkController extends AbstractController
      * validate an artwork
      * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"POST"})
      */
-    public function validate(EntityManagerInterface $entityManager, Artwork $artwork) : Response
+    public function validate(EntityManagerInterface $entityManager, Artwork $artwork = null) : Response
     {
-        
+        //404?
+        if($artwork === null)
+        {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
         $artwork->setStatus(1);
         $entityManager->persist($artwork);
         $entityManager->flush();

@@ -53,8 +53,14 @@ class ExhibitionController extends AbstractController
     /**
      * @Route("/{id}", name="app_exhibition_show", methods={"GET"})
      */
-    public function show(Exhibition $exhibition): Response
+    public function show(Exhibition $exhibition = null): Response
     {
+        //404?
+        if($exhibition === null)
+        {
+            return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
         return $this->render('exhibition/show.html.twig', [
             'exhibition' => $exhibition,
         ]);
@@ -63,8 +69,15 @@ class ExhibitionController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_exhibition_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Exhibition $exhibition, ExhibitionRepository $exhibitionRepository): Response
+    public function edit(Request $request, Exhibition $exhibition = null, ExhibitionRepository $exhibitionRepository): Response
     {
+
+        //404?
+        if($exhibition === null)
+        {
+            return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
         $form = $this->createForm(ExhibitionType::class, $exhibition);
         $form->handleRequest($request);
 
@@ -83,8 +96,14 @@ class ExhibitionController extends AbstractController
     /**
      * @Route("/{id}", name="app_exhibition_delete", methods={"POST"})
      */
-    public function delete(Request $request, Exhibition $exhibition, ExhibitionRepository $exhibitionRepository): Response
+    public function delete(Request $request, Exhibition $exhibition = null, ExhibitionRepository $exhibitionRepository): Response
     {
+        //404?
+        if($exhibition === null)
+        {
+            return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+        
         if ($this->isCsrfTokenValid('delete'.$exhibition->getId(), $request->request->get('_token'))) {
             $exhibitionRepository->remove($exhibition, true);
         }
