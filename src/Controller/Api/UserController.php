@@ -164,4 +164,85 @@ class UserController extends AbstractController
             ['groups' => 'get_user']
         );
     }
+
+    /**
+     * Edit profile
+     *
+     * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PUT"})
+     */
+    public function edit(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
+    {
+
+        // getting the logged user
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        //Get Json content
+        $jsonContent = $request->getContent();
+
+        try {
+            // Convert Json in doctrine entity
+            $userNewInfos = $serializer->deserialize($jsonContent, User::class, 'json');
+        } catch (NotEncodableValueException $e) {
+            // if json getted isn't right, make an alert for client
+            return $this->json(
+                ['error' => 'JSON invalide'],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        
+        //Validate entity
+        $errors = $validator->validate($userNewInfos);
+
+        // Is there some errors ?
+        if (count($errors) > 0) {
+            //returned array
+            $errorsClean = [];
+            // @get back validation errors clean
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
+            };
+
+            return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        
+        // setting new data
+        $user->setNickname($userNewInfos->getNickname());
+        $user->setLastname($userNewInfos->getLastname());
+        $user->setFirstname($userNewInfos->getFirstname());
+        $user->setEmail($userNewInfos->getEmail());
+        $user->setPresentation($userNewInfos->getPresentation());
+        $user->setDateOfBirth($userNewInfos->getDateOfBirth());
+        $user->setAvatar($userNewInfos->getAvatar());
+        
+        //if nickname is not null
+        // then slugify nickname
+        if ($userNewInfos->getNickname() !== null) {
+            
+            $slug = $slugger->slugify($userNewInfos->getNickname());
+            $user->setSlug($slug);
+       } else {
+
+           //slugifying firstname and lastname
+           $fullname = $userNewInfos->getFirstname() . ' ' . $userNewInfos->getLastname();
+           $slug = $slugger->slugify($fullname);
+           $user->setSlug($slug);
+       }
+       
+        
+        // Save entity
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // return status 200
+        return $this->json(
+            $user,
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'get_user']
+        );
+    }
 }
