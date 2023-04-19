@@ -22,7 +22,20 @@ class ArtworkController extends AbstractController
     public function index(ArtworkRepository $artworkRepository): Response
     {
         return $this->render('artwork/index.html.twig', [
-            'artworks' => $artworkRepository->findAll(),
+            'artworks' => $artworkRepository->findBy(['status' => true]),
+        ]);
+    }
+
+    /**
+     * Displaying artworks with status false
+     *
+     * @Route ("/validation-waiting", name="app_validation_waiting")
+     */
+    public function validatePage(ArtworkRepository $artworkRepository) : Response
+    {
+        return $this->render('artwork/validation.html.twig',
+        [
+            'artworks' => $artworkRepository->findBy(['status' => false])
         ]);
     }
 

@@ -1,0 +1,37 @@
+{% extends 'main.html.twig' %}
+{% block body %}
+<h1 class="text-center">Oeuvres en attente de validation</h1>
+<div class="text-center">
+    <a href="{{ path('app_artwork_new') }}" class="btn btn-success mb-4 mt-4">Ajouter une oeuvre</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr class="text-center">
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Valider</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for artwork in artworks %}
+        <tr class="text-center">
+            <td>{{ artwork.id }}</td>
+            <td>{{ artwork.title }}</td>
+            <td>{{ artwork.description }}</td>
+            <td><img src="{{ artwork.picture }}" height="50px"></td>
+            <td>
+            <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
+                <button class="btn btn-success">Valider l'oeuvre</button>
+            </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7">Aucune oeuvre à valider pour le moment</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

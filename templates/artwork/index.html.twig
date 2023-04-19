@@ -4,8 +4,9 @@
 
 {% block sub_body %}
     <h1 class="text-center">Liste des oeuvres</h1>
-    <div class="text-center">
+    <div class="text-center d-flex justify-content-between">
         <a href="{{ path('app_artwork_new') }}" class="btn btn-success mb-4 mt-4">Ajouter une oeuvre</a>
+        <a href="{{ path('app_validation_waiting')}}" class="btn btn-warning mb-4 mt-4" >Oeuvres en attente de validation</a>
     </div>
     <table class="table table-striped">
         <thead>
@@ -27,13 +28,8 @@
                 <td><img src="{{ artwork.picture }}" height="50px"></td>
                 <td>{{ artwork.status ? 'Validé' : 'Non validé' }}</td>
                 <td>
-                   
                     <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-primary">En savoir plus</a>
                     <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}" class="btn btn-warning">Modifier</a>
-                    <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
-                        <button class="btn btn-success">Valider l'oeuvre</button>
-                    </form>
-                    {# <a href="{{ path('app_artwork_validate', {'id': artwork.id}) }}" class="btn btn-success">Valider</a> #}
                 </td>
             </tr>
         {% else %}
