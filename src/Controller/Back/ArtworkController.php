@@ -22,7 +22,7 @@ class ArtworkController extends AbstractController
     public function index(ArtworkRepository $artworkRepository): Response
     {
         return $this->render('artwork/index.html.twig', [
-            'artworks' => $artworkRepository->findBy(['status' => true]),
+            'artworks' => $artworkRepository->findBy(['status' => true],['id' => 'DESC']),
         ]);
     }
 
@@ -112,6 +112,6 @@ class ArtworkController extends AbstractController
         $artwork->setStatus(1);
         $entityManager->persist($artwork);
         $entityManager->flush();
-        return $this->redirectToRoute('app_artwork_index');
+        return $this->redirectToRoute('app_validation_waiting');
     }
 }
