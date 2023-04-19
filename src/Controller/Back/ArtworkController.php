@@ -30,7 +30,7 @@ class ArtworkController extends AbstractController
     /**
      * Displaying artworks with status false
      *
-     * @Route ("/validation-waiting", name="app_validation_waiting")
+     * @Route ("/validation-waiting", name="app_validation_waiting", methods={"GET"})
      */
     public function validatePage(ArtworkRepository $artworkRepository) : Response
     {

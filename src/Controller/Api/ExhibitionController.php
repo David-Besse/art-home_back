@@ -24,8 +24,10 @@ class ExhibitionController extends AbstractController
      */
     public function getExhibitions(ExhibitionRepository $exhibitionRepository): Response
     {
+        //fetching all exhibitions
         $exhibitionsList = $exhibitionRepository->findAll();
 
+        // return status 200
         return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
     }
 
@@ -40,7 +42,8 @@ class ExhibitionController extends AbstractController
         if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-
+        
+        // return status 200
         return $this->json($exhibition, Response::HTTP_OK, [], ['groups' => 'get_exhibition_by_id']);
     }
 
@@ -79,6 +82,7 @@ class ExhibitionController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
         //slugify
         $slug = $slugger->slugify($exhibition->getTitle());
         $exhibition->setSlug($slug);
@@ -88,19 +92,11 @@ class ExhibitionController extends AbstractController
         $entityManager->persist($exhibition);
         $entityManager->flush();
 
-        // On retourne la réponse adaptée (201 + Location: URL de la ressource)
+        // return status 201
         return $this->json(
-            // Le film créé peut être ajouté au retour
             $exhibition,
-            // Le status code : 201 CREATED
-            // utilisons les constantes de classes !
             Response::HTTP_CREATED,
-            // REST ask an header Location + URL 
-            [
-                // if we need header location uncomment this :
-                // 'Location' => $this->generateUrl('api_exhibition_by_id', ['id' => $exhibition->getId()])
-            ],
-            // Groups
+            [],
             ['groups' => 'get_exhibition_by_id']
         );
     }
@@ -146,6 +142,7 @@ class ExhibitionController extends AbstractController
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        // setting new data
         $exhibitionToEdit->setTitle($exhibition->getTitle());
         $exhibitionToEdit->setDescription($exhibition->getDescription());
         $exhibitionToEdit->setArtist($exhibition->getArtist());
@@ -155,18 +152,11 @@ class ExhibitionController extends AbstractController
         $entityManager->persist($exhibitionToEdit);
         $entityManager->flush();
 
-
+        // return status 200
         return $this->json(
-
             $exhibitionToEdit,
-            // status code : 200 HTTP_OK        
             Response::HTTP_OK,
-            // REST ask an header Location + URL 
-            [
-                // if we need header location uncomment this :
-                // 'Location' => $this->generateUrl('api_exhibition_by_id', ['id' => $exhibition->getId()])
-            ],
-            // Groups
+            [],
             ['groups' => 'get_exhibition_by_id']
         );
     }
@@ -183,16 +173,14 @@ class ExhibitionController extends AbstractController
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
+        // remove entity from DB
         $entityManager->remove($exhibitionToDelete);
         $entityManager->flush();
 
+        //return status 204
         return $this->json(
-
             [],
-            // status code : 204 HTTP_OK        
             Response::HTTP_NO_CONTENT
-            // REST ask an header Location + URL 
-
         );
     }
 
@@ -202,8 +190,10 @@ class ExhibitionController extends AbstractController
      */
     public function getExhibitionsForHomepage(ExhibitionRepository $exhibitionRepository): Response
     {
+        //fetching exhibitons for homepage
         $exhibitionsList = $exhibitionRepository->findAllForHomeSQL();
 
+        //return status 200
         return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
     }
 
@@ -218,19 +208,10 @@ class ExhibitionController extends AbstractController
             return $this->json(['error' => 'Artiste non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
+        //fecthing id and title of exhibitions for submit artwork form
         $exhibitionsList = $exhibitionRepository->findTitleAndIdForFormSQL($artist);
 
+        // return status 200
         return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
     }
-
-    // /**
-    //  * Get active exhibitions
-    //  *@Route("/api/exhibitions/artist/{id<\d+>}/active", name="api_exhibitions_artist_active", methods={"GET"})
-    //  */
-    // public function getActiveExhibitionsByArtist(ExhibitionRepository $exhibitionRepository, User $artist)
-    // {
-    //     $exhibitionsList = $exhibitionRepository->findActiveExhibitionByArtistQB($artist);
-
-    //     return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
-    // }
 }

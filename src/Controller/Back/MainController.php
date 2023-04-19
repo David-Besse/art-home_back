@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MainController extends AbstractController
 {
     /**
-     * Undocumented function
+     * Display the homepage of backoffice
      *
      * @Route("/", name="app_home_backoffice")
      */

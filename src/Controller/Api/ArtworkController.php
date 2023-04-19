@@ -27,10 +27,10 @@ class ArtworkController extends AbstractController
     {
         // fetch all artworks
         $artworks = $artworkRepository->findAll();
-   
+
         // transform data in json format
         return $this->json(
-            $artworks, 
+            $artworks,
             Response::HTTP_OK,
             [],
             ['groups' => 'get_artworks_collection']
@@ -38,7 +38,7 @@ class ArtworkController extends AbstractController
     }
 
     /**
-     * Get on artwork entity
+     * Get an artwork entity
      *
      * @Route("/api/artworks/{id}", name="app_api_artwork_by_id", requirements={"id"="\d+"}, methods={"GET"})
      */
@@ -57,7 +57,6 @@ class ArtworkController extends AbstractController
             [],
             ['groups' => 'get_artwork']
         );
-
     }
 
     /**
@@ -65,20 +64,18 @@ class ArtworkController extends AbstractController
      *
      * @Route("/api/secure/artworks/new", name="app_api_artwork_new", methods={"POST"})
      */
-    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, MySlugger $slugger) : Response
+    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, MySlugger $slugger): Response
     {
         //Fetch the json content
         $jsonContent = $request->getContent();
 
-        
+
         // Checking if json format is respected
         //if not, throw an error
-        try{
+        try {
             //Transforming json Content into entity
             $artwork = $serializer->deserialize($jsonContent, Artwork::class, 'json');
-            
-
-        }catch(NotEncodableValueException $e) {
+        } catch (NotEncodableValueException $e) {
 
             return $this->json(
                 ['error' => 'JSON INVALIDE'],
@@ -87,7 +84,6 @@ class ArtworkController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
-        
         $errors = $validator->validate($artwork);
 
         //Checking if there is any error
@@ -103,10 +99,11 @@ class ArtworkController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
         //slugify
         $slug = $slugger->slugify($artwork->getTitle());
         $artwork->setSlug($slug);
-            
+
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($artwork);
@@ -114,50 +111,47 @@ class ArtworkController extends AbstractController
 
         //Return response if created
         return $this->json(
-            $artwork, 
+            $artwork,
             Response::HTTP_CREATED,
             [],
             ['groups' => 'get_artwork']
         );
     }
-    
+
     /**
      * Edit artwork entity
      *
      * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PUT"})
      */
-    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null) : Response
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
     {
 
         // 404 ?
         if ($artworkToEdit === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-         //Fetch the json content
-         $jsonContent = $request->getContent();
+        //Fetch the json content
+        $jsonContent = $request->getContent();
 
-        
-         // Checking if json format is respected
-         //if not, throw an error
-         try{
-             //Transforming json Content into entity
-             $artwork = $serializer->deserialize($jsonContent, Artwork::class, 'json');
- 
-         }catch(NotEncodableValueException $e) {
- 
-             return $this->json(
-                 ['error' => 'JSON INVALIDE'],
-                 Response::HTTP_UNPROCESSABLE_ENTITY
-             );
-         }
- 
-         // Checking the entity : if all fields are well fill
-         
-         $errors = $validator->validate($artwork);
- 
-         //Checking if there is any error
-         // If yes, then throw an error
-         if (count($errors) > 0) {
+        // Checking if json format is respected
+        //if not, throw an error
+        try {
+            //Transforming json Content into entity
+            $artwork = $serializer->deserialize($jsonContent, Artwork::class, 'json');
+        } catch (NotEncodableValueException $e) {
+
+            return $this->json(
+                ['error' => 'JSON INVALIDE'],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        // Checking the entity : if all fields are well fill
+        $errors = $validator->validate($artwork);
+
+        //Checking if there is any error
+        // If yes, then throw an error
+        if (count($errors) > 0) {
             // return array
             $errorsClean = [];
             // Clean error messages
@@ -168,27 +162,28 @@ class ArtworkController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
- 
-         
-         //Saving the entity and saving in DBB
-         $entityManager = $doctrine->getManager();
 
-         $artworkToEdit->setTitle($artwork->getTitle());
-         $artworkToEdit->setDescription($artwork->getDescription());
-         $artworkToEdit->setPicture($artwork->getPicture());
-         $artworkToEdit->setExhibition($artwork->getExhibition());
 
-         $entityManager->persist($artworkToEdit);
-         $entityManager->flush();
- 
-         //Return response if created
-         return $this->json(
-             $artwork, 
-             Response::HTTP_OK,
-             [],
-             ['groups' => 'get_artwork']
-         );
-        
+        //Saving the entity and saving in DBB
+        $entityManager = $doctrine->getManager();
+
+        // setting new data
+        $artworkToEdit->setTitle($artwork->getTitle());
+        $artworkToEdit->setDescription($artwork->getDescription());
+        $artworkToEdit->setPicture($artwork->getPicture());
+        $artworkToEdit->setExhibition($artwork->getExhibition());
+
+        // sending new data in DB
+        $entityManager->persist($artworkToEdit);
+        $entityManager->flush();
+
+        //Return response if created
+        return $this->json(
+            $artwork,
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'get_artwork']
+        );
     }
 
     /**
@@ -196,11 +191,10 @@ class ArtworkController extends AbstractController
      *
      * @Route("api/secure/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
      */
-    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager) : Response
+    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager): Response
     {
         //404?
-        if($artwork === null)
-        {
+        if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
@@ -213,7 +207,6 @@ class ArtworkController extends AbstractController
             [],
             Response::HTTP_NO_CONTENT
         );
-        
     }
 
     /**
@@ -223,15 +216,14 @@ class ArtworkController extends AbstractController
     public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository)
     {
         //404
-        if($exhibition === null)
-        {
+        if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
+        
+        // fetching exhibitons for profile page
         $artworksList = $artworkRepository->findArtworksByExhibitionForProfilePageQB($exhibition);
 
-        return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition'] );
+        // return status 200
+        return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);
     }
-
-
-
 }
