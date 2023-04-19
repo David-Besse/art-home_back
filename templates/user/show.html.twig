@@ -3,9 +3,9 @@
 {% block title %}Utilisateur{% endblock %}
 
 {% block sub_body %}
-    <h1 class="text-center">Utilisateur</h1>
+    <h1 class="text-center">Utilisateur : {{ user.email}}</h1>
 
-    <table class="table">
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -37,11 +37,11 @@
             </tr>
         </tbody>
     </table>
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-around">
 
-    <a href="{{ path('app_user_index') }}" class="btn btn-primary">Retour à la liste des utilsateurs</a>
+    <a href="{{ path('app_user_index') }}" class="btn btn-outline-primary">Retour à la liste des utilsateurs</a>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">Modifier</a>
+    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-warning">Modifier</a>
 
     {{ include('user/_delete_form.html.twig') }}
 </div>
