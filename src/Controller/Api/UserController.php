@@ -170,7 +170,7 @@ class UserController extends AbstractController
      *
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PUT"})
      */
-    public function edit(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine)
+    public function edit(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
     {
 
         // getting the logged user
@@ -207,7 +207,7 @@ class UserController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+        
         // setting new data
         $user->setNickname($userNewInfos->getNickname());
         $user->setLastname($userNewInfos->getLastname());
@@ -216,6 +216,21 @@ class UserController extends AbstractController
         $user->setPresentation($userNewInfos->getPresentation());
         $user->setDateOfBirth($userNewInfos->getDateOfBirth());
         $user->setAvatar($userNewInfos->getAvatar());
+        
+        //if nickname is not null
+        // then slugify nickname
+        if ($userNewInfos->getNickname() !== null) {
+            
+            $slug = $slugger->slugify($userNewInfos->getNickname());
+            $user->setSlug($slug);
+       } else {
+
+           //slugifying firstname and lastname
+           $fullname = $userNewInfos->getFirstname() . ' ' . $userNewInfos->getLastname();
+           $slug = $slugger->slugify($fullname);
+           $user->setSlug($slug);
+       }
+       
         
         // Save entity
         $entityManager = $doctrine->getManager();
