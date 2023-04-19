@@ -49,6 +49,7 @@ class UserController extends AbstractController
             }
             $userRepository->add($user, true);
 
+            $this->addFlash('success', 'L\'utilisateur a été ajouté');
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -91,6 +92,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user, true);
 
+            $this->addFlash('success', 'L\'utilisateur a été modifié');
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -115,6 +117,7 @@ class UserController extends AbstractController
             $userRepository->remove($user, true);
         }
 
+        $this->addFlash('danger', 'L\'utilisateur a été supprimé');
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -4,6 +4,7 @@
 
 {% block sub_body %}
     <h1 class="text-center">Liste des expositions</h1>
+    {{ include('_flash_messages.html.twig')}}
     <div class="text-center">
         <a href="{{ path('app_exhibition_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une exposition</a>
     </div>

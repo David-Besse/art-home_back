@@ -1,6 +1,7 @@
 {% extends 'main.html.twig' %}
 {% block sub_body %}
 <h1 class="text-center">Oeuvres en attente de validation</h1>
+{{ include('_flash_messages.html.twig')}}
 <div class="text-center">
     <a href="{{ path('app_artwork_index') }}" class="btn btn-outline-primary mb-4 mt-4">Retour à la liste des oeuvres</a>
 </div>
