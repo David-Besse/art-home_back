@@ -17,6 +17,8 @@
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Pseudo</th>
+                <th>Date de naissance</th>
+                <th>Présentation</th>
                 <th>Avatar</th>
                 <th>Actions</th>
             </tr>
@@ -30,6 +32,8 @@
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.nickname }}</td>
+                <td>{{ user.dateOfBirth ? user.dateOfBirth|date('Y-m-d') }}</td>
+                <td>{{ user.presentation }}</td>
                 <td>{{ user.avatar }}</td>
                 <td>
                     <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-outline-primary">En savoir plus</a>
