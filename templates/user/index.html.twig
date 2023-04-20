@@ -32,7 +32,7 @@
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.nickname }}</td>
-                <td>{{ user.dateOfBirth }}</td>
+                <td>{{ user.dateOfBirth ? user.dateOfBirth|date('Y-m-d') }}</td>
                 <td>{{ user.presentation }}</td>
                 <td>{{ user.avatar }}</td>
                 <td>

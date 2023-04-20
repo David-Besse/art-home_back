@@ -9,10 +9,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class UserType extends AbstractType
 {
@@ -77,6 +79,20 @@ class UserType extends AbstractType
             ->add('nickname', TextType::class,
             [
                 'label'=> 'Pseudo'
+            ])
+            ->add('dateOfBirth', DateType::class,
+            [
+                
+                'label'=> 'date de naissance',
+
+
+
+                'years' => range(date('Y')+0, 1900)
+                
+            ])
+            ->add('presentation', TextareaType::class,
+            [
+                'label' => 'présentation'
             ])
             ->add('avatar', UrlType::class,
             [
