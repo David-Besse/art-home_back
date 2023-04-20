@@ -45,7 +45,7 @@ class ExhibitionType extends AbstractType
                 },
                 'placeholder' => 'Choisissez un artiste', 
                 'attr' => [
-                    'class'=> 'form-select-lg mb-3'
+                    'class'=> 'form-select'
                 ]               
             ])
         ;
