@@ -171,7 +171,7 @@ class UserController extends AbstractController
      *
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PUT"})
      */
-    public function edit(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
+    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
     {
 
         // getting the logged user
