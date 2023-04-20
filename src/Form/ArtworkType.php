@@ -42,12 +42,8 @@ class ArtworkType extends AbstractType
             [
                 'label' => 'A quelle exposition voulez-vous lier cette oeuvre ?',
                 'class' => Exhibition::class,
-                'expanded' => true,
-                'multiple' => false,
                 'choice_label' => 'title',
-                'label_attr' => [
-                    'class' => 'radio-inline'
-                ],
+                'placeholder' => 'Veuillez sélectionner une exposition'
             ])
         ;
     }
