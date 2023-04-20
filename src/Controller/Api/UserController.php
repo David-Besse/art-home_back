@@ -53,7 +53,7 @@ class UserController extends AbstractController
             // modifying date format 
             $dateOfBirth = date_format($user->getDateOfBirth(), 'Y-m-d');
         } else {
-            $dateOfBirth = $user->getDateOfBirth();
+            $dateOfBirth = "0000-00-00";
         }
 
 
@@ -174,48 +174,49 @@ class UserController extends AbstractController
     public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
     {
 
-        // getting the logged user
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
+    // getting the logged user
+    /** @var \App\Entity\User $user */
+    $user = $this->getUser();
 
-        //Get Json content
-        $jsonContent = $request->getContent();
+    //Get Json content
+    $jsonContent = $request->getContent();
+    
 
-        try {
-            // Convert Json in doctrine entity
-            $userNewInfos = $serializer->deserialize($jsonContent, User::class, 'json');
-        } catch (NotEncodableValueException $e) {
-            // if json getted isn't right, make an alert for client
-            return $this->json(
-                ['error' => 'JSON invalide'],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+    try {
+        // Convert Json in doctrine entity
+        $userNewInfos = $serializer->deserialize($jsonContent, User::class, 'json');
+    } catch (NotEncodableValueException $e) {
+        // if json getted isn't right, make an alert for client
+        return $this->json(
+            ['error' => 'JSON invalide'],
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        );
+    }
 
-        
-        //Validate entity
-        $errors = $validator->validate($userNewInfos);
 
-        // Is there some errors ?
-        if (count($errors) > 0) {
-            //returned array
-            $errorsClean = [];
-            // @get back validation errors clean
-            /** @var ConstraintViolation $error */
-            foreach ($errors as $error) {
-                $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
-            };
+    //Validate entity
+    $errors = $validator->validate($userNewInfos);
 
-            return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-        
+    // Is there some errors ?
+    if (count($errors) > 0) {
+        //returned array
+        $errorsClean = [];
+        // @get back validation errors clean
+        /** @var ConstraintViolation $error */
+        foreach ($errors as $error) {
+            $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
+        };
+
+        return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
         // setting new data
+        $user->setDateOfBirth($userNewInfos->getDateOfBirth());
         $user->setNickname($userNewInfos->getNickname());
         $user->setLastname($userNewInfos->getLastname());
         $user->setFirstname($userNewInfos->getFirstname());
         $user->setEmail($userNewInfos->getEmail());
         $user->setPresentation($userNewInfos->getPresentation());
-        $user->setDateOfBirth($userNewInfos->getDateOfBirth());
         $user->setAvatar($userNewInfos->getAvatar());
         
         //if nickname is not null

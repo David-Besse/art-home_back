@@ -51,8 +51,12 @@ class ExhibitionController extends AbstractController
      * Create  exhibition item
      * @Route("/api/secure/exhibitions/new", name="api_exhibition_new", methods={"PUT"})
      */
-    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, MySlugger $slugger)
+    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, MySlugger $slugger, ExhibitionRepository $exhibitionRepository)
     {
+
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
         //Get Json content
         $jsonContent = $request->getContent();
 
@@ -83,10 +87,16 @@ class ExhibitionController extends AbstractController
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        //setting the artist thanks to logged user
+        $exhibition->setArtist($user);
+        
         //slugify
         $slug = $slugger->slugify($exhibition->getTitle());
         $exhibition->setSlug($slug);
 
+        //setting date
+        $exhibition->setStartDate(new \DateTime());
+        $exhibition->setEndDate(date_add(new \DateTime(),date_interval_create_from_date_string("122 days")));
         // Save entity
         $entityManager = $doctrine->getManager();
         $entityManager->persist($exhibition);
@@ -94,10 +104,10 @@ class ExhibitionController extends AbstractController
 
         // return status 201
         return $this->json(
-            $exhibition,
+            $user->getExhibition(),
             Response::HTTP_CREATED,
             [],
-            ['groups' => 'get_exhibition_by_id']
+            ['groups' => 'get_exhibitions_collection']
         );
     }
 
