@@ -315,4 +315,12 @@ class ArtworkProvider
         'https://cdn.pixabay.com/photo/2020/07/13/15/26/sculpture-5401108_640.jpg'
 
     ];
+
+    /**
+     * Fetch an artwork
+     */
+    public function getArtwork()
+    {
+        return $this->artworks[array_rand($this->artworks)];
+    }
 }
