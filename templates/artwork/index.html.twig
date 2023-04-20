@@ -24,7 +24,11 @@
             <tr class=" text-center">
                 <td>{{ artwork.id }}</td>
                 <td>{{ artwork.title }}</td>
-                <td>{{ artwork.description }}</td>
+                {% if artwork.description is same as (null)%}
+                <td>-</td>
+                {% else %}
+                <td>{{ artwork.description }}</td>    
+                {% endif %}
                 <td><img src="{{ artwork.picture }}" height="100px"></td>
                 <td>
                     <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-outline-primary btn-sm">En savoir plus</a>

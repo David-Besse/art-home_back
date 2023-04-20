@@ -81,18 +81,14 @@ class UserType extends AbstractType
                 'label'=> 'Pseudo'
             ])
             ->add('dateOfBirth', DateType::class,
-            [
-                
-                'label'=> 'date de naissance',
-
-
-
-                'years' => range(date('Y')+0, 1900)
-                
+            [                
+                'label'=> 'Date de naissance',
+                'widget' => 'single_text',
+                'years' => range(date('Y')+0, 1900)               
             ])
             ->add('presentation', TextareaType::class,
             [
-                'label' => 'présentation'
+                'label' => 'Présentation'
             ])
             ->add('avatar', UrlType::class,
             [
