@@ -61,11 +61,12 @@ class UserController extends AbstractController
         $exhibitions = [];
         foreach ($exhibitionFetched as $exhibition) {
             $id = $exhibition->getId();
-
             $title = $exhibition->getTitle();
+            $description = $exhibition->getDescription();
             $exhibitions[] = [
                 'id' => $id,
-                'title' => $title
+                'title' => $title,
+                'description' => $description
             ];
         }
         // putting the informations in the empty array
