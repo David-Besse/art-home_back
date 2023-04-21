@@ -21,13 +21,13 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email ', EmailType::class,
+            ->add('email', EmailType::class,
             [
                 'label' => 'Adresse email',
                 'help' => 'L\'email ne doit pas dépasser 180 caractères',
                 'empty_data' => ''
             ])
-            ->add('roles ', ChoiceType::class,
+            ->add('roles', ChoiceType::class,
             [
                 'label' => 'Quel rôle voulez-vous attribuer à cet utilisateur ?',
                 'choices' => [
@@ -50,6 +50,7 @@ class UserType extends AbstractType
                 // Preparing password field
                 //If user exist then his id is not null
                 if ($user->getId() !== null) {
+                    
                     //  for edit form
                     $form->add('password', PasswordType::class, 
                     [
@@ -88,8 +89,7 @@ class UserType extends AbstractType
             ])
             ->add('dateOfBirth', DateType::class,
             [                
-                'label'=> 'Date de naissance',
-                'widget' => 'single_text',
+                'label'=> 'Date de naissance',                
                 'years' => range(date('Y')+0, 1900)               
             ])
             ->add('presentation', TextareaType::class,
