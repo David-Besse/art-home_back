@@ -106,7 +106,7 @@ class ExhibitionController extends AbstractController
      * Edit exhibition item
      * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PUT"})
      */
-    public function editExhibition(Exhibition $exhibitionToEdit, Request $request, SerializerInterface $serializer,ManagerRegistry $doctrine, ValidatorInterface $validator)
+    public function editExhibition(Exhibition $exhibitionToEdit, Request $request, SerializerInterface $serializer,ManagerRegistry $doctrine, ValidatorInterface $validator,MySlugger $slugger)
     {
               //Get Json content
               $jsonContent = $request->getContent();
@@ -142,6 +142,9 @@ class ExhibitionController extends AbstractController
         $exhibitionToEdit->setTitle($exhibition->getTitle());
         $exhibitionToEdit->setDescription($exhibition->getDescription());
         $exhibitionToEdit->setArtist($exhibition->getArtist());
+        //slugify
+        $slug = $slugger->slugify($exhibitionToEdit->getTitle());
+        $exhibitionToEdit->setSlug($slug);
         
         // Save entity
         $entityManager = $doctrine->getManager();
