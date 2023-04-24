@@ -105,14 +105,18 @@ class ArtworkController extends AbstractController
         $slug = $slugger->slugify($artwork->getTitle());
         $artwork->setSlug($slug);
 
+        // fetching exhibition
+        $exhibitionToDisplay = $artwork->getExhibition();
+
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($artwork);
         $entityManager->flush();
 
+  
         //Return response if created
         return $this->json(
-            $artwork,
+            $exhibitionToDisplay->getArtwork(),
             Response::HTTP_CREATED,
             [],
             ['groups' => 'get_artwork']
