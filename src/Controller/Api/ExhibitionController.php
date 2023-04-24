@@ -105,7 +105,7 @@ class ExhibitionController extends AbstractController
      * Edit exhibition item
      * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PATCH"})
      */
-    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator)
+    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, MySlugger $slugger)
     {
         // 404 ?
         if ($exhibitionToEdit === null) {
@@ -142,7 +142,10 @@ class ExhibitionController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+        //slugify
+        $slug = $slugger->slugify($exhibitionModified->getTitle());
+        $exhibitionModified->setSlug($slug);
+        
         // Save entity
         $entityManager = $doctrine->getManager();
         $entityManager->persist($exhibitionModified);

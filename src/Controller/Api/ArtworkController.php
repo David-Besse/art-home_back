@@ -125,7 +125,7 @@ class ArtworkController extends AbstractController
      * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PATCH"})
      */
 
-    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null, MySlugger $slugger): Response
     {
 
         // 404 ?
