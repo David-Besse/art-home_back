@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ExhibitionRepository::class)
+ * 
  */
 class Exhibition
 {
@@ -20,7 +21,7 @@ class Exhibition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition"})
      */
     private $id;
 

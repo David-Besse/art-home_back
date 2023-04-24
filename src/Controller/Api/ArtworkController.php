@@ -222,7 +222,8 @@ class ArtworkController extends AbstractController
         
         // fetching exhibitons for profile page
         $artworksList = $artworkRepository->findArtworksByExhibitionForProfilePageQB($exhibition);
-
+        
+        
         // return status 200
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);
     }

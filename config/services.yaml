@@ -34,3 +34,8 @@ services:
         arguments:
         # parameters name
             $toLower: true
+
+    App\EventListener\AutoSlugger:
+        tags:
+            event: 'postPersist'
+            # name: 'doctrine.event_listener'
