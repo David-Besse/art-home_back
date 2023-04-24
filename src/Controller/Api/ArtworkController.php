@@ -84,6 +84,7 @@ class ArtworkController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
+
         $errors = $validator->validate($artwork);
 
         //Checking if there is any error
@@ -123,6 +124,7 @@ class ArtworkController extends AbstractController
      *
      * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PATCH"})
      */
+
     public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
     {
 
@@ -133,11 +135,16 @@ class ArtworkController extends AbstractController
         //Fetch the json content
         $jsonContent = $request->getContent();
 
+
         // Checking if json format is respected
         //if not, throw an error
         try {
             //Transforming json Content into entity
+
+
+
             $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json',['object_to_populate' => $artworkToEdit]);
+
         } catch (NotEncodableValueException $e) {
 
             return $this->json(
@@ -147,7 +154,10 @@ class ArtworkController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
+
+
         $errors = $validator->validate($artworkModified);
+
 
         //Checking if there is any error
         // If yes, then throw an error
@@ -167,8 +177,16 @@ class ArtworkController extends AbstractController
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
 
+
+        
+        //slugify
+        $slug = $slugger->slugify($artworkModified->getTitle());
+        $artworkModified->setSlug($slug);
+
+
         // sending new data in DB
-        $entityManager->persist($artworkToEdit);
+
+        $entityManager->persist($artworkModified);
         $entityManager->flush();
 
         //Return response if created
@@ -187,6 +205,7 @@ class ArtworkController extends AbstractController
      */
     public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager): Response
     {
+
         //404?
         if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
@@ -217,7 +236,9 @@ class ArtworkController extends AbstractController
         // fetching exhibitons for profile page
         $artworksList = $artworkRepository->findArtworksByExhibitionForProfilePageQB($exhibition);
 
+
         // return status 200
+
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);
     }
 }

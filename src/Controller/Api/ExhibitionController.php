@@ -112,6 +112,7 @@ class ExhibitionController extends AbstractController
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
+
         //Get Json content
         $jsonContent = $request->getContent();
 
