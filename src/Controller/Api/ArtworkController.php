@@ -143,6 +143,7 @@ class ArtworkController extends AbstractController
 
 
 
+            
             $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json',['object_to_populate' => $artworkToEdit]);
 
         } catch (NotEncodableValueException $e) {
