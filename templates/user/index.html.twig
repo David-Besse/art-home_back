@@ -4,8 +4,9 @@
 
 {% block sub_body %}
     <h1 class="text-center">Liste des utilisateurs</h1>
+    {{ include('_flash_messages.html.twig')}}
     <div class="text-center">
-        <a href="{{ path('app_user_new') }}" class="btn btn-success mb-4 mt-4">Ajouter un utilisateur</a>
+        <a href="{{ path('app_user_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter un utilisateur</a>
     </div>
     <table class="table table-striped">
         <thead>
@@ -16,6 +17,8 @@
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Pseudo</th>
+                <th>Date de naissance</th>
+                <th style="width:400px">Présentation</th>
                 <th>Avatar</th>
                 <th>Actions</th>
             </tr>
@@ -28,11 +31,31 @@
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.firstname }}</td>
-                <td>{{ user.nickname }}</td>
+                {% if user.nickname is same as (null) %}
+                <td>-</td>
+                {% else %}
+                <td>{{ user.nickname }}</td>    
+                {% endif %}
+                {% if user.dateOfBirth is same as (null) %}
+                <td>-</td>
+                {% else %}    
+                <td>{{ user.dateOfBirth ? user.dateOfBirth|date('Y-m-d') }}</td>
+                {% endif %}
+                
+                {% if user.presentation is same as (null) %}
+                <td>-</td>
+                {% else %}
+                <td>{{ user.presentation | u.truncate(50) }} [...]</td>
+                {% endif %}
+                {% if user.avatar is same as (null) %}
+                <td>-</td>
+                {% else %}   
                 <td>{{ user.avatar }}</td>
+                {% endif %}
+                
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-primary">En savoir plus</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-outline-primary btn-sm">En savoir plus</a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-warning btn-sm">Modifier</a>
                 </td>
             </tr>
         {% else %}

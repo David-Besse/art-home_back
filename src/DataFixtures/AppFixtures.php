@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\Provider\ArtworkProvider;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Artwork;
@@ -58,6 +59,9 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
         // injection of a seed to keep the same data when reload the fixtures
         $faker->seed(22);
+
+        //Our providers
+        $faker->addProvider(new ArtworkProvider());
         
 
         //Creating users
@@ -95,6 +99,8 @@ class AppFixtures extends Fixture
                 $artist->setFirstname($faker->firstName());
                 $artist->setLastname($faker->lastName());
                 $artist->setNickname($faker->userName());
+                $artist->setDateOfBirth($faker->dateTimeBetween('-100 years', '- 10 years'));
+                $artist->setPresentation($faker->paragraph());
                 $artist->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 50) . '/50/50');
                 $artist->setRoles(["ROLE_ARTIST"]);
                 $fullname = $artist->getFirstname().' '. $artist->getLastname();
@@ -141,7 +147,7 @@ class AppFixtures extends Fixture
             
             $artwork->setTitle($faker->word());
             $artwork->setDescription($faker->paragraph());
-            $artwork->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 300) . '/300/300');
+            $artwork->setPicture($faker->unique()->getArtwork());
 
             //association of an exhibition thanks to the exhibition array
             $randomExhibition = $exhibitionsList[mt_rand(0, count($exhibitionsList) - 1)];

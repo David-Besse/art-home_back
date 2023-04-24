@@ -1,0 +1,24 @@
+h1 {
+    font-family: 'Averia Libre', display;
+}
+/* .test {
+    background-image: url(https://cdn.pixabay.com/photo/2020/05/17/20/34/concept-5183469_640.jpg);
+} */
+.form {
+    
+    background-color: rgb(236, 236, 236);
+    border-radius: 10px;
+    padding : 3rem;
+    margin : 1rem;
+}
+
+.input-group {
+    gap: 1rem;
+    border-radius: 10px;
+}
+
+.presentation {
+    height : 5rem;
+}
+
+

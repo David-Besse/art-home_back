@@ -92,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=800, nullable=true)
-     * @Groups({"get_user"})
+     * @Groups({"get_user", "get_exhibitions_collection"})
      */
     private $presentation;
 

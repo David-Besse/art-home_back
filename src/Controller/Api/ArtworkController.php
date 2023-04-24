@@ -38,12 +38,17 @@ class ArtworkController extends AbstractController
     }
 
     /**
-     * Get on artwork entity
+     * Get an artwork entity
      *
      * @Route("/api/artworks/{id}", name="app_api_artwork_by_id", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function getArtworkById(Artwork $artwork): Response
+    public function getArtworkById(Artwork $artwork = null): Response
     {
+
+        // 404 ?
+        if ($artwork === null) {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
 
         // transform entity Artwork into json 
         return $this->json(
@@ -95,6 +100,7 @@ class ArtworkController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
         //slugify
         $slug = $slugger->slugify($artwork->getTitle());
         $artwork->setSlug($slug);
@@ -116,11 +122,16 @@ class ArtworkController extends AbstractController
     /**
      * Edit artwork entity
      *
-     * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PUT"})
+     * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PATCH"})
      */
-    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit, MySlugger $slugger): Response
+
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
     {
 
+        // 404 ?
+        if ($artworkToEdit === null) {
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
         //Fetch the json content
         $jsonContent = $request->getContent();
 
@@ -129,7 +140,11 @@ class ArtworkController extends AbstractController
         //if not, throw an error
         try {
             //Transforming json Content into entity
-            $artwork = $serializer->deserialize($jsonContent, Artwork::class, 'json');
+
+
+
+            $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json',['object_to_populate' => $artworkToEdit]);
+
         } catch (NotEncodableValueException $e) {
 
             return $this->json(
@@ -140,7 +155,9 @@ class ArtworkController extends AbstractController
 
         // Checking the entity : if all fields are well fill
 
-        $errors = $validator->validate($artwork);
+
+        $errors = $validator->validate($artworkModified);
+
 
         //Checking if there is any error
         // If yes, then throw an error
@@ -160,20 +177,21 @@ class ArtworkController extends AbstractController
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
 
-        $artworkToEdit->setTitle($artwork->getTitle());
-        $artworkToEdit->setDescription($artwork->getDescription());
-        $artworkToEdit->setPicture($artwork->getPicture());
-        $artworkToEdit->setExhibition($artwork->getExhibition());
-        //slugify
-        $slug = $slugger->slugify($artworkToEdit->getTitle());
-        $artworkToEdit->setSlug($slug);
 
-        $entityManager->persist($artworkToEdit);
+        
+        //slugify
+        $slug = $slugger->slugify($artworkModified->getTitle());
+        $artworkModified->setSlug($slug);
+
+
+        // sending new data in DB
+
+        $entityManager->persist($artworkModified);
         $entityManager->flush();
 
         //Return response if created
         return $this->json(
-            $artwork,
+            $artworkModified,
             Response::HTTP_OK,
             [],
             ['groups' => 'get_artwork']
@@ -188,8 +206,9 @@ class ArtworkController extends AbstractController
     public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager): Response
     {
 
+        //404?
         if ($artwork === null) {
-            return $this->json(['error' => 'Film non trouvé.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
         // remove entity artwork
@@ -207,9 +226,18 @@ class ArtworkController extends AbstractController
      * Get artworks by exhibition for profile page
      * @Route("api/secure/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function getArtworksByExhibition(Exhibition $exhibition, ArtworkRepository $artworkRepository)
+    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository)
     {
+        //404
+        if ($exhibition === null) {
+            return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+        
+        // fetching exhibitons for profile page
         $artworksList = $artworkRepository->findArtworksByExhibitionForProfilePageQB($exhibition);
+
+
+        // return status 200
 
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);
     }

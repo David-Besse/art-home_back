@@ -43,7 +43,10 @@ class ExhibitionType extends AbstractType
                 {
                     return $user->getFirstname().' '.$user->getLastname();
                 },
-                'placeholder' => 'Choisissez un artiste',
+                'placeholder' => 'Choisissez un artiste', 
+                'attr' => [
+                    'class'=> 'form-select'
+                ]               
             ])
         ;
     }

@@ -6,8 +6,10 @@
     <h1>Modifier les oeuvres</h1>
 
     {{ include('artwork/_form.html.twig', {'button_label': 'Modifier'}) }}
+<div class="d-flex justify-content-around">
 
-    <a href="{{ path('app_artwork_index') }}" class="btn btn-primary">Retour à la liste des oeuvres</a>
+    <a href="{{ path('app_artwork_index') }}" class="btn btn-outline-primary">Retour à la liste des oeuvres</a>
 
     {{ include('artwork/_delete_form.html.twig') }}
+</div>
 {% endblock %}

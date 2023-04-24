@@ -4,8 +4,9 @@
 
 {% block sub_body %}
     <h1 class="text-center">Liste des expositions</h1>
+    {{ include('_flash_messages.html.twig')}}
     <div class="text-center">
-        <a href="{{ path('app_exhibition_new') }}" class="btn btn-success mb-4 mt-4">Ajouter une exposition</a>
+        <a href="{{ path('app_exhibition_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une exposition</a>
     </div>
     <table class="table table-striped">
         <thead>
@@ -16,7 +17,7 @@
                 <th>Début de l'exposition</th>
                 <th>Fin de l'exposition</th>
                 <th>Statut</th>
-                <th>Description</th>
+                <th style="width:600px">Description</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -29,10 +30,15 @@
                 <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
                 <td>{{ exhibition.status ? 'En cours' : 'Archivée' }}</td>
+                {% if exhibition.description is same as (null) %}
+                <td>-</td>
+                {% else %}
                 <td>{{ exhibition.description }}</td>
+                {% endif %}
+                
                 <td>
-                    <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}" class="btn btn-primary">En savoir plus</a>
-                    <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}" class="btn btn-outline-primary btn-sm">En savoir plus</a>
+                    <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}" class="btn btn-outline-warning btn-sm">Modifier</a>
                 </td>
             </tr>
         {% else %}

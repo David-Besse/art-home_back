@@ -20,12 +20,13 @@ class ArtworkType extends AbstractType
             ->add('title', TextType::class,
             [
                 'label' => 'Titre de l\'oeuvre',
-                'empty_data' => ''
+                'empty_data' => '',
+                'help' => 'Le titre ne doit pas dépasser 255 caractères'
                
             ])
             ->add('description', TextareaType::class,
             [
-                'label' => 'Description de l\'oeuvre',
+                'label' => 'Description de l\'oeuvre',               
             ])
             ->add('picture', UrlType::class,
             [
@@ -34,6 +35,7 @@ class ArtworkType extends AbstractType
                     'placeholder' => 'par ex: https://...'
 
                 ],
+                'help' => 'Le titre ne doit pas dépasser 255 caractères',
                 'empty_data' => ''
                
             ])
@@ -42,12 +44,8 @@ class ArtworkType extends AbstractType
             [
                 'label' => 'A quelle exposition voulez-vous lier cette oeuvre ?',
                 'class' => Exhibition::class,
-                'expanded' => true,
-                'multiple' => false,
                 'choice_label' => 'title',
-                'label_attr' => [
-                    'class' => 'radio-inline'
-                ],
+                'placeholder' => 'Veuillez sélectionner une exposition'
             ])
         ;
     }

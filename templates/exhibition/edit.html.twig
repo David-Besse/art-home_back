@@ -4,10 +4,12 @@
 
 {% block sub_body %}
     <h1>Modifier une exposition</h1>
-
+    
     {{ include('exhibition/_form.html.twig', {'button_label': 'Modifier'}) }}
+    <div class="d-flex justify-content-around">
 
-    <a href="{{ path('app_exhibition_index') }}" class="btn btn-primary">Retour à la liste des expositions</a>
+    <a href="{{ path('app_exhibition_index') }}" class="btn btn-outline-primary">Retour à la liste des expositions</a>
 
     {{ include('exhibition/_delete_form.html.twig') }}
+</div>
 {% endblock %}
