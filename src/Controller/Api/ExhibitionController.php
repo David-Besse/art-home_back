@@ -48,8 +48,8 @@ class ExhibitionController extends AbstractController
     }
 
     /**
-     * Create  exhibition item
-     * @Route("/api/secure/exhibitions/new", name="api_exhibition_new", methods={"PUT"})
+     * Create exhibition item
+     * @Route("/api/secure/exhibitions/new", name="api_exhibition_new", methods={"POST"})
      */
     public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, MySlugger $slugger, ExhibitionRepository $exhibitionRepository)
     {

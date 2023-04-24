@@ -51,14 +51,7 @@ class UserController extends AbstractController
         $email = $user->getEmail();
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
-
-        if ($user->getDateOfBirth() !== null) {
-            // modifying date format 
-            $dateOfBirth = date_format($user->getDateOfBirth(), 'Y-m-d');
-        } else {
-            $dateOfBirth = "0000-00-00";
-        }
-
+        $dateOfBirth = $user->getDateOfBirth();
 
         $exhibitionFetched = $user->getExhibition();
         $exhibitions = [];
@@ -102,7 +95,7 @@ class UserController extends AbstractController
      */
     public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger): Response
     {
-  
+
         //Fetch the json content
         $jsonContent = $request->getContent();
 
@@ -172,85 +165,73 @@ class UserController extends AbstractController
     /**
      * Edit profile
      *
-     * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PUT"})
+     * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
     public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
     {
 
-    // getting the logged user
-    /** @var \App\Entity\User $user */
-    $user = $this->getUser();
+        // getting the logged user
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
 
-    //Get Json content
-    $jsonContent = $request->getContent();
-    // decoding json content
-    $jsonContentToDecode = json_decode($jsonContent);
+        //Get Json content
+        $jsonContent = $request->getContent();
+        // decoding json content
+        $jsonContentToDecode = json_decode($jsonContent);
 
-    // if datOfBirth is an empty string
-    if($jsonContentToDecode->dateOfBirth == ""){
+        // if datOfBirth is an empty string
+        // if ($jsonContentToDecode->dateOfBirth == "") {
 
-        //setting to null 
-        //and removing the proprety from the object
-        $user->setDateOfBirth(null);
-        unset($jsonContentToDecode->dateOfBirth);
-        $newJsonContent = json_encode($request);
+        //     //setting to null
+        //     //and removing the proprety from the object
+        //     $user->setDateOfBirth(null);
+        //     unset($jsonContentToDecode->dateOfBirth);
+        //     $newJsonContent = json_encode($request);
+        // } else {
+        //     $newJsonContent = $jsonContent;
+        // }
 
-    }else{
-        $newJsonContent = $jsonContent;
-    }
+        try {
+            // Convert Json in doctrine entity
+            $userNewInfos = $serializer->deserialize($jsonContent, User::class, 'json', ['object_to_populate' => $user]);
+        } catch (NotEncodableValueException $e) {
+            // if json getted isn't right, make an alert for client
+            return $this->json(
+                ['error' => 'JSON invalide'],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
 
-    try {
-        // Convert Json in doctrine entity
-        $userNewInfos = $serializer->deserialize($newJsonContent, User::class, 'json');
-    } catch (NotEncodableValueException $e) {
-        // if json getted isn't right, make an alert for client
-        return $this->json(
-            ['error' => 'JSON invalide'],
-            Response::HTTP_UNPROCESSABLE_ENTITY
-        );
-    }
+        //Validate entity
+        $errors = $validator->validate($userNewInfos);
 
+        // Is there some errors ?
+        if (count($errors) > 0) {
+            //returned array
+            $errorsClean = [];
+            // @get back validation errors clean
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
+            };
 
-    //Validate entity
-    $errors = $validator->validate($userNewInfos);
+            return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
-    // Is there some errors ?
-    if (count($errors) > 0) {
-        //returned array
-        $errorsClean = [];
-        // @get back validation errors clean
-        /** @var ConstraintViolation $error */
-        foreach ($errors as $error) {
-            $errorsClean[$error->getPropertyPath()][] = $error->getMessage();
-        };
-
-        return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
-        // setting new data
-        //$user->setDateOfBirth($userNewInfos->getDateOfBirth());
-        $user->setNickname($userNewInfos->getNickname());
-        $user->setLastname($userNewInfos->getLastname());
-        $user->setFirstname($userNewInfos->getFirstname());
-        $user->setEmail($userNewInfos->getEmail());
-        $user->setPresentation($userNewInfos->getPresentation());
-        $user->setAvatar($userNewInfos->getAvatar());
-        
         //if nickname is not null
         // then slugify nickname
         if ($userNewInfos->getNickname() !== null) {
-            
+
             $slug = $slugger->slugify($userNewInfos->getNickname());
             $user->setSlug($slug);
-       } else {
+        } else {
 
-           //slugifying firstname and lastname
-           $fullname = $userNewInfos->getFirstname() . ' ' . $userNewInfos->getLastname();
-           $slug = $slugger->slugify($fullname);
-           $user->setSlug($slug);
-       }
-       
-        
+            //slugifying firstname and lastname
+            $fullname = $userNewInfos->getFirstname() . ' ' . $userNewInfos->getLastname();
+            $slug = $slugger->slugify($fullname);
+            $user->setSlug($slug);
+        }
+
         // Save entity
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);
