@@ -37,5 +37,8 @@ services:
 
     App\EventListener\AutoSlugger:
         tags:
-            event: 'postPersist'
-            # name: 'doctrine.event_listener'
+            -
+                name: 'doctrine.event_listener'
+                event: 'prePersist'
+                connection: 'default'
+            

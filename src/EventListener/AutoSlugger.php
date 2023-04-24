@@ -8,14 +8,15 @@ use App\Entity\Artwork;
 use App\Entity\Exhibition;
 use App\Service\MySlugger;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class AutoSlugger
 {
-    public function preUpdate(LifecycleEventArgs $args, MySlugger $slugger, ManagerRegistry $doctrine): void
+    public function prePersist(	PrePersistEventArgs $args, MySlugger $slugger, ManagerRegistry $doctrine): void
     {
         $entity = $args->getObject();
-
+        dd($entity);
         if ($entity instanceof User ) {
             return;
         }
