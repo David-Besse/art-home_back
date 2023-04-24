@@ -33,7 +33,7 @@ class ArtworkController extends AbstractController
             $artworks,
             Response::HTTP_OK,
             [],
-            ['groups' => 'get_artworks_collection']
+            ['groups' => 'get_artwork_by_exhibition']
         );
     }
 
@@ -105,17 +105,21 @@ class ArtworkController extends AbstractController
         $slug = $slugger->slugify($artwork->getTitle());
         $artwork->setSlug($slug);
 
+        // fetching exhibition
+        $exhibitionToDisplay = $artwork->getExhibition();
+
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($artwork);
         $entityManager->flush();
 
+  
         //Return response if created
         return $this->json(
-            $artwork,
+            $exhibitionToDisplay->getArtwork(),
             Response::HTTP_CREATED,
             [],
-            ['groups' => 'get_artwork']
+            ['groups' => 'get_artwork_by_exhibition']
         );
     }
 
@@ -139,11 +143,7 @@ class ArtworkController extends AbstractController
         // Checking if json format is respected
         //if not, throw an error
         try {
-            //Transforming json Content into entity
-
-
-
-            
+            //Transforming json Content into entity 
             $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json',['object_to_populate' => $artworkToEdit]);
 
         } catch (NotEncodableValueException $e) {
@@ -155,10 +155,7 @@ class ArtworkController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
-
-
         $errors = $validator->validate($artworkModified);
-
 
         //Checking if there is any error
         // If yes, then throw an error
@@ -178,15 +175,11 @@ class ArtworkController extends AbstractController
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
 
-
-        
         //slugify
         $slug = $slugger->slugify($artworkModified->getTitle());
         $artworkModified->setSlug($slug);
 
-
         // sending new data in DB
-
         $entityManager->persist($artworkModified);
         $entityManager->flush();
 
@@ -237,9 +230,7 @@ class ArtworkController extends AbstractController
         // fetching exhibitons for profile page
         $artworksList = $artworkRepository->findArtworksByExhibitionForProfilePageQB($exhibition);
 
-
         // return status 200
-
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);
     }
 }
