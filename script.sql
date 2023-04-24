@@ -19,6 +19,7 @@ CREATE TABLE `artwork` (
   PRIMARY KEY (`id`),
   KEY `IDX_881FC5762A7D4494` (`exhibition_id`),
   CONSTRAINT `FK_881FC5762A7D4494` FOREIGN KEY (`exhibition_id`) REFERENCES `exhibition` (`id`)
+
 ) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `artwork`;
@@ -183,6 +184,9 @@ CREATE TABLE `doctrine_migration_versions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
 DROP TABLE IF EXISTS `exhibition`;
 CREATE TABLE `exhibition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -196,6 +200,7 @@ CREATE TABLE `exhibition` (
   PRIMARY KEY (`id`),
   KEY `IDX_B8353389B7970CF8` (`artist_id`),
   CONSTRAINT `FK_B8353389B7970CF8` FOREIGN KEY (`artist_id`) REFERENCES `user` (`id`)
+
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `exhibition`;
@@ -232,6 +237,21 @@ CREATE TABLE `messenger_messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+TRUNCATE `exhibition`;
+INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `status`, `artist_id`, `description`) VALUES
+(1,	'blanditiis',	'blanditiis',	'2023-04-20',	'2023-08-20',	1,	3,	'Quam ab asperiores inventore est et. Accusantium aperiam dolorum dolores culpa illum ad ipsa dolorem. Excepturi nostrum consequatur neque corrupti eos laboriosam. Aut molestiae ipsa excepturi omnis animi occaecati aliquam. Aut officia aliquam voluptatem voluptatem.'),
+(2,	'accusantium',	'accusantium',	'2023-04-20',	'2023-08-20',	1,	3,	'Recusandae repudiandae ipsam earum vitae sed. Velit maxime hic aliquid amet ut reiciendis fugiat. Quisquam consequatur animi et omnis in iure nobis.'),
+(3,	'earum',	'earum',	'2023-04-20',	'2023-08-20',	1,	6,	'Voluptatem quo ipsum culpa laudantium. Tempora dolor consequatur omnis ut. Molestias minus quae ea similique commodi voluptatem. Amet unde velit consequatur temporibus harum tempora molestiae.'),
+(4,	'fugiat',	'fugiat',	'2023-04-20',	'2023-08-20',	1,	5,	'Autem nam et corrupti consectetur. Et quod consequatur pariatur amet est ut aliquid. Eos consequatur fugit soluta adipisci dignissimos et eaque. Provident velit dolores omnis consequatur modi sapiente.'),
+(5,	'molestias',	'molestias',	'2023-04-20',	'2023-08-20',	1,	7,	'Voluptatem iusto unde totam molestiae. Corporis minima veniam natus. Non libero maxime voluptatem laboriosam ea vero et. Itaque odio repellat eum tenetur dolores assumenda.'),
+(6,	'cum',	'cum',	'2023-04-20',	'2023-08-20',	1,	4,	'Ut magnam ut in labore aut iure. Vel excepturi a debitis minus enim culpa iste.'),
+(7,	'ut',	'ut',	'2023-04-20',	'2023-08-20',	1,	4,	'Incidunt eligendi officia vitae debitis quas. Sunt ipsa sed dolorem quis sit. Qui consequatur cupiditate harum distinctio veniam nihil.'),
+(8,	'laudantium',	'laudantium',	'2023-04-20',	'2023-08-20',	1,	5,	'Et praesentium beatae enim tempore aliquam nihil. Eligendi aut et iste vero ut. In tenetur beatae ipsa et sed architecto.'),
+(9,	'sint',	'sint',	'2023-04-20',	'2023-08-20',	1,	6,	'Aut et ipsa et omnis est. Officia et harum qui quidem. Ut molestiae ea ut sit soluta et.'),
+(10,	'fugit',	'fugit',	'2023-04-20',	'2023-08-20',	1,	5,	'Occaecati repellat rerum voluptate dolor. Vel et aut molestias fuga. Iusto aperiam ut ea architecto sint. Eum rerum porro impedit velit.');
+
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -247,7 +267,11 @@ CREATE TABLE `user` (
   `presentation` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
+
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 TRUNCATE `user`;
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`, `nickname`, `avatar`, `slug`, `date_of_birth`, `presentation`) VALUES
@@ -265,3 +289,4 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`,
 (12,	'azerty@aze.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$i43wigcHEalKeOppuHsHReuk073lauZvuRviueqDLS0i.H0g74I2K',	'azerty',	'azerty',	'',	'',	'',	NULL,	'');
 
 -- 2023-04-21 14:04:09
+
