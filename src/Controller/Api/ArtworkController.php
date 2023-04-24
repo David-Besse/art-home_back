@@ -121,7 +121,7 @@ class ArtworkController extends AbstractController
     /**
      * Edit artwork entity
      *
-     * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PUT"})
+     * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PATCH"})
      */
     public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
     {
@@ -137,7 +137,7 @@ class ArtworkController extends AbstractController
         //if not, throw an error
         try {
             //Transforming json Content into entity
-            $artwork = $serializer->deserialize($jsonContent, Artwork::class, 'json');
+            $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json',['object_to_populate' => $artworkToEdit]);
         } catch (NotEncodableValueException $e) {
 
             return $this->json(
@@ -147,7 +147,7 @@ class ArtworkController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
-        $errors = $validator->validate($artwork);
+        $errors = $validator->validate($artworkModified);
 
         //Checking if there is any error
         // If yes, then throw an error
@@ -167,19 +167,13 @@ class ArtworkController extends AbstractController
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
 
-        // setting new data
-        $artworkToEdit->setTitle($artwork->getTitle());
-        $artworkToEdit->setDescription($artwork->getDescription());
-        $artworkToEdit->setPicture($artwork->getPicture());
-        $artworkToEdit->setExhibition($artwork->getExhibition());
-
         // sending new data in DB
         $entityManager->persist($artworkToEdit);
         $entityManager->flush();
 
         //Return response if created
         return $this->json(
-            $artwork,
+            $artworkModified,
             Response::HTTP_OK,
             [],
             ['groups' => 'get_artwork']

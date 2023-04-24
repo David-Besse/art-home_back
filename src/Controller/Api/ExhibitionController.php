@@ -103,7 +103,7 @@ class ExhibitionController extends AbstractController
 
     /**
      * Edit exhibition item
-     * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PUT"})
+     * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PATCH"})
      */
     public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator)
     {
@@ -117,7 +117,7 @@ class ExhibitionController extends AbstractController
 
         try {
             // Convert Json in doctrine entity
-            $exhibition = $serializer->deserialize($jsonContent, Exhibition::class, 'json');
+            $exhibitionModified = $serializer->deserialize($jsonContent, Exhibition::class, 'json',['object_to_populate' => $exhibitionToEdit]);
         } catch (NotEncodableValueException $e) {
             // if json getted isn't right, make an alert for client
             return $this->json(
@@ -127,7 +127,7 @@ class ExhibitionController extends AbstractController
         }
 
         //Validate entity
-        $errors = $validator->validate($exhibition);
+        $errors = $validator->validate($exhibitionModified);
 
         // Is there some errors ?
         if (count($errors) > 0) {
@@ -142,19 +142,14 @@ class ExhibitionController extends AbstractController
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        // setting new data
-        $exhibitionToEdit->setTitle($exhibition->getTitle());
-        $exhibitionToEdit->setDescription($exhibition->getDescription());
-        $exhibitionToEdit->setArtist($exhibition->getArtist());
-
         // Save entity
         $entityManager = $doctrine->getManager();
-        $entityManager->persist($exhibitionToEdit);
+        $entityManager->persist($exhibitionModified);
         $entityManager->flush();
 
         // return status 200
         return $this->json(
-            $exhibitionToEdit,
+            $exhibitionModified,
             Response::HTTP_OK,
             [],
             ['groups' => 'get_exhibition_by_id']
