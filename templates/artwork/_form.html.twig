@@ -1,4 +1,9 @@
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}})}}
-    {{ form_widget(form) }}
-    <button class="btn btn-outline-success">{{ button_label|default('Ajouter') }}</button>
-{{ form_end(form) }}
+<div class = "form">
+    
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}})}}
+        {{ form_widget(form) }}
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-outline-success">{{ button_label|default('Ajouter') }}</button>
+        </div>
+    {{ form_end(form) }}
+</div>

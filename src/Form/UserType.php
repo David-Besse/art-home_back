@@ -23,13 +23,13 @@ class UserType extends AbstractType
         $builder
             ->add('email', EmailType::class,
             [
-                'label' => 'Adresse email',
+                'label' => 'Adresse email *',
                 'help' => 'L\'email ne doit pas dépasser 180 caractères',
                 'empty_data' => ''
             ])
             ->add('roles', ChoiceType::class,
             [
-                'label' => 'Quel rôle voulez-vous attribuer à cet utilisateur ?',
+                'label' => 'Quel rôle voulez-vous attribuer à cet utilisateur ? *',
                 'choices' => [
                     'Artiste' => 'ROLE_ARTIST',
                     'Modérateur' => 'ROLE_MODERATOR',
@@ -54,7 +54,7 @@ class UserType extends AbstractType
                     //  for edit form
                     $form->add('password', PasswordType::class, 
                     [
-                        'label' => 'Mot de passe ',
+                        'label' => 'Mot de passe *',
                         'mapped' => false,
                         'help' => 'Le mot de passe ne doit pas dépasser 255 caractères',
                         'attr' => [
@@ -65,7 +65,7 @@ class UserType extends AbstractType
                     //for create form
                     $form->add('password', PasswordType::class, 
                     [
-                        'label' => 'Mot de passe ',
+                        'label' => 'Mot de passe *',
                         'help' => 'Le mot de passe ne doit pas dépasser 255 caractères',
                     ]);
                 }
@@ -74,11 +74,11 @@ class UserType extends AbstractType
             [
                 'label'=> 'Nom *',
                 'help' => 'Le nom ne doit pas dépasser 255 caractères',
-                'empty_data' => ''
+                'empty_data' => '',
             ])
             ->add('firstname', TextType::class,
             [
-                'label' => 'Prénom ',
+                'label' => 'Prénom *',
                 'help' => 'Le prénom ne doit pas dépasser 255 caractères',
                 'empty_data' => ''
             ])
@@ -90,7 +90,9 @@ class UserType extends AbstractType
             ->add('dateOfBirth', DateType::class,
             [                
                 'label'=> 'Date de naissance',                
-                'years' => range(date('Y')+0, 1900)               
+                'years' => range(date('Y')+0, 1900),
+                'placeholder' => 'Choisissez une date',
+                'empty_data' => null               
             ])
             ->add('presentation', TextareaType::class,
             [
