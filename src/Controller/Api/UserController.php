@@ -3,13 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Entity\Exhibition;
 use App\Service\MySlugger;
-use App\Repository\UserRepository;
-use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\Types\Null_;
-use phpDocumentor\Reflection\Types\Nullable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -176,20 +171,6 @@ class UserController extends AbstractController
 
         //Get Json content
         $jsonContent = $request->getContent();
-        // decoding json content
-        $jsonContentToDecode = json_decode($jsonContent);
-
-        // if datOfBirth is an empty string
-        // if ($jsonContentToDecode->dateOfBirth == "") {
-
-        //     //setting to null
-        //     //and removing the proprety from the object
-        //     $user->setDateOfBirth(null);
-        //     unset($jsonContentToDecode->dateOfBirth);
-        //     $newJsonContent = json_encode($request);
-        // } else {
-        //     $newJsonContent = $jsonContent;
-        // }
 
         try {
             // Convert Json in doctrine entity

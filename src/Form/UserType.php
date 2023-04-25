@@ -90,7 +90,7 @@ class UserType extends AbstractType
             ->add('dateOfBirth', DateType::class,
             [                
                 'label'=> 'Date de naissance',                
-                'years' => range(date('Y')+0, 1900)               
+                'years' => range(date('Y')+0, 1900)      
             ])
             ->add('presentation', TextareaType::class,
             [

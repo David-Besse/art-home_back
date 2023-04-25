@@ -20,7 +20,11 @@
         <tr class="text-center">
             <td>{{ artwork.id }}</td>
             <td>{{ artwork.title }}</td>
-            <td>{{ artwork.description }}</td>
+            {% if artwork.description is same as (null)%}
+            <td>-</td>
+            {% else %}
+            <td>{{ artwork.description }}</td>    
+            {% endif %}
             <td><img src="{{ artwork.picture }}" height="300px"></td>
             <td>
             <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
