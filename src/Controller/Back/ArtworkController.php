@@ -56,9 +56,10 @@ class ArtworkController extends AbstractController
         // if form is submitted
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //slugify the title
+            //sluggify the title
             $slug = $slugger->slugify($artwork->getTitle());
             $artwork->setSlug($slug);
+
             $artworkRepository->add($artwork, true);
 
             // add flash messages
@@ -96,7 +97,7 @@ class ArtworkController extends AbstractController
      * 
      * @Route("/{id}/edit", name="app_artwork_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
+    public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository, MySlugger $slugger): Response
     {
         //404?
         if ($artwork === null) {
@@ -109,8 +110,13 @@ class ArtworkController extends AbstractController
 
         //if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
-            $artworkRepository->add($artwork, true);
 
+            //sluggify the title
+            $slug = $slugger->slugify($artwork->getTitle());
+            $artwork->setSlug($slug);
+
+            $artworkRepository->add($artwork, true);
+            
             //adding flash messages
             $this->addFlash('success', 'L\'oeuvre a été modifiée');
 
