@@ -95,7 +95,7 @@ class UserController extends AbstractController
      * 
      * @Route("/{id}/edit", name="app_user_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, User $user = null, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user = null, UserRepository $userRepository, MySlugger $slugger): Response
     {
         //404?
         if ($user === null) {
@@ -108,6 +108,19 @@ class UserController extends AbstractController
 
         // if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //slugify nickname or firstname/lastname
+            if ($user->getNickname() !== Null) {
+
+                $slug = $slugger->slugify($user->getNickname());
+                $user->setSlug($slug);
+            } else {
+
+                $fullname = $user->getFirstname() . ' ' . $user->getLastname();
+                $slug = $slugger->slugify($fullname);
+                $user->setSlug($slug);
+            }
+
             $userRepository->add($user, true);
 
             //flash messages
