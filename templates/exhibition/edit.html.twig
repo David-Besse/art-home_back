@@ -3,7 +3,8 @@
 {% block title %}Modifier une exposition{% endblock %}
 
 {% block sub_body %}
-    <h1>Modifier une exposition</h1>
+    <h1 class="text-center">Modifier une exposition</h1>
+    <span class = "text-danger">"Les champs suivis d'un * sont obligatoires"</span>
     
     {{ include('exhibition/_form.html.twig', {'button_label': 'Modifier'}) }}
     <div class="d-flex justify-content-around">
