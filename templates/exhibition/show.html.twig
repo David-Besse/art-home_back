@@ -29,7 +29,12 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ exhibition.description }}</td>
+                {% if exhibition.description is same as (null) %}
+                <td>-</td>
+                {% else %}
+                <td>{{ exhibition.description }}</td>         
+                {% endif %}
+                
             </tr>
         </tbody>
     </table>
