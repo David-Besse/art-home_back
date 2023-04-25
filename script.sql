@@ -10,19 +10,17 @@ SET NAMES utf8mb4;
 DROP TABLE IF EXISTS `artwork`;
 CREATE TABLE `artwork` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `picture` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` longtext DEFAULT NULL,
+  `picture` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `exhibition_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_881FC5762A7D4494` (`exhibition_id`),
   CONSTRAINT `FK_881FC5762A7D4494` FOREIGN KEY (`exhibition_id`) REFERENCES `exhibition` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-TRUNCATE `artwork`;
 INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`, `exhibition_id`) VALUES
 (1,	'La ville sous lumières',	'Les étincelles sont floues et créent des formes organiques, comme des courbes et des cercles, qui se mélangent et se superposent. L\'ensemble de l\'image est dynamique et énergique, créant une atmosphère de feu et de passion.',	'https://cdn.pixabay.com/photo/2014/02/14/08/27/sparks-265850_640.jpg',	'la-ville-sous-lumieres',	1,	9),
 (2,	'L\'étrangeté de la vie marine',	'Illustration d\'une méduse flottant dans l\'eau, créant une sensation de légèreté, de douceur, de calme et de tranquillité',	'https://cdn.pixabay.com/photo/2022/02/08/13/41/jellyfish-7001410_640.jpg',	'l-etrangete-de-la-vie-marine',	1,	2),
@@ -173,37 +171,39 @@ INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`
 (147,	'Horizons infinis',	'Saepe et molestiae unde hic minus consequuntur harum. Odit magnam sed numquam numquam qui sunt. Ipsum similique soluta explicabo autem et. Aliquam sequi voluptatem in et.',	'https://cdn.pixabay.com/photo/2022/08/13/05/59/impressionism-7382949_640.jpg',	'horizons-infinis',	1,	10),
 (148,	'Éclaboussures de mercure',	'Voluptas adipisci cumque ea est. Sapiente aut maiores laborum quis unde ex beatae. Perspiciatis molestiae molestiae doloremque quasi amet voluptatem. Mollitia et fugit qui odio repudiandae.',	'https://cdn.pixabay.com/photo/2020/05/17/20/34/concept-5183469_640.jpg',	'eclaboussures-de-mercure',	1,	1),
 (149,	'Promenade sur le bord du lac',	'Placeat est id vitae est. Voluptate aut nisi quod exercitationem harum. Magni tempora velit sit sit iure. Aut autem ut qui ea non.',	'https://cdn.pixabay.com/photo/2013/02/13/16/53/robert-padley-81327_640.jpg',	'promenade-sur-le-bord-du-lac',	1,	8),
-(150,	'La fleur d\'ivresse',	'Fleurs violettes en pleine floraison',	'https://cdn.pixabay.com/photo/2017/09/04/22/40/flowers-2715804_640.jpg',	'la-fleur-d-ivresse',	1,	7);
-
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+(150,	'La fleur d\'ivresse',	'Fleurs violettes en pleine floraison',	'https://cdn.pixabay.com/photo/2017/09/04/22/40/flowers-2715804_640.jpg',	'la-fleur-d-ivresse',	1,	7),
+(158,	'test patch 3',	'qdzqdzqdqzqzdq',	'zdzqdzqd',	'test-patch-3',	0,	1),
+(159,	'qdzqdzqdq',	'qdzqdzqdqzqzdq',	'zdzqdzqd',	'qdzqdzqdq',	0,	24),
+(160,	'qdqzdqdqzdzq',	'qzdqzdzqdzdqz',	'qdqdzdqz',	'qdqzdqdqzdzq',	0,	20),
+(161,	'qdqzdqdqzdzq',	'qzdqzdzqdzdqz',	'qdqdzdqz',	'qdqzdqdqzdzq',	0,	20),
+(162,	'qdqzdqdqzdzq',	'qzdqzdzqdzdqz',	'qdqdzdqz',	'qdqzdqdqzdzq',	0,	20),
+(163,	'aaaaaaaaaaa',	'aaaaaaaaaaaaaaaa',	'aaaaaaaaaaaa',	'aaaaaaaaaaa',	0,	24),
+(164,	'bbbbbbbbbbbbb',	'bbbbbbbbbbbbb',	'bbbbbbbbbb',	'bbbbbbbbbbbbb',	0,	24),
+(165,	'cccccccccc',	'cccccccccccc',	'ccccccccc',	'cccccccccc',	0,	24),
+(166,	'dddddddd',	'ddddddddddd',	'ddddddddd',	'dddddddd',	0,	23),
+(167,	'eeeeeeeee',	'eeeeeeeeeee',	'eeeeeeeeee',	'eeeeeeeee',	0,	24),
+(168,	'qzqdqzdzq',	'qdzqdzq',	'qdzqdzq',	'qzqdqzdzq',	0,	25),
+(169,	'aaaaaaaa',	'aaaaaaaaaaa',	'aaaaaaaaaaa',	'aaaaaaaa',	0,	25),
+(170,	'bbbbbbbb',	'bbbbbbb',	'bbbbbbbb',	'bbbbbbbb',	0,	25),
+(171,	'ccccccccc',	'cccccccccc',	'cccccccccc',	'ccccccccc',	0,	25),
+(172,	'ccccccccc',	'cccccccccc',	'cccccccccc',	'ccccccccc',	0,	25),
+(173,	'abc',	'aaaaaaaaaa',	'abc',	'abc',	0,	25);
 
 DROP TABLE IF EXISTS `exhibition`;
 CREATE TABLE `exhibition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `artist_id` int(11) NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_B8353389B7970CF8` (`artist_id`),
   CONSTRAINT `FK_B8353389B7970CF8` FOREIGN KEY (`artist_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-TRUNCATE `exhibition`;
 INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `status`, `artist_id`, `description`) VALUES
 (1,	'Renaissance naturelle',	'renaissance-naturelle',	'2023-04-20',	'2023-08-20',	1,	3,	'Cette exposition est une célébration de la nature et de son renouveau. Les œuvres présentées dans cette exposition cherchent à explorer la relation entre l\'homme et la nature et comment cette relation peut être renouvelée pour créer un avenir plus durable. Les visiteurs sont invités à contempler les différentes manières dont l\'artiste explore la relation entre l\'homme et la nature, et comment cette relation peut être renouvelée pour créer un avenir plus durable.'),
 (2,	'Dans l\'univers d\'Aurélien Baquet',	'dans-l-univers-d-aurelien-baquet',	'2023-04-20',	'2023-08-20',	1,	3,	'L\'exposition présente une collection de photographies, de peintures, de dessins du monde entier qui explorent la beauté et la complexité de la nature. A travers son exposition Aurélien Baquet veut nous transmettre son amour de la nature et le respect qu\'il a pour elle. Voyager à travers cette exposition immersive'),
@@ -221,59 +221,23 @@ INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `stat
 (22,	'test',	'test',	'2023-04-20',	'2023-08-20',	1,	10,	'encore un test'),
 (23,	'cochon pendu',	'cochon-pendu',	'2023-04-21',	'2023-08-21',	1,	3,	'c\'est une longue histoire...');
 
-DROP TABLE IF EXISTS `messenger_messages`;
-CREATE TABLE `messenger_messages` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL,
-  `available_at` datetime NOT NULL,
-  `delivered_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
-  KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
-  KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-TRUNCATE `exhibition`;
-INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `status`, `artist_id`, `description`) VALUES
-(1,	'blanditiis',	'blanditiis',	'2023-04-20',	'2023-08-20',	1,	3,	'Quam ab asperiores inventore est et. Accusantium aperiam dolorum dolores culpa illum ad ipsa dolorem. Excepturi nostrum consequatur neque corrupti eos laboriosam. Aut molestiae ipsa excepturi omnis animi occaecati aliquam. Aut officia aliquam voluptatem voluptatem.'),
-(2,	'accusantium',	'accusantium',	'2023-04-20',	'2023-08-20',	1,	3,	'Recusandae repudiandae ipsam earum vitae sed. Velit maxime hic aliquid amet ut reiciendis fugiat. Quisquam consequatur animi et omnis in iure nobis.'),
-(3,	'earum',	'earum',	'2023-04-20',	'2023-08-20',	1,	6,	'Voluptatem quo ipsum culpa laudantium. Tempora dolor consequatur omnis ut. Molestias minus quae ea similique commodi voluptatem. Amet unde velit consequatur temporibus harum tempora molestiae.'),
-(4,	'fugiat',	'fugiat',	'2023-04-20',	'2023-08-20',	1,	5,	'Autem nam et corrupti consectetur. Et quod consequatur pariatur amet est ut aliquid. Eos consequatur fugit soluta adipisci dignissimos et eaque. Provident velit dolores omnis consequatur modi sapiente.'),
-(5,	'molestias',	'molestias',	'2023-04-20',	'2023-08-20',	1,	7,	'Voluptatem iusto unde totam molestiae. Corporis minima veniam natus. Non libero maxime voluptatem laboriosam ea vero et. Itaque odio repellat eum tenetur dolores assumenda.'),
-(6,	'cum',	'cum',	'2023-04-20',	'2023-08-20',	1,	4,	'Ut magnam ut in labore aut iure. Vel excepturi a debitis minus enim culpa iste.'),
-(7,	'ut',	'ut',	'2023-04-20',	'2023-08-20',	1,	4,	'Incidunt eligendi officia vitae debitis quas. Sunt ipsa sed dolorem quis sit. Qui consequatur cupiditate harum distinctio veniam nihil.'),
-(8,	'laudantium',	'laudantium',	'2023-04-20',	'2023-08-20',	1,	5,	'Et praesentium beatae enim tempore aliquam nihil. Eligendi aut et iste vero ut. In tenetur beatae ipsa et sed architecto.'),
-(9,	'sint',	'sint',	'2023-04-20',	'2023-08-20',	1,	6,	'Aut et ipsa et omnis est. Officia et harum qui quidem. Ut molestiae ea ut sit soluta et.'),
-(10,	'fugit',	'fugit',	'2023-04-20',	'2023-08-20',	1,	5,	'Occaecati repellat rerum voluptate dolor. Vel et aut molestias fuga. Iusto aperiam ut ea architecto sint. Eum rerum porro impedit velit.');
-
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(180) NOT NULL,
+  `roles` longtext NOT NULL COMMENT '(DC2Type:json)',
+  `password` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `firstname` varchar(255) NOT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
-  `presentation` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentation` varchar(800) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
-
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-TRUNCATE `user`;
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`, `nickname`, `avatar`, `slug`, `date_of_birth`, `presentation`) VALUES
 (1,	'admin@admin.com',	'[\"ROLE_ADMIN\"]',	'$2y$13$Ov7uQzlJShWEfQoKfKiM8uCh0jQHhHU/XkfQ7J/4xroi5VcAEF7wu',	'Mallet',	'Colette',	NULL,	NULL,	NULL,	NULL,	NULL),
 (2,	'moderator@moderator.com',	'[\"ROLE_MODERATOR\"]',	'$2y$13$/oyU5SMCpjo6Q1jXSV0D4OZT6i4kKyiIiRuf3jdxGDvr4d9P6bbwG',	'Renault',	'William',	NULL,	NULL,	NULL,	NULL,	NULL),
@@ -288,5 +252,4 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`,
 (11,	'azer@azer.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$DR/Y9hejJi7rXEmhhX41POTJ5bmLqGrEk2.JvV5aF3D6NnC.S156e',	'azer',	'azer',	'',	'',	'',	NULL,	''),
 (12,	'azerty@aze.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$i43wigcHEalKeOppuHsHReuk073lauZvuRviueqDLS0i.H0g74I2K',	'azerty',	'azerty',	'',	'',	'',	NULL,	'');
 
--- 2023-04-21 14:04:09
-
+-- 2023-04-25 14:27:10
