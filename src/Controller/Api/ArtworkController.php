@@ -228,7 +228,7 @@ class ArtworkController extends AbstractController
         }
         
         // fetching exhibitons for profile page
-        $artworksList = $artworkRepository->find($exhibition);
+        $artworksList = $artworkRepository->findBy(['exhibition' => $exhibition]);
         
 
         // return status 200
