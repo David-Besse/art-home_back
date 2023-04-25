@@ -107,7 +107,7 @@ class UserController extends AbstractController
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
-
+ 
         // Checking the entity : if all fields are well fill
 
         $errors = $validator->validate($user);
