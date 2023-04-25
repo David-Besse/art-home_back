@@ -19,8 +19,7 @@ CREATE TABLE `artwork` (
   PRIMARY KEY (`id`),
   KEY `IDX_881FC5762A7D4494` (`exhibition_id`),
   CONSTRAINT `FK_881FC5762A7D4494` FOREIGN KEY (`exhibition_id`) REFERENCES `exhibition` (`id`)
-
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `artwork`;
 INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`, `exhibition_id`) VALUES
@@ -173,19 +172,17 @@ INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`
 (147,	'Horizons infinis',	'Saepe et molestiae unde hic minus consequuntur harum. Odit magnam sed numquam numquam qui sunt. Ipsum similique soluta explicabo autem et. Aliquam sequi voluptatem in et.',	'https://cdn.pixabay.com/photo/2022/08/13/05/59/impressionism-7382949_640.jpg',	'horizons-infinis',	1,	10),
 (148,	'Éclaboussures de mercure',	'Voluptas adipisci cumque ea est. Sapiente aut maiores laborum quis unde ex beatae. Perspiciatis molestiae molestiae doloremque quasi amet voluptatem. Mollitia et fugit qui odio repudiandae.',	'https://cdn.pixabay.com/photo/2020/05/17/20/34/concept-5183469_640.jpg',	'eclaboussures-de-mercure',	1,	1),
 (149,	'Promenade sur le bord du lac',	'Placeat est id vitae est. Voluptate aut nisi quod exercitationem harum. Magni tempora velit sit sit iure. Aut autem ut qui ea non.',	'https://cdn.pixabay.com/photo/2013/02/13/16/53/robert-padley-81327_640.jpg',	'promenade-sur-le-bord-du-lac',	1,	8),
-(150,	'La fleur d\'ivresse',	'Fleurs violettes en pleine floraison',	'https://cdn.pixabay.com/photo/2017/09/04/22/40/flowers-2715804_640.jpg',	'la-fleur-d-ivresse',	1,	7);
-
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+(150,	'La fleur d\'ivresse',	'Fleurs violettes en pleine floraison',	'https://cdn.pixabay.com/photo/2017/09/04/22/40/flowers-2715804_640.jpg',	'la-fleur-d-ivresse',	1,	7),
+(158,	'test patch 3',	'qdzqdzqdqzqzdq',	'zdzqdzqd',	'test-patch-3',	0,	1),
+(159,	'qdzqdzqdq',	'qdzqdzqdqzqzdq',	'zdzqdzqd',	'qdzqdzqdq',	0,	24),
+(160,	'qdqzdqdqzdzq',	'qzdqzdzqdzdqz',	'qdqdzdqz',	'qdqzdqdqzdzq',	0,	20),
+(161,	'qdqzdqdqzdzq',	'qzdqzdzqdzdqz',	'qdqdzdqz',	'qdqzdqdqzdzq',	0,	20),
+(162,	'qdqzdqdqzdzq',	'qzdqzdzqdzdqz',	'qdqdzdqz',	'qdqzdqdqzdzq',	0,	20),
+(163,	'aaaaaaaaaaa',	'aaaaaaaaaaaaaaaa',	'aaaaaaaaaaaa',	'aaaaaaaaaaa',	0,	24),
+(164,	'bbbbbbbbbbbbb',	'bbbbbbbbbbbbb',	'bbbbbbbbbb',	'bbbbbbbbbbbbb',	0,	24),
+(165,	'cccccccccc',	'cccccccccccc',	'ccccccccc',	'cccccccccc',	0,	24),
+(166,	'dddddddd',	'ddddddddddd',	'ddddddddd',	'dddddddd',	0,	23),
+(167,	'eeeeeeeee',	'eeeeeeeeeee',	'eeeeeeeeee',	'eeeeeeeee',	0,	24);
 
 DROP TABLE IF EXISTS `exhibition`;
 CREATE TABLE `exhibition` (
@@ -200,8 +197,7 @@ CREATE TABLE `exhibition` (
   PRIMARY KEY (`id`),
   KEY `IDX_B8353389B7970CF8` (`artist_id`),
   CONSTRAINT `FK_B8353389B7970CF8` FOREIGN KEY (`artist_id`) REFERENCES `user` (`id`)
-
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `exhibition`;
 INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `status`, `artist_id`, `description`) VALUES
@@ -217,40 +213,9 @@ INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `stat
 (10,	'Dialogues silencieux',	'dialogues-silencieux',	'2023-04-20',	'2023-08-20',	1,	5,	'C\'est une exploration de la communication non verbale et des expressions visuelles qui transcendent les mots. Les œuvres d\'art présentées dans cette exposition cherchent à transmettre des émotions, des idées et des réflexions en utilisant des formes, des couleurs, des textures et des mouvements. Vous serez accueillis par des œuvres d\'art silencieuses mais puissantes.'),
 (19,	'Pour toi',	'pour-toi',	'2023-04-20',	'2023-08-20',	1,	3,	'Ode à Mathieu'),
 (20,	'Pim Pam Poum',	'pim-pam-poum',	'2023-04-20',	'2023-08-20',	1,	3,	'c\'est l\'effet papillon..'),
-(21,	'Salut les backeux',	'salut-les-backeux',	'2023-04-20',	'2023-08-20',	1,	3,	'mode CLI.. afk popcorn'),
-(22,	'test',	'test',	'2023-04-20',	'2023-08-20',	1,	10,	'encore un test'),
-(23,	'cochon pendu',	'cochon-pendu',	'2023-04-21',	'2023-08-21',	1,	3,	'c\'est une longue histoire...');
-
-DROP TABLE IF EXISTS `messenger_messages`;
-CREATE TABLE `messenger_messages` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL,
-  `available_at` datetime NOT NULL,
-  `delivered_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
-  KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
-  KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-TRUNCATE `exhibition`;
-INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `status`, `artist_id`, `description`) VALUES
-(1,	'blanditiis',	'blanditiis',	'2023-04-20',	'2023-08-20',	1,	3,	'Quam ab asperiores inventore est et. Accusantium aperiam dolorum dolores culpa illum ad ipsa dolorem. Excepturi nostrum consequatur neque corrupti eos laboriosam. Aut molestiae ipsa excepturi omnis animi occaecati aliquam. Aut officia aliquam voluptatem voluptatem.'),
-(2,	'accusantium',	'accusantium',	'2023-04-20',	'2023-08-20',	1,	3,	'Recusandae repudiandae ipsam earum vitae sed. Velit maxime hic aliquid amet ut reiciendis fugiat. Quisquam consequatur animi et omnis in iure nobis.'),
-(3,	'earum',	'earum',	'2023-04-20',	'2023-08-20',	1,	6,	'Voluptatem quo ipsum culpa laudantium. Tempora dolor consequatur omnis ut. Molestias minus quae ea similique commodi voluptatem. Amet unde velit consequatur temporibus harum tempora molestiae.'),
-(4,	'fugiat',	'fugiat',	'2023-04-20',	'2023-08-20',	1,	5,	'Autem nam et corrupti consectetur. Et quod consequatur pariatur amet est ut aliquid. Eos consequatur fugit soluta adipisci dignissimos et eaque. Provident velit dolores omnis consequatur modi sapiente.'),
-(5,	'molestias',	'molestias',	'2023-04-20',	'2023-08-20',	1,	7,	'Voluptatem iusto unde totam molestiae. Corporis minima veniam natus. Non libero maxime voluptatem laboriosam ea vero et. Itaque odio repellat eum tenetur dolores assumenda.'),
-(6,	'cum',	'cum',	'2023-04-20',	'2023-08-20',	1,	4,	'Ut magnam ut in labore aut iure. Vel excepturi a debitis minus enim culpa iste.'),
-(7,	'ut',	'ut',	'2023-04-20',	'2023-08-20',	1,	4,	'Incidunt eligendi officia vitae debitis quas. Sunt ipsa sed dolorem quis sit. Qui consequatur cupiditate harum distinctio veniam nihil.'),
-(8,	'laudantium',	'laudantium',	'2023-04-20',	'2023-08-20',	1,	5,	'Et praesentium beatae enim tempore aliquam nihil. Eligendi aut et iste vero ut. In tenetur beatae ipsa et sed architecto.'),
-(9,	'sint',	'sint',	'2023-04-20',	'2023-08-20',	1,	6,	'Aut et ipsa et omnis est. Officia et harum qui quidem. Ut molestiae ea ut sit soluta et.'),
-(10,	'fugit',	'fugit',	'2023-04-20',	'2023-08-20',	1,	5,	'Occaecati repellat rerum voluptate dolor. Vel et aut molestias fuga. Iusto aperiam ut ea architecto sint. Eum rerum porro impedit velit.');
+(21,	'Salut les backeux',	'salut-les-backeux',	'2023-03-20',	'2023-08-20',	0,	3,	'mode CLI.. afk popcorn'),
+(23,	'cochon pendu',	'cochon-pendu',	'2023-04-21',	'2023-08-21',	1,	3,	'c\'est une longue histoire...'),
+(24,	'il parait que',	'il-parait-que',	'2023-04-24',	'2023-08-24',	1,	3,	'c\'est bien ce que je pensais');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -260,33 +225,25 @@ CREATE TABLE `user` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `firstname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
-  `presentation` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentation` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
-
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `user`;
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`, `nickname`, `avatar`, `slug`, `date_of_birth`, `presentation`) VALUES
 (1,	'admin@admin.com',	'[\"ROLE_ADMIN\"]',	'$2y$13$Ov7uQzlJShWEfQoKfKiM8uCh0jQHhHU/XkfQ7J/4xroi5VcAEF7wu',	'Mallet',	'Colette',	NULL,	NULL,	NULL,	NULL,	NULL),
 (2,	'moderator@moderator.com',	'[\"ROLE_MODERATOR\"]',	'$2y$13$/oyU5SMCpjo6Q1jXSV0D4OZT6i4kKyiIiRuf3jdxGDvr4d9P6bbwG',	'Renault',	'William',	NULL,	NULL,	NULL,	NULL,	NULL),
-(3,	'gilles@chevalier.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Petit',	'Gilles',	'Gillou',	'https://cdn.pixabay.com/photo/2016/12/07/21/01/cartoon-1890438_640.jpg',	'gillou',	'2011-12-13',	'Je suis un artiste contemporain français dont le travail se concentre sur l\'exploration de la relation entre l\'art et la vie. Je suis connu pour mes peintures et mes sculptures qui reflètent une esthétique minimaliste et conceptuelle, ainsi que pour mes installations immersives qui invitent le spectateur à interagir avec l\'œuvre'),
+(3,	'gilles@chevalier.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Petit',	'Gilles',	'Gillou',	'https://cdn.pixabay.com/photo/2016/12/07/21/01/cartoon-1890438_640.jpg',	'gillou',	NULL,	'Je suis un artiste contemporain français dont le travail se concentre sur l\'exploration de la relation entre l\'art et la vie. Je suis connu pour mes peintures et mes sculptures qui reflètent une esthétique minimaliste et conceptuelle, ainsi que pour mes installations immersives qui invitent le spectateur à interagir avec l\'œuvre'),
 (4,	'paul.david@blot.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'David',	'Paul',	'paulDav',	'https://cdn.pixabay.com/photo/2017/03/17/22/23/comedian-2152801_640.jpg',	'pauldav',	'1994-11-13',	'Je suis un artiste contemporain qui travaille principalement avec des techniques mixtes pour créer des œuvres d\'art originales et dynamiques. Né en France, j\'ai grandi dans une famille d\'artistes et ai commencé à m\'intéresser à l\'art dès mon plus jeune âge.'),
 (5,	'diane12@bousquet.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Maury',	'Diane',	'maury-diane',	'https://cdn.pixabay.com/photo/2022/12/28/01/47/book-cover-7682044_640.jpg',	'maury-diane',	'1973-08-13',	'Artiste passionnée par la peinture et la sculpture. Je suis née dans une famille d\'artistes et a été encouragée dès mon plus jeune âge à développer mes talents artistiques.\r\nJe me suis spécialisée dans l\'utilisation de la couleur et de la lumière pour créer des œuvres d\'art qui célèbrent la beauté de la nature et de la vie. Mes peintures sont souvent abstraites et géométriques, avec des motifs de couleurs vives qui se chevauchent et se fondent pour créer une sensation de mouvement et d\'harmonie.'),
 (6,	'martinez.alexandrie@live.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Martinez',	'Alexandrie',	'martal',	'https://cdn.pixabay.com/photo/2016/08/31/02/10/girl-1632515_640.jpg',	'martal',	'1970-09-16',	'Je suis une artiste contemporaine talentueuse et polyvalente, originaire de France. Je suis connue pour mon style unique et expressif, ainsi que pour ma capacité à utiliser une variété de médiums pour créer des œuvres d\'art qui capturent l\'imagination. Née dans une famille d\'artistes, j\'ai commencé à dessiner dès mon plus jeune âge et ai rapidement découvert ma passion pour l\'art.'),
 (7,	'girard.louis@orange.fr',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Girard',	'Louis',	'gerard86',	'https://cdn.pixabay.com/photo/2022/08/02/01/33/man-7359262_640.jpg',	'gerard86',	'1991-02-12',	'Gérard est un artiste libre, indépendant et non-conformiste, qui vit et travaille en France. Il est connu pour son style unique et son approche non-conventionnelle de l\'art.\r\n\r\nJ\'ai commencé à expérimenter avec l\'art dès mon plus jeune âge, et ma passion pour la création m\'a conduit à explorer une variété de médiums, tels que la peinture, la sculpture et la photographie. Au fil du temps, j\'ai développé mon propre style distinctif, qui se caractérise par des couleurs vives, des formes abstraites et des textures riches.Mon art est souvent inspiré par la nature, les émotions humaines et la condition humaine en général.'),
-(8,	'laurent@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Lemaitre',	'Sébastien',	NULL,	'https://picsum.photos/id/26/50/50',	'sebastien-lemaitre',	NULL,	'je suis laurent, coucou c\'est moi laurent j\'adore la psicine et la plage. Mon plat préféré c\'est les grenouilles miaaaaaaaaaammmmmmmm'),
-(9,	'rossi.maurice@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Rossi',	'Maurice',	'morossi',	'https://cdn.pixabay.com/photo/2021/01/21/16/44/model-5937809_640.jpg',	'morossi',	'1956-04-21',	'Je suis un artiste dévoué et passionné qui travaille dans une variété de médiums, notamment la peinture, la sculpture et la photographie. Originaire de France, j\'ai commencé à m\'intéresser à l\'art dès mon plus jeune âge et ai rapidement découvert ma passion pour la création. Au fil du temps, j\'ai développé mon propre style distinctif qui se caractérise par une palette de couleurs riches et vibrantes et une esthétique élégante et sophistiquée. J\'utilise souvent des formes géométriques et des motifs abstraits pour créer des œuvres d\'art qui sont à la fois intrigantes et captivantes.'),
-(10,	'blabla@bla.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$wgIXJEJaoG45YiqVDgRKSe3A7LW1JYEflRNrspLitIq.oE0GhytjK',	'blabla',	'blabla',	'',	'',	'',	'0001-01-01',	''),
-(11,	'azer@azer.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$DR/Y9hejJi7rXEmhhX41POTJ5bmLqGrEk2.JvV5aF3D6NnC.S156e',	'azer',	'azer',	'',	'',	'',	NULL,	''),
-(12,	'azerty@aze.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$i43wigcHEalKeOppuHsHReuk073lauZvuRviueqDLS0i.H0g74I2K',	'azerty',	'azerty',	'',	'',	'',	NULL,	'');
+(8,	'seb@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Lemaitre',	'Sébastien',	NULL,	'https://picsum.photos/id/26/50/50',	'sebastien-lemaitre',	NULL,	'je suis laurent, coucou c\'est moi laurent j\'adore la psicine et la plage. Mon plat préféré c\'est les grenouilles miaaaaaaaaaammmmmmmm'),
+(9,	'rossi.maurice@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Rossi',	'Maurice',	'morossi',	'https://cdn.pixabay.com/photo/2021/01/21/16/44/model-5937809_640.jpg',	'morossi',	'1956-04-21',	'Je suis un artiste dévoué et passionné qui travaille dans une variété de médiums, notamment la peinture, la sculpture et la photographie. Originaire de France, j\'ai commencé à m\'intéresser à l\'art dès mon plus jeune âge et ai rapidement découvert ma passion pour la création. Au fil du temps, j\'ai développé mon propre style distinctif qui se caractérise par une palette de couleurs riches et vibrantes et une esthétique élégante et sophistiquée. J\'utilise souvent des formes géométriques et des motifs abstraits pour créer des œuvres d\'art qui sont à la fois intrigantes et captivantes.');
 
--- 2023-04-21 14:04:09
-
+-- 2023-04-25 09:36:12
