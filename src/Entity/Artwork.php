@@ -57,7 +57,7 @@ class Artwork
     /**
      * @ORM\ManyToOne(targetEntity=Exhibition::class, inversedBy="artwork")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_artwork"})
+     * @Groups({"get_artwork", "get_artwork_by_exhibition"})
      * @Assert\NotBlank
      */
     private $exhibition;
