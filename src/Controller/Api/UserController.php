@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\MySlugger;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,7 +89,7 @@ class UserController extends AbstractController
      * @param Request $request
      * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
      */
-    public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger): Response
+    public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger, UserRepository $userRepository): Response
     {
 
         //Fetch the json content
@@ -104,6 +105,13 @@ class UserController extends AbstractController
 
             return $this->json(
                 ['error' => 'JSON INVALIDE'],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        if ($userRepository->findOneByEmail($user->getEmail()) !== null) {
+            return $this->json(
+                ['erreur' => 'L\'email est déjà existant'],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }

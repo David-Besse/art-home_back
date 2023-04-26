@@ -20,20 +20,20 @@ class Exhibition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_exhibition_artwork_artist_by_id"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork","get_exhibition_artwork_artist_by_id"})
      * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id"})
      */
     private $slug;
 

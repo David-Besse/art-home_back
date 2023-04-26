@@ -44,7 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
-     * @Assert\Regex("/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/")
+     * @Assert\Regex(
+     * pattern= "/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/",
+     * message= "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, un chiffre et un caractère spécial.")
      * @Groups({"get_user"})
      */
     private $password;
@@ -54,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      * @Assert\NotBlank
      * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id"})
      */
     private $lastname;
 
@@ -62,25 +64,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user_data", "get_user"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user_data", "get_user","get_exhibition_artwork_artist_by_id"})
      */
     private $nickname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id"})
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id"})
      */
     private $slug;
 
@@ -96,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=800, nullable=true)
-     * @Groups({"get_user", "get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_user", "get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id"})
      */
     private $presentation;
 
