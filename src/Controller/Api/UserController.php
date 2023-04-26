@@ -3,9 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Entity\Exhibition;
 use App\Service\MySlugger;
-use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,14 +46,7 @@ class UserController extends AbstractController
         $email = $user->getEmail();
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
-
-        if ($user->getDateOfBirth() !== null) {
-            // modifying date format 
-            $dateOfBirth = date_format($user->getDateOfBirth(), 'Y-m-d');
-        } else {
-            $dateOfBirth = $user->getDateOfBirth();
-        }
-
+        $dateOfBirth = $user->getDateOfBirth();
 
         $exhibitionFetched = $user->getExhibition();
         $exhibitions = [];
@@ -118,7 +109,6 @@ class UserController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
-
         $errors = $validator->validate($user);
 
         //Checking if there is any error
@@ -169,7 +159,7 @@ class UserController extends AbstractController
     /**
      * Edit profile
      *
-     * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PUT"})
+     * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
     public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
     {
@@ -183,7 +173,7 @@ class UserController extends AbstractController
 
         try {
             // Convert Json in doctrine entity
-            $userNewInfos = $serializer->deserialize($jsonContent, User::class, 'json');
+            $userNewInfos = $serializer->deserialize($jsonContent, User::class, 'json', ['object_to_populate' => $user]);
         } catch (NotEncodableValueException $e) {
             // if json getted isn't right, make an alert for client
             return $this->json(
@@ -192,7 +182,6 @@ class UserController extends AbstractController
             );
         }
 
-        
         //Validate entity
         $errors = $validator->validate($userNewInfos);
 
@@ -208,31 +197,21 @@ class UserController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
-        // setting new data
-        $user->setNickname($userNewInfos->getNickname());
-        $user->setLastname($userNewInfos->getLastname());
-        $user->setFirstname($userNewInfos->getFirstname());
-        $user->setEmail($userNewInfos->getEmail());
-        $user->setPresentation($userNewInfos->getPresentation());
-        $user->setDateOfBirth($userNewInfos->getDateOfBirth());
-        $user->setAvatar($userNewInfos->getAvatar());
-        
+
         //if nickname is not null
         // then slugify nickname
         if ($userNewInfos->getNickname() !== null) {
-            
+
             $slug = $slugger->slugify($userNewInfos->getNickname());
             $user->setSlug($slug);
-       } else {
+        } else {
 
-           //slugifying firstname and lastname
-           $fullname = $userNewInfos->getFirstname() . ' ' . $userNewInfos->getLastname();
-           $slug = $slugger->slugify($fullname);
-           $user->setSlug($slug);
-       }
-       
-        
+            //slugifying firstname and lastname
+            $fullname = $userNewInfos->getFirstname() . ' ' . $userNewInfos->getLastname();
+            $slug = $slugger->slugify($fullname);
+            $user->setSlug($slug);
+        }
+
         // Save entity
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);

@@ -27,6 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
+     * @Assert\Regex("/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-z]{2,4}$/")
      * @Groups({"get_user"})
      */
     private $email;
@@ -43,7 +44,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
-     *  @Groups({"get_user"})
+     * @Assert\Regex("/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/")
+     * @Groups({"get_user"})
      */
     private $password;
 
@@ -51,6 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      * @Assert\NotBlank
+     * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $lastname;
@@ -58,6 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      */
     private $firstname;
@@ -92,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=800, nullable=true)
-     * @Groups({"get_user", "get_exhibitions_collection"})
+     * @Groups({"get_user", "get_exhibitions_collection", "get_exhibition_by_id"})
      */
     private $presentation;
 

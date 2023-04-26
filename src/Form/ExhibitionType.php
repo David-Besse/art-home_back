@@ -20,7 +20,7 @@ class ExhibitionType extends AbstractType
         $builder
             ->add('title', TextType::class,
             [
-                'label' => 'Titre de l\'exposition',
+                'label' => 'Titre de l\'exposition *',
                 'help' => 'Le titre ne doit pas dépasser 255 caractères',
                 'empty_data' => ''
             ]
@@ -31,7 +31,7 @@ class ExhibitionType extends AbstractType
             ])
             ->add('artist', EntityType::class,
             [
-                'label' => 'Artiste',
+                'label' => 'Artiste *',
                 'class' => User::class,
                 'query_builder' => function(EntityRepository $er)
                 {
@@ -43,7 +43,7 @@ class ExhibitionType extends AbstractType
                 {
                     return $user->getFirstname().' '.$user->getLastname();
                 },
-                'placeholder' => 'Choisissez un artiste', 
+                'placeholder' => 'Choisissez un artiste ', 
                 'attr' => [
                     'class'=> 'form-select'
                 ]               

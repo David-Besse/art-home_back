@@ -17,7 +17,11 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ artwork.description }}</td>
+                {% if artwork.description is same as (null)%}
+                <td>-</td>
+                {% else %}
+                <td>{{ artwork.description }}</td>    
+                {% endif %}
             </tr>
             <tr>
                 <th>Image</th>

@@ -19,7 +19,7 @@ class ArtworkType extends AbstractType
         $builder
             ->add('title', TextType::class,
             [
-                'label' => 'Titre de l\'oeuvre',
+                'label' => 'Titre de l\'oeuvre *',
                 'empty_data' => '',
                 'help' => 'Le titre ne doit pas dépasser 255 caractères'
                
@@ -30,7 +30,7 @@ class ArtworkType extends AbstractType
             ])
             ->add('picture', UrlType::class,
             [
-                'label' => 'Lien de l\'oeuvre',
+                'label' => 'Lien de l\'oeuvre *',
                 'attr' => [
                     'placeholder' => 'par ex: https://...'
 
@@ -42,7 +42,7 @@ class ArtworkType extends AbstractType
             // ->add('status')
             ->add('exhibition', EntityType::class,
             [
-                'label' => 'A quelle exposition voulez-vous lier cette oeuvre ?',
+                'label' => 'A quelle exposition voulez-vous lier cette oeuvre ? *',
                 'class' => Exhibition::class,
                 'choice_label' => 'title',
                 'placeholder' => 'Veuillez sélectionner une exposition'

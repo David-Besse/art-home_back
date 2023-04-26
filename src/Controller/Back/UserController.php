@@ -4,12 +4,13 @@ namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\UserRepository;
 use App\Service\MySlugger;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @Route("/user")
@@ -33,7 +34,7 @@ class UserController extends AbstractController
      * 
      * @Route("/new", name="app_user_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, UserRepository $userRepository, MySlugger $slugger): Response
+    public function new(Request $request, UserRepository $userRepository, MySlugger $slugger, UserPasswordHasherInterface $passwordHasher): Response
     {
         // create new entity and new form
         $user = new User();
@@ -54,6 +55,8 @@ class UserController extends AbstractController
                 $slug = $slugger->slugify($fullname);
                 $user->setSlug($slug);
             }
+            //hashing the password
+            $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
             $userRepository->add($user, true);
 
             // flash messages
@@ -92,7 +95,7 @@ class UserController extends AbstractController
      * 
      * @Route("/{id}/edit", name="app_user_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, User $user = null, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user = null, UserRepository $userRepository, MySlugger $slugger): Response
     {
         //404?
         if ($user === null) {
@@ -105,6 +108,19 @@ class UserController extends AbstractController
 
         // if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //slugify nickname or firstname/lastname
+            if ($user->getNickname() !== Null) {
+
+                $slug = $slugger->slugify($user->getNickname());
+                $user->setSlug($slug);
+            } else {
+
+                $fullname = $user->getFirstname() . ' ' . $user->getLastname();
+                $slug = $slugger->slugify($fullname);
+                $user->setSlug($slug);
+            }
+
             $userRepository->add($user, true);
 
             //flash messages

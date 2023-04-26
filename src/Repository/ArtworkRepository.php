@@ -40,18 +40,18 @@ class ArtworkRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * Get artworks by Exhibibitions
-     */
-    public function findArtworksByExhibitionForProfilePageQB(Exhibition $exhibition)
-    {
-        return $this->createQueryBuilder('a')
-        ->where('a.exhibition = :exhibition')
-        ->groupBy('a.id')
-        ->setParameter('exhibition', $exhibition)
-        ->getQuery()
-        ->getResult();
-    }
+    // /**
+    //  * Get artworks by Exhibibitions
+    //  */
+    // public function findArtworksByExhibitionForProfilePageQB(Exhibition $exhibition)
+    // {
+    //     return $this->createQueryBuilder('a')
+    //     ->where('a.exhibition = :exhibition')
+    //     ->groupBy('a.id')
+    //     ->setParameter('exhibition', $exhibition)
+    //     ->getQuery()
+    //     ->getResult();
+    // }
 //    /**
 //     * @return Artwork[] Returns an array of Artwork objects
 //     */
