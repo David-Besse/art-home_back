@@ -59,22 +59,6 @@ class ExhibitionRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
     }
-
-
-
-
-    // /**
-    //  * Get active exhibition by artist
-    //  */
-    // public function findActiveExhibitionByArtistQB(User $artist): array
-    // {
-    // return $this->createQueryBuilder('e')
-    //     ->where('e.artist = :artist', 'e.status = 1')
-    //     ->setParameter('artist', $artist)
-    //     ->getQuery()
-    //     ->getResult();
-    // }
-
     
 
     /**

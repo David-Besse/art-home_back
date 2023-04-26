@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 /**
  * @ORM\Entity(repositoryClass=ArtworkRepository::class)
  */
@@ -23,27 +24,27 @@ class Artwork
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
 
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id"})
      */
     private $slug;
 
