@@ -10,19 +10,4 @@ framework:
 when@test:
     framework:
         validation:
-            not_compromised_password: false
-
-App\Entity\User:
-    properties:
-        email:
-            - Regex:
-                pattern: '/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/'
-        password:
-            - Regex:
-                pattern: '/^(?=.[A-Z])(?=.\d)(?=.[!@#$%^&()+])[A-Za-z\d!@#$%^&*()_+]{8,}$/'
-        firstName:
-            - Regex:
-                pattern: '/^[a-zA-Z][a-zA-Z '-]*$/'
-        lastname:
-            - Regex:
-                pattern: '/^[a-zA-Z][a-zA-Z '-]*$/'         
+            not_compromised_password: false        
