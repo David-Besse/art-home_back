@@ -4,9 +4,11 @@
 
 {% block sub_body %}
     <h1 class="text-center">Ajouter une oeuvre</h1>
-    <span class = "text-danger">"Les champs suivis d'un * sont obligatoires"</span>
+    <div class="form">
+        <span class="text-danger d-flex justify-content-start mb-5">* champs obligatoires</span>
+        {{ include('artwork/_form.html.twig') }}
+    </div>
 
-    {{ include('artwork/_form.html.twig') }}
 <div class="text-center">
 
     <a href="{{ path('app_artwork_index') }}" class="btn btn-outline-primary">Retour à la liste des oeuvres</a>
