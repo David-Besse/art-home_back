@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Exhibition;
 use App\Entity\User;
+use App\Repository\ArtworkRepository;
 use App\Repository\ExhibitionRepository;
 use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,7 +36,7 @@ class ExhibitionController extends AbstractController
      * Get one exhibition and related artworks and related artist
      * @Route("/api/exhibitions/{id<\d+>}", name="api_exhibition_by_id", methods={"GET"})
      */
-    public function getExhibitionById(Exhibition $exhibition = null): Response
+    public function getExhibitionById(Exhibition $exhibition = null, int $id, ArtworkRepository $artworkRepository): Response
     {
 
         // 404 ?
@@ -43,8 +44,18 @@ class ExhibitionController extends AbstractController
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
         
+        $artist = $exhibition->getArtist();
+
+        $artworks = $artworkRepository->findBy(['status' => 1, 'exhibition' => $exhibition]);
+
+        $data[] = [
+            'exhibition' => $exhibition,
+            'artwork' => $artworks,
+            'artist' => $artist
+        ];
+
         // return status 200
-        return $this->json($exhibition, Response::HTTP_OK, [], ['groups' => 'get_exhibition_by_id']);
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'get_exhibition_artwork_artist_by_id']);
     }
 
     /**
