@@ -7,16 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserControllerTest extends WebTestCase
 {
-    // public function testSomething(): void
-    // {
-    //     $client = static::createClient();
-    //     $crawler = $client->request('GET', '/');
 
-    //     $this->assertResponseIsSuccessful();
-    //     $this->assertSelectorTextContains('h1', 'Hello World');
-    // }
-
-        public function testGetInformationForProfile(): void
+    public function testGetInformationForProfile(): void
     {
 
         $client = static::createClient();
