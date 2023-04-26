@@ -44,8 +44,8 @@ class ExhibitionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             //slugify the title
-            $slug = $slugger->slugify($exhibition->getTitle());
-            $exhibition->setSlug($slug);
+            // $slug = $slugger->slugify($exhibition->getTitle());
+            // $exhibition->setSlug($slug);
             $exhibitionRepository->add($exhibition, true);
 
             // flash messages
@@ -100,8 +100,8 @@ class ExhibitionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             //sluggify the title
-            $slug = $slugger->slugify($exhibition->getTitle());
-            $exhibition->setSlug($slug);
+            // $slug = $slugger->slugify($exhibition->getTitle());
+            // $exhibition->setSlug($slug);
             
             $exhibitionRepository->add($exhibition, true);
 
