@@ -109,7 +109,6 @@ class UserController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
-
         $errors = $validator->validate($user);
 
         //Checking if there is any error
