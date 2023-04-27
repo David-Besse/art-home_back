@@ -3,42 +3,44 @@
 {% block title %}Liste des oeuvres{% endblock %}
 
 {% block sub_body %}
-    <h1 class="text-center">Liste des oeuvres validés</h1>
-    {{ include('_flash_messages.html.twig')}}
-    <div class="text-center d-flex justify-content-around">
-        <a href="{{ path('app_artwork_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une oeuvre</a>
-    </div>
-    <table class="table table-striped">
-        <thead>
-            <tr class="text-center">
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+<h1 class="text-center">Liste des oeuvres validés</h1>
+{{ include('_flash_messages.html.twig')}}
+<div class="text-center d-flex justify-content-around">
+    <a href="{{ path('app_artwork_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une oeuvre</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr class="text-center">
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
         {% for artwork in artworks %}
-            <tr class="text-center">
-                <td>{{ artwork.id }}</td>
-                <td>{{ artwork.title }}</td>
-                {% if artwork.description is same as (null)%}
-                <td>-</td>
-                {% else %}
-                <td style="text-align: justify; width: 40rem;">{{ artwork.description }}</td>    
-                {% endif %}
-                <td style="text-align: end;"><img src="{{ artwork.picture }}" height="100px"></td>
-                <td>
-                    <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-outline-primary btn-sm">En savoir plus</a>
-                    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}" class="btn btn-outline-warning btn-sm">Modifier</a>
-                </td>
-            </tr>
+        <tr class="text-center">
+            <td>{{ artwork.id }}</td>
+            <td>{{ artwork.title }}</td>
+            {% if artwork.description is same as (null)%}
+            <td>-</td>
+            {% else %}
+            <td style="text-align: justify; width: 40rem;">{{ artwork.description }}</td>
+            {% endif %}
+            <td style="text-align: end;"><img src="{{ artwork.picture }}" height="100px"></td>
+            <td>
+                <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-outline-primary btn-sm">En
+                    savoir plus</a>
+                <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}"
+                    class="btn btn-outline-warning btn-sm">Modifier</a>
+            </td>
+        </tr>
         {% else %}
-            <tr>
-                <td colspan="7">Aucune oeuvre pour le moment</td>
-            </tr>
+        <tr>
+            <td colspan="7">Aucune oeuvre pour le moment</td>
+        </tr>
         {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
 {% endblock %}

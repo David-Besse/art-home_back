@@ -3,12 +3,12 @@
 {% block title %}Modifier une exposition{% endblock %}
 
 {% block sub_body %}
-    <h1 class="text-center">Modifier une exposition</h1>
-    <div class="form">
-        <span class="text-danger d-flex justify-content-start mb-5">* champs obligatoires</span>
-        {{ include('exhibition/_form.html.twig', {'button_label': 'Modifier'}) }}
-    </div>
-    <div class="d-flex justify-content-around">
+<h1 class="text-center">Modifier une exposition</h1>
+<div class="form">
+    <span class="text-danger d-flex justify-content-start mb-5">* champs obligatoires</span>
+    {{ include('exhibition/_form.html.twig', {'button_label': 'Modifier'}) }}
+</div>
+<div class="d-flex justify-content-around">
 
     <a href="{{ path('app_exhibition_index') }}" class="btn btn-outline-primary">Retour à la liste des expositions</a>
 

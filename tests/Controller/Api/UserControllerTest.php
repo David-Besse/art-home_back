@@ -8,35 +8,42 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class UserControllerTest extends WebTestCase
 {
 
+    /**
+     * Test for fetching informations for profile page
+     *
+     */
     public function testGetInformationForProfile(): void
     {
 
+        //creating a user
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
         // retrieve the test user
         $testUser = $userRepository->findOneByEmail('gilles.margaret@chevalier.com');
         // simulate $testUser being logged in
         $client->loginUser($testUser);
+        //route to test
         $crawler = $client->request('GET', '/api/secure/users/profile');
 
         $this->assertResponseIsSuccessful();
-        
     }
 
-     /**
-     * Test route for create an user
-     
+    /**
+     * Test route for create an user   
      */
     public function testCreateUser(): void
     {
+        //create a user
         $client = static::createClient();
 
+        //create data for user
         $email = 'jjon@gmail.com';
         $password = 'jean';
         $lastname = 'louis';
         $firstname = 'jean';
         $roles = ['ROLE_ARTIST'];
 
+        //putting data in array
         $data = [
             'email' => $email,
             'password' => $password,
@@ -44,11 +51,11 @@ class UserControllerTest extends WebTestCase
             'firstname' => $firstname,
             'roles' => $roles
         ];
-        
-        $crawler = $client->request('POST', '/api/users/new',[],[],[], json_encode($data));
 
+        //route to test with data
+        $crawler = $client->request('POST', '/api/users/new', [], [], [], json_encode($data));
+
+        //status 201 if created
         $this->assertResponseStatusCodeSame(201);
-        
     }
-
 }
