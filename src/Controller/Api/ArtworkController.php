@@ -64,7 +64,7 @@ class ArtworkController extends AbstractController
      *
      * @Route("/api/secure/artworks/new", name="app_api_artwork_new", methods={"POST"})
      */
-    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, MySlugger $slugger): Response
+    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator): Response
     {
         //Fetch the json content
         $jsonContent = $request->getContent();
@@ -101,10 +101,6 @@ class ArtworkController extends AbstractController
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        //slugify
-        $slug = $slugger->slugify($artwork->getTitle());
-        $artwork->setSlug($slug);
-
         // fetching exhibition
         $exhibitionToDisplay = $artwork->getExhibition();
 
@@ -129,7 +125,7 @@ class ArtworkController extends AbstractController
      * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PATCH"})
      */
 
-    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null, MySlugger $slugger): Response
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
     {
 
         // 404 ?
@@ -174,10 +170,6 @@ class ArtworkController extends AbstractController
 
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
-
-        //slugify
-        $slug = $slugger->slugify($artworkModified->getTitle());
-        $artworkModified->setSlug($slug);
 
         // sending new data in DB
         $entityManager->persist($artworkModified);

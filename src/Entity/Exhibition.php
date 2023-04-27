@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ExhibitionRepository::class)
+ * 
  */
 class Exhibition
 {

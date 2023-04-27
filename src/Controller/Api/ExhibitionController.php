@@ -62,7 +62,7 @@ class ExhibitionController extends AbstractController
      * Create exhibition item
      * @Route("/api/secure/exhibitions/new", name="api_exhibition_new", methods={"POST"})
      */
-    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, MySlugger $slugger, ExhibitionRepository $exhibitionRepository)
+    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, ExhibitionRepository $exhibitionRepository)
     {
 
         /** @var \App\Entity\User $user */
@@ -100,10 +100,6 @@ class ExhibitionController extends AbstractController
 
         //setting the artist thanks to logged user
         $exhibition->setArtist($user);
-        
-        //slugify
-        $slug = $slugger->slugify($exhibition->getTitle());
-        $exhibition->setSlug($slug);
 
         //setting date
         $exhibition->setStartDate(new \DateTime());
@@ -126,7 +122,7 @@ class ExhibitionController extends AbstractController
      * Edit exhibition item
      * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PATCH"})
      */
-    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, MySlugger $slugger)
+    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator)
     {
         // 404 ?
         if ($exhibitionToEdit === null) {
@@ -163,9 +159,6 @@ class ExhibitionController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        //slugify
-        $slug = $slugger->slugify($exhibitionModified->getTitle());
-        $exhibitionModified->setSlug($slug);
         
         // Save entity
         $entityManager = $doctrine->getManager();

@@ -46,7 +46,7 @@ class ArtworkController extends AbstractController
      * 
      * @Route("/new", name="app_artwork_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ArtworkRepository $artworkRepository, MySlugger $slugger): Response
+    public function new(Request $request, ArtworkRepository $artworkRepository): Response
     {
         // create a new artwork entity and form
         $artwork = new Artwork();
@@ -55,10 +55,6 @@ class ArtworkController extends AbstractController
 
         // if form is submitted
         if ($form->isSubmitted() && $form->isValid()) {
-
-            //sluggify the title
-            $slug = $slugger->slugify($artwork->getTitle());
-            $artwork->setSlug($slug);
 
             $artworkRepository->add($artwork, true);
 
@@ -97,7 +93,7 @@ class ArtworkController extends AbstractController
      * 
      * @Route("/{id}/edit", name="app_artwork_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository, MySlugger $slugger): Response
+    public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
     {
         //404?
         if ($artwork === null) {
@@ -110,10 +106,6 @@ class ArtworkController extends AbstractController
 
         //if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
-
-            //sluggify the title
-            $slug = $slugger->slugify($artwork->getTitle());
-            $artwork->setSlug($slug);
 
             $artworkRepository->add($artwork, true);
             

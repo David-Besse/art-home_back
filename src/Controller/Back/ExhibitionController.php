@@ -33,7 +33,7 @@ class ExhibitionController extends AbstractController
      * 
      * @Route("/new", name="app_exhibition_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ExhibitionRepository $exhibitionRepository, MySlugger $slugger): Response
+    public function new(Request $request, ExhibitionRepository $exhibitionRepository): Response
     {
         // create exhibition entity and create new form
         $exhibition = new Exhibition();
@@ -43,9 +43,6 @@ class ExhibitionController extends AbstractController
         //if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //slugify the title
-            $slug = $slugger->slugify($exhibition->getTitle());
-            $exhibition->setSlug($slug);
             $exhibitionRepository->add($exhibition, true);
 
             // flash messages
@@ -84,7 +81,7 @@ class ExhibitionController extends AbstractController
      * 
      * @Route("/{id}/edit", name="app_exhibition_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Exhibition $exhibition = null, ExhibitionRepository $exhibitionRepository, MySlugger $slugger): Response
+    public function edit(Request $request, Exhibition $exhibition = null, ExhibitionRepository $exhibitionRepository): Response
     {
 
         //404?
@@ -98,10 +95,6 @@ class ExhibitionController extends AbstractController
 
         //if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
-
-            //sluggify the title
-            $slug = $slugger->slugify($exhibition->getTitle());
-            $exhibition->setSlug($slug);
             
             $exhibitionRepository->add($exhibition, true);
 
