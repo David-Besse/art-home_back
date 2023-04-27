@@ -24,6 +24,7 @@ class ArtworkController extends AbstractController
      */
     public function index(ArtworkRepository $artworkRepository): Response
     {
+
         return $this->render('artwork/index.html.twig', [
             'artworks' => $artworkRepository->findBy(['status' => true], ['id' => 'DESC']),
         ]);

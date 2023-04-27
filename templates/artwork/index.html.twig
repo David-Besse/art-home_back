@@ -7,29 +7,28 @@
     {{ include('_flash_messages.html.twig')}}
     <div class="text-center d-flex justify-content-around">
         <a href="{{ path('app_artwork_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une oeuvre</a>
-        <a href="{{ path('app_validation_waiting')}}" class="btn btn-outline-warning mb-4 mt-4" >Oeuvres en attente de validation</a>
     </div>
     <table class="table table-striped">
         <thead>
             <tr class="text-center">
                 <th>Id</th>
                 <th>Titre</th>
-                <th style="width:900px">Description</th>
+                <th>Description</th>
                 <th>Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for artwork in artworks %}
-            <tr class=" text-center">
+            <tr class="text-center">
                 <td>{{ artwork.id }}</td>
                 <td>{{ artwork.title }}</td>
                 {% if artwork.description is same as (null)%}
                 <td>-</td>
                 {% else %}
-                <td>{{ artwork.description }}</td>    
+                <td style="text-align: justify; width: 40rem;">{{ artwork.description }}</td>    
                 {% endif %}
-                <td><img src="{{ artwork.picture }}" height="100px"></td>
+                <td style="text-align: end;"><img src="{{ artwork.picture }}" height="100px"></td>
                 <td>
                     <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-outline-primary btn-sm">En savoir plus</a>
                     <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}" class="btn btn-outline-warning btn-sm">Modifier</a>
