@@ -17,15 +17,10 @@ class MySlugger
 
     public function slugify(string $str)
     {
-        if ($this->toLower)
-        {
-            return $this->slugger->slug($str)->lower();            
+        if ($this->toLower) {
+            return $this->slugger->slug($str)->lower();
         }
 
         return $this->slugger->slug($str);
-
-        
-        
-
     }
 }

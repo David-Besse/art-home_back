@@ -3,41 +3,41 @@
 {% block title %}Exposition{% endblock %}
 
 {% block sub_body %}
-    <h1 class="text-center">Exposition : {{ exhibition.title}}</h1>
+<h1 class="text-center">Exposition : {{ exhibition.title}}</h1>
 
-    <table class="table table-striped">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ exhibition.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ exhibition.title }}</td>
-            </tr>
-            <tr>
-                <th>Début de l'exposition</th>
-                <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>FIn de l'exposition</th>
-                <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Statut</th>
-                <td>{{ exhibition.status ? 'En cours' : 'Archivée' }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                {% if exhibition.description is same as (null) %}
-                <td>-</td>
-                {% else %}
-                <td>{{ exhibition.description }}</td>         
-                {% endif %}
-                
-            </tr>
-        </tbody>
-    </table>
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ exhibition.id }}</td>
+        </tr>
+        <tr>
+            <th>Titre</th>
+            <td>{{ exhibition.title }}</td>
+        </tr>
+        <tr>
+            <th>Début de l'exposition</th>
+            <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>FIn de l'exposition</th>
+            <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Statut</th>
+            <td>{{ exhibition.status ? 'En cours' : 'Archivée' }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            {% if exhibition.description is same as (null) %}
+            <td>-</td>
+            {% else %}
+            <td>{{ exhibition.description }}</td>
+            {% endif %}
+
+        </tr>
+    </tbody>
+</table>
 <div class="d-flex justify-content-around">
 
     <a href="{{ path('app_exhibition_index') }}" class="btn btn-outline-primary">Retour à la liste des expositions</a>

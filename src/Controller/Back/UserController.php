@@ -76,7 +76,7 @@ class UserController extends AbstractController
     /**
      * Display an entity
      * 
-     * @Route("/{id}", name="app_user_show", methods={"GET"})
+     * @Route("/{id}", name="app_user_show", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function show(User $user = null): Response
     {
@@ -93,7 +93,7 @@ class UserController extends AbstractController
     /**
      * Display edit form and process edit form
      * 
-     * @Route("/{id}/edit", name="app_user_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="app_user_edit", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, User $user = null, UserRepository $userRepository, MySlugger $slugger): Response
     {
@@ -140,7 +140,7 @@ class UserController extends AbstractController
     /**
      * Delete item
      * 
-     * @Route("/{id}", name="app_user_delete", methods={"POST"})
+     * @Route("/{id}", name="app_user_delete", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function delete(Request $request, User $user = null, UserRepository $userRepository): Response
     {

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Back;
 
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -14,6 +15,7 @@ class MainController extends AbstractController
      */
     public function home()
     {
+
         return $this->render('main.html.twig');
     }
 }

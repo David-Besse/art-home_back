@@ -21,7 +21,7 @@ class ExhibitionController extends AbstractController
 {
     /**
      * Get all exhibitions 
-     *@Route("/api/exhibitions", name="api_exhibitions_get", methods={"GET"})
+     *@Route("/api/exhibitions", name="app_api_exhibitions_get", methods={"GET"})
      */
     public function getExhibitions(ExhibitionRepository $exhibitionRepository): Response
     {
@@ -34,20 +34,23 @@ class ExhibitionController extends AbstractController
 
     /**
      * Get one exhibition and related artworks and related artist
-     * @Route("/api/exhibitions/{id<\d+>}", name="api_exhibition_by_id", methods={"GET"})
+     * @Route("/api/exhibitions/{id<\d+>}", name="app_api_exhibition_by_id", methods={"GET"})
      */
-    public function getExhibitionById(Exhibition $exhibition = null, int $id, ArtworkRepository $artworkRepository): Response
+    public function getExhibitionById(Exhibition $exhibition = null, ArtworkRepository $artworkRepository): Response
     {
 
         // 404 ?
         if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-        
+
+        //ftech the artist
         $artist = $exhibition->getArtist();
 
+        //fetch artworks with status true
         $artworks = $artworkRepository->findBy(['status' => 1, 'exhibition' => $exhibition]);
 
+        //put data in array
         $data[] = [
             'exhibition' => $exhibition,
             'artwork' => $artworks,
@@ -60,9 +63,9 @@ class ExhibitionController extends AbstractController
 
     /**
      * Create exhibition item
-     * @Route("/api/secure/exhibitions/new", name="api_exhibition_new", methods={"POST"})
+     * @Route("/api/secure/exhibitions/new", name="app_api_exhibition_new", methods={"POST"})
      */
-    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, ExhibitionRepository $exhibitionRepository)
+    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
 
         /** @var \App\Entity\User $user */
@@ -101,9 +104,6 @@ class ExhibitionController extends AbstractController
         //setting the artist thanks to logged user
         $exhibition->setArtist($user);
 
-        //setting date
-        $exhibition->setStartDate(new \DateTime());
-        $exhibition->setEndDate(date_add(new \DateTime(),date_interval_create_from_date_string("122 days")));
         // Save entity
         $entityManager = $doctrine->getManager();
         $entityManager->persist($exhibition);
@@ -120,9 +120,9 @@ class ExhibitionController extends AbstractController
 
     /**
      * Edit exhibition item
-     * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="api_exhibition_edit", methods={"PATCH"})
+     * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="app_api_exhibition_edit", methods={"PATCH"})
      */
-    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator)
+    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
         // 404 ?
         if ($exhibitionToEdit === null) {
@@ -135,7 +135,7 @@ class ExhibitionController extends AbstractController
 
         try {
             // Convert Json in doctrine entity
-            $exhibitionModified = $serializer->deserialize($jsonContent, Exhibition::class, 'json',['object_to_populate' => $exhibitionToEdit]);
+            $exhibitionModified = $serializer->deserialize($jsonContent, Exhibition::class, 'json', ['object_to_populate' => $exhibitionToEdit]);
         } catch (NotEncodableValueException $e) {
             // if json getted isn't right, make an alert for client
             return $this->json(
@@ -159,7 +159,7 @@ class ExhibitionController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         // Save entity
         $entityManager = $doctrine->getManager();
         $entityManager->persist($exhibitionModified);
@@ -176,7 +176,7 @@ class ExhibitionController extends AbstractController
 
     /**
      * Delete an exhibition item
-     * @Route("/api/secure/exhibitions/{id<\d+>}/delete", name="api_exhibition_delete", methods={"DELETE"})
+     * @Route("/api/secure/exhibitions/{id<\d+>}/delete", name="app_api_exhibition_delete", methods={"DELETE"})
      */
     public function deleteExhibition(Exhibition $exhibitionToDelete = null, EntityManagerInterface $entityManager): Response
     {
@@ -199,7 +199,7 @@ class ExhibitionController extends AbstractController
 
     /**
      * Get exhibitions infos and principal picture for homepage
-     * @Route("api/exhibitions/homepage", name="api_exhibitions_homepage", methods={"GET"})
+     * @Route("api/exhibitions/homepage", name="app_api_exhibitions_homepage", methods={"GET"})
      */
     public function getExhibitionsForHomepage(ExhibitionRepository $exhibitionRepository): Response
     {
@@ -212,9 +212,9 @@ class ExhibitionController extends AbstractController
 
     /**
      * Get active exhibitions infos by artist to submit artwork form
-     * @Route("api/exhibitions/artist/{id<\d+>}/form", name="api_exhibitions_artist_form", methods={"GET"})
+     * @Route("api/exhibitions/artist/{id<\d+>}/form", name="app_api_exhibitions_artist_form", methods={"GET"})
      */
-    public function getActiveExhibitionsForArtworkForm(ExhibitionRepository $exhibitionRepository, User $artist = null)
+    public function getActiveExhibitionsForArtworkForm(ExhibitionRepository $exhibitionRepository, User $artist = null): Response
     {
         // 404 ?
         if ($artist === null) {

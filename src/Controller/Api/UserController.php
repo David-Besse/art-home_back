@@ -21,7 +21,7 @@ class UserController extends AbstractController
      * Get information artist and exhibitions for profile page
      * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})
      */
-    public function getInformationForProfile()
+    public function getInformationForProfile(): Response
     {
         // getting the logged user
         /** @var \App\Entity\User $user */
@@ -169,7 +169,7 @@ class UserController extends AbstractController
      *
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
-    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger)
+    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger): Response
     {
 
         // getting the logged user

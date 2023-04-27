@@ -3,16 +3,16 @@
 {% block title %}Ajouter un utilisateur{% endblock %}
 
 {% block sub_body %}
-   
-        <h1 class="text-center">Ajouter un utilisateur</h1>
-        <div class="form">
-            <span class="text-danger d-flex justify-content-start mb-5">* champs obligatoires</span>
-            {{ include('user/_form.html.twig') }}
-        </div>
 
-    <div class="text-center">
+<h1 class="text-center">Ajouter un utilisateur</h1>
+<div class="form">
+    <span class="text-danger d-flex justify-content-start mb-5">* champs obligatoires</span>
+    {{ include('user/_form.html.twig') }}
+</div>
 
-        <a href="{{ path('app_user_index') }}" class="btn btn-outline-primary">Retour à la liste des utilsateurs</a>
-    </div>
+<div class="text-center">
+
+    <a href="{{ path('app_user_index') }}" class="btn btn-outline-primary">Retour à la liste des utilsateurs</a>
+</div>
 
 {% endblock %}

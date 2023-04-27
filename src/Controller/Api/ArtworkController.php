@@ -109,7 +109,7 @@ class ArtworkController extends AbstractController
         $entityManager->persist($artwork);
         $entityManager->flush();
 
-  
+
         //Return response if created
         return $this->json(
             $exhibitionToDisplay->getArtwork(),
@@ -140,8 +140,7 @@ class ArtworkController extends AbstractController
         //if not, throw an error
         try {
             //Transforming json Content into entity 
-            $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json',['object_to_populate' => $artworkToEdit]);
-
+            $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json', ['object_to_populate' => $artworkToEdit]);
         } catch (NotEncodableValueException $e) {
 
             return $this->json(
@@ -189,7 +188,7 @@ class ArtworkController extends AbstractController
      *
      * @Route("api/secure/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
      */
-    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager, ArtworkRepository $artworkRepository): Response
+    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager): Response
     {
 
         //404?
@@ -197,13 +196,16 @@ class ArtworkController extends AbstractController
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
+        //fetch exhibiton depending on artwork
         $exhibition = $artwork->getExhibition();
         // remove entity artwork
         $entityManager->remove($artwork);
         $entityManager->flush();
 
+        //fetch artworks of the exhibition
         $newArtworksList = $exhibition->getArtwork();
 
+        //return response 
         return $this->json(
             $newArtworksList,
             Response::HTTP_NO_CONTENT,
@@ -216,16 +218,16 @@ class ArtworkController extends AbstractController
      * Get artworks by exhibition for profile page
      * @Route("api/secure/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository)
+    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository): Response
     {
         //404
         if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-        
+
         // fetching exhibitons for profile page
-        $artworksList = $artworkRepository->findBy(['exhibition' => $exhibition],['title'=>'asc']);
-        
+        $artworksList = $artworkRepository->findBy(['exhibition' => $exhibition], ['title' => 'asc']);
+
 
         // return status 200
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);
