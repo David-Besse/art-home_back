@@ -5,7 +5,6 @@ namespace App\Controller\Back;
 use App\Entity\Artwork;
 use App\Form\ArtworkType;
 use App\Repository\ArtworkRepository;
-use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +23,7 @@ class ArtworkController extends AbstractController
      */
     public function index(ArtworkRepository $artworkRepository): Response
     {
+
         return $this->render('artwork/index.html.twig', [
             'artworks' => $artworkRepository->findBy(['status' => true], ['id' => 'DESC']),
         ]);
@@ -75,7 +75,7 @@ class ArtworkController extends AbstractController
     /**
      * Display an artwork
      * 
-     * @Route("/{id}", name="app_artwork_show", methods={"GET"})
+     * @Route("/{id}", name="app_artwork_show", methods={"GET"},requirements={"id"="\d+"} )
      */
     public function show(Artwork $artwork = null): Response
     {
@@ -83,6 +83,7 @@ class ArtworkController extends AbstractController
         if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
+
         return $this->render('artwork/show.html.twig', [
             'artwork' => $artwork,
         ]);
@@ -91,7 +92,7 @@ class ArtworkController extends AbstractController
     /**
      * Display edit form and form process
      * 
-     * @Route("/{id}/edit", name="app_artwork_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="app_artwork_edit", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
     {
@@ -126,7 +127,7 @@ class ArtworkController extends AbstractController
     /**
      * Process delete form
      * 
-     * @Route("/{id}", name="app_artwork_delete", methods={"POST"})
+     * @Route("/{id}", name="app_artwork_delete", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function delete(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
     {
@@ -152,7 +153,7 @@ class ArtworkController extends AbstractController
     /**
      * Validate an artwork
      * 
-     * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"POST"})
+     * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function validate(EntityManagerInterface $entityManager, Artwork $artwork = null, Request $request): Response
     {
@@ -177,7 +178,6 @@ class ArtworkController extends AbstractController
             $this->addFlash('success', 'L\'oeuvre a été validée');
         }
 
-
         //redirection
         return $this->redirectToRoute('app_validation_waiting');
     }
@@ -185,7 +185,7 @@ class ArtworkController extends AbstractController
     /**
      * Decline an artwork
      *
-     * @Route ("/artworks/{id}/decline", name="app_artwork_decline", methods={"POST"})
+     * @Route ("/artworks/{id}/decline", name="app_artwork_decline", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function decline(Artwork $artwork = null, ArtworkRepository $artworkRepository, Request $request): Response
     {
@@ -201,13 +201,12 @@ class ArtworkController extends AbstractController
         //compare token validity
         //if token is valid
         if ($this->isCsrfTokenValid('delete-item', $submittedToken)) {
-            
+
             //removing artwork from DB
             $artworkRepository->remove($artwork, true);
             //flash messages
             $this->addFlash('danger', 'L\'oeuvre a été refusée');
         }
-
 
         //redirection
         return $this->redirectToRoute('app_validation_waiting');

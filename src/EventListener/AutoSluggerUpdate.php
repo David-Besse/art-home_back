@@ -7,6 +7,9 @@ use App\Entity\User;
 use App\Service\MySlugger;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
+/**
+ * Slugify the title of an entity when update
+ */
 class AutoSluggerUpdate
 {
 
@@ -21,15 +24,14 @@ class AutoSluggerUpdate
     {
         $entity = $event->getObject();
 
-        if ($entity instanceof User ) {
+        if ($entity instanceof User) {
             return;
         }
-        
+
         $entityManager = $event->getObjectManager();
 
         //slugify
         $slug = $this->slugger->slugify($entity->getTitle());
         $entity->setSlug($slug->toString());
-
     }
 }

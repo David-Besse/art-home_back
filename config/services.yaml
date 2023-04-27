@@ -46,3 +46,6 @@ services:
             -
                 name: 'doctrine.event_listener'
                 event: 'preUpdate'
+    
+    App\Service\ArtworkValidateLayout:
+        public: true

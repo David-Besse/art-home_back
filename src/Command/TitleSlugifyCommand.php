@@ -35,28 +35,29 @@ class TitleSlugifyCommand extends Command
     {
         $this
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        
-        //On met un message qui explique la manip
+
+        //Explanation of what the command do
         $io->info('Mise à jour de nos slugs dans la BDD');
 
+        //fetching all artworks
         $artworks = $this->artworkRepository->findAll();
 
-        foreach($artworks as $artwork)
-        {
+        //getting all titles and slugify them
+        foreach ($artworks as $artwork) {
             $title = $artwork->getTitle();
-            $artwork->setSlug($this->sluggerManager->slugify($title));       
+            $artwork->setSlug($this->sluggerManager->slugify($title));
         }
 
+        // push in DB
         $this->entityManager->flush();
 
-        // affiche ce message en cas de succès 
+        // Success message 
         $io->success('Mise à jour éxécutée');
 
         return Command::SUCCESS;

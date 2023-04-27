@@ -3,36 +3,36 @@
 {% block title %}Oeuvres{% endblock %}
 
 {% block sub_body %}
-    <h1 class="text-center">Oeuvre : {{artwork.title}}</h1>
+<h1 class="text-center">Oeuvre : {{artwork.title}}</h1>
 
-    <table class="table table-striped">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ artwork.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ artwork.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                {% if artwork.description is same as (null)%}
-                <td>-</td>
-                {% else %}
-                <td>{{ artwork.description }}</td>    
-                {% endif %}
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td><img src="{{ artwork.picture }}" alt=""></td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ artwork.status ? 'Validé' : 'Non Validé' }}</td>
-            </tr>
-        </tbody>
-    </table>
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ artwork.id }}</td>
+        </tr>
+        <tr>
+            <th>Titre</th>
+            <td>{{ artwork.title }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            {% if artwork.description is same as (null)%}
+            <td>-</td>
+            {% else %}
+            <td>{{ artwork.description }}</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td><img src="{{ artwork.picture }}" alt=""></td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{ artwork.status ? 'Validé' : 'Non Validé' }}</td>
+        </tr>
+    </tbody>
+</table>
 <div class="d-flex justify-content-around">
     <a href="{{ path('app_artwork_index') }}" class="btn btn-outline-primary">Retour à la liste des oeuvres</a>
 

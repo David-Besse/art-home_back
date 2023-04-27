@@ -10,16 +10,19 @@ class UserControllerTest extends WebTestCase
     /**
      * Check if moderator can access UserController paths
      *
-     * @return void
      */
     public function testModeratorAccess(): void
     {
+        //create a user
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('moderator@moderator.com');
+        //connecting as user
         $client->loginUser($testUser);
-        $crawler = $client->request('GET','user/' );
+        //route to test
+        $crawler = $client->request('GET', 'user/');
 
+        //status 403 if forbidden access
         $this->assertResponseStatusCodeSame(403);
     }
 }

@@ -17,7 +17,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
- 
+
     private $connection;
     private $slugger;
     // Injection od the DB Connection
@@ -33,14 +33,14 @@ class AppFixtures extends Fixture
      */
     private function truncate()
     {
-        
+
         // Checking of FK (foreign key) desactivated
         $this->connection->executeQuery('SET foreign_key_checks = 0');
         // truncate of each table
         $this->connection->executeQuery('TRUNCATE TABLE user');
         $this->connection->executeQuery('TRUNCATE TABLE artwork');
         $this->connection->executeQuery('TRUNCATE TABLE exhibition');
- 
+
         // Checking of FK (foreign key) reactivated
         $this->connection->executeQuery('SET foreign_key_checks = 1');
     }
@@ -62,70 +62,69 @@ class AppFixtures extends Fixture
 
         //Our providers
         $faker->addProvider(new ArtworkProvider());
-        
+
 
         //Creating users
-            //Admin
-            $admin = new User();
-            $admin->setEmail('admin@admin.com');
-            $admin->setPassword('$2y$13$Ov7uQzlJShWEfQoKfKiM8uCh0jQHhHU/XkfQ7J/4xroi5VcAEF7wu');
-            $admin->setFirstname($faker->firstName());
-            $admin->setLastname($faker->lastName());
-            $admin->setRoles(["ROLE_ADMIN"]);
-                        
-            $manager->persist($admin);
+        //Admin
+        $admin = new User();
+        $admin->setEmail('admin@admin.com');
+        $admin->setPassword('$2y$13$Ov7uQzlJShWEfQoKfKiM8uCh0jQHhHU/XkfQ7J/4xroi5VcAEF7wu');
+        $admin->setFirstname($faker->firstName());
+        $admin->setLastname($faker->lastName());
+        $admin->setRoles(["ROLE_ADMIN"]);
 
-            //Moderator
-            $moderator =new User();
-            $moderator->setEmail('moderator@moderator.com');
-            $moderator->setPassword('$2y$13$/oyU5SMCpjo6Q1jXSV0D4OZT6i4kKyiIiRuf3jdxGDvr4d9P6bbwG');
-            $moderator->setFirstname($faker->firstName());
-            $moderator->setLastname($faker->lastName());
-            $moderator->setRoles(["ROLE_MODERATOR"]);
+        $manager->persist($admin);
 
-            $manager->persist($moderator);
+        //Moderator
+        $moderator = new User();
+        $moderator->setEmail('moderator@moderator.com');
+        $moderator->setPassword('$2y$13$/oyU5SMCpjo6Q1jXSV0D4OZT6i4kKyiIiRuf3jdxGDvr4d9P6bbwG');
+        $moderator->setFirstname($faker->firstName());
+        $moderator->setLastname($faker->lastName());
+        $moderator->setRoles(["ROLE_MODERATOR"]);
 
-            //Artists
+        $manager->persist($moderator);
 
-            //creation of an array to push each artist into it
-            $artistList = []; 
+        //Artists
 
-            // loop to create 8 artist
-            for($a = 1 ; $a < 8; $a++ )
-            {
-                $artist = new User();
-                $artist->setEmail($faker->email());
-                $artist->setPassword('$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy');
-                $artist->setFirstname($faker->firstName());
-                $artist->setLastname($faker->lastName());
-                $artist->setNickname($faker->userName());
-                $artist->setDateOfBirth($faker->dateTimeBetween('-100 years', '- 10 years'));
-                $artist->setPresentation($faker->paragraph());
-                $artist->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 50) . '/50/50');
-                $artist->setRoles(["ROLE_ARTIST"]);
-                $fullname = $artist->getFirstname().' '. $artist->getLastname();
-                $slug = $this->slugger->slugify($fullname);
-                $artist->setSlug($slug);
+        //creation of an array to push each artist into it
+        $artistList = [];
 
-
-                $artistList[] = $artist;
+        // loop to create 8 artist
+        for ($a = 1; $a < 8; $a++) {
+            $artist = new User();
+            $artist->setEmail($faker->email());
+            $artist->setPassword('$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy');
+            $artist->setFirstname($faker->firstName());
+            $artist->setLastname($faker->lastName());
+            $artist->setNickname($faker->userName());
+            $artist->setDateOfBirth($faker->dateTimeBetween('-100 years', '- 10 years'));
+            $artist->setPresentation($faker->paragraph());
+            $artist->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 50) . '/50/50');
+            $artist->setRoles(["ROLE_ARTIST"]);
+            $fullname = $artist->getFirstname() . ' ' . $artist->getLastname();
+            $slug = $this->slugger->slugify($fullname);
+            $artist->setSlug($slug);
 
 
-                $manager->persist($artist);
-            }
+            $artistList[] = $artist;
+
+
+            $manager->persist($artist);
+        }
 
         //Exhibitions
 
         //creation of an array to push each exhibtion into it
         $exhibitionsList = [];
 
-        for ($e = 1; $e<=10; $e++) {
+        for ($e = 1; $e <= 10; $e++) {
             $exhibition = new Exhibition();
             // unique exhibition
             $exhibition->setTitle($faker->word());
             $exhibition->setStartDate(new DateTime());
             $exhibition->setDescription($faker->paragraph());
-            $exhibition->setEndDate(date_add(new DateTime(),date_interval_create_from_date_string("122 days")));
+            $exhibition->setEndDate(date_add(new DateTime(), date_interval_create_from_date_string("122 days")));
             $exhibition->setStatus('1');
             $slug = $this->slugger->slugify($exhibition->getTitle());
             $exhibition->setSlug($slug);
@@ -135,16 +134,15 @@ class AppFixtures extends Fixture
             $exhibition->setArtist($randomArtist);
 
             $exhibitionsList[] = $exhibition;
-            
+
             $manager->persist($exhibition);
-            
         }
-        
+
         //Artworks
 
-        for ($w = 1; $w<=150; $w++) {
+        for ($w = 1; $w <= 150; $w++) {
             $artwork = new Artwork();
-            
+
             $artwork->setTitle($faker->word());
             $artwork->setDescription($faker->paragraph());
             $artwork->setPicture($faker->unique()->getArtwork());

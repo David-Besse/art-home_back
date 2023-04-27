@@ -30,13 +30,13 @@
             <td><img src="{{ artwork.picture }}" height="300px"></td>
             <td>
                 <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
-                    <input type="hidden" name="token" value="{{ csrf_token('validate-item') }}"/>
+                    <input type="hidden" name="token" value="{{ csrf_token('validate-item') }}" />
                     <button class="btn btn-outline-success">Valider l'oeuvre</button>
                 </form>
             </td>
             <td>
                 <form action="{{ path('app_artwork_decline', {'id':artwork.id})}}" method="post">
-                    <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}"/>
+                    <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}" />
                     <button class="btn btn-outline-danger">Refuser l'oeuvre</button>
                 </form>
 
