@@ -108,7 +108,7 @@ class ArtworkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $artworkRepository->add($artwork, true);
-            
+
             //adding flash messages
             $this->addFlash('success', 'L\'oeuvre a été modifiée');
 
@@ -154,21 +154,60 @@ class ArtworkController extends AbstractController
      * 
      * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"POST"})
      */
-    public function validate(EntityManagerInterface $entityManager, Artwork $artwork = null): Response
+    public function validate(EntityManagerInterface $entityManager, Artwork $artwork = null, Request $request): Response
     {
         //404?
         if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
-        //if form is submited
-        //ten set new status to true
-        $artwork->setStatus(1);
-        $entityManager->persist($artwork);
-        $entityManager->flush();
+        //fetching token
+        $submittedToken = $submittedToken = $request->request->get('token');
 
-        //flash messages
-        $this->addFlash('success', 'L\'oeuvre a été validée');
+        //compare token validity
+        //if token is valid
+        if ($this->isCsrfTokenValid('validate-item', $submittedToken)) {
+
+            //then set new status to true
+            $artwork->setStatus(1);
+            $entityManager->persist($artwork);
+            $entityManager->flush();
+
+            //flash messages
+            $this->addFlash('success', 'L\'oeuvre a été validée');
+        }
+
+
+        //redirection
+        return $this->redirectToRoute('app_validation_waiting');
+    }
+
+    /**
+     * Decline an artwork
+     *
+     * @Route ("/artworks/{id}/decline", name="app_artwork_decline", methods={"POST"})
+     */
+    public function decline(Artwork $artwork = null, ArtworkRepository $artworkRepository, Request $request): Response
+    {
+
+        //404?
+        if ($artwork === null) {
+            return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
+        }
+
+        //fetching token
+        $submittedToken = $submittedToken = $request->request->get('token');
+
+        //compare token validity
+        //if token is valid
+        if ($this->isCsrfTokenValid('delete-item', $submittedToken)) {
+            
+            //removing artwork from DB
+            $artworkRepository->remove($artwork, true);
+            //flash messages
+            $this->addFlash('danger', 'L\'oeuvre a été refusée');
+        }
+
 
         //redirection
         return $this->redirectToRoute('app_validation_waiting');
