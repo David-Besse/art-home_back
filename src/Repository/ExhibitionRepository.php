@@ -42,26 +42,6 @@ class ExhibitionRepository extends ServiceEntityRepository
     }
 
     /**
-     * get exhibitions title and id by artist
-     */
-    public function findTitleAndIdForFormSQL(User $artist)
-    {
-        $id = $artist->getId();
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`
-                FROM `exhibition`
-                WHERE `exhibition`.`status` = 1 AND`exhibition`.`artist_id` = "'.$id.'"';
-               
-        
-        $stmt = $conn->prepare($sql);
-        $resultSet = $stmt->executeQuery();
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAllAssociative();
-    }
-    
-
-    /**
      * Get exhibition infos and first picture for carrousel in home page
      */
     public function findAllForHomeSQL(): array
