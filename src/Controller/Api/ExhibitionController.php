@@ -225,6 +225,7 @@ class ExhibitionController extends AbstractController
         $exhibitionsList = $exhibitionRepository->findby(['status'=>1,'artist'=>$artist]);
 
         // return status 200
-        return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_title_and_id']);
+        return $this->json($exhibitionsList, Response::HTTP_OK);
     }
+    
 }
