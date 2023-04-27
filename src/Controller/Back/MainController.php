@@ -15,7 +15,7 @@ class MainController extends AbstractController
      */
     public function home(ArtworkRepository $artworkRepository)
     {
-        $artworksNotValidate = $artworkRepository->findBy(['status' => false]);
-        return $this->render('main.html.twig', ['artworksNotValidate' => $artworksNotValidate]);
+        
+        return $this->render('main.html.twig');
     }
 }
