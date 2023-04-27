@@ -3,7 +3,8 @@
 <h1 class="text-center">Oeuvres en attente de validation</h1>
 {{ include('_flash_messages.html.twig')}}
 <div class="text-center">
-    <a href="{{ path('app_artwork_index') }}" class="btn btn-outline-primary mb-4 mt-4">Retour à la liste des oeuvres</a>
+    <a href="{{ path('app_artwork_index') }}" class="btn btn-outline-primary mb-4 mt-4">Retour à la liste des
+        oeuvres</a>
 </div>
 <table class="table table-striped">
     <thead>
@@ -13,30 +14,37 @@
             <th>Description</th>
             <th>Image</th>
             <th>Valider</th>
+            <th>Refuser</th>
         </tr>
     </thead>
     <tbody>
-    {% for artwork in artworks %}
+        {% for artwork in artworks %}
         <tr class="text-center">
             <td>{{ artwork.id }}</td>
             <td>{{ artwork.title }}</td>
             {% if artwork.description is same as (null)%}
             <td>-</td>
             {% else %}
-            <td>{{ artwork.description }}</td>    
+            <td>{{ artwork.description }}</td>
             {% endif %}
             <td><img src="{{ artwork.picture }}" height="300px"></td>
             <td>
-            <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
-                <button class="btn btn-outline-success">Valider l'oeuvre</button>
-            </form>
+                <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
+                    <button class="btn btn-outline-success">Valider l'oeuvre</button>
+                </form>
+            </td>
+            <td>
+                <form action="{{ path('app_artwork_decline', {'id':artwork.id})}}" method="post">
+                    <button class="btn btn-outline-danger">Refuser l'oeuvre</button>
+                </form>
+
             </td>
         </tr>
-    {% else %}
+        {% else %}
         <tr class="text-center">
             <td colspan="7">Aucune oeuvre à valider pour le moment</td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </tbody>
 </table>
 {% endblock %}

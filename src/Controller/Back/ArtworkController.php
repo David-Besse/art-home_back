@@ -173,4 +173,29 @@ class ArtworkController extends AbstractController
         //redirection
         return $this->redirectToRoute('app_validation_waiting');
     }
+
+    /**
+     * Decline an artwork
+     *
+     * @Route ("/artworks/{id}/decline", name="app_artwork_decline", methods={"POST"})
+     */
+    public function decline(Artwork $artwork = null, ArtworkRepository $artworkRepository) : Response
+    {
+
+        //404?
+        if($artwork === null)
+        {
+            return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
+        }
+
+        //removing artwork from DB
+        $artworkRepository->remove($artwork,true);
+
+        //flash messages
+        $this->addFlash('danger', 'L\'oeuvre a été refusée');
+
+        //redirection
+        return $this->redirectToRoute('app_validation_waiting');
+
+    }
 }
