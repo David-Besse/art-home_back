@@ -13,11 +13,9 @@
             <tr class="text-center">
                 <th>Id</th>
                 <th>Title</th>
-                <th>Slug</th>
-                <th>Début de l'exposition</th>
                 <th>Fin de l'exposition</th>
                 <th>Statut</th>
-                <th style="width:600px">Description</th>
+                <th style="width:40rem">Description</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -26,14 +24,12 @@
             <tr class="text-center">
                 <td>{{ exhibition.id }}</td>
                 <td>{{ exhibition.title }}</td>
-                <td>{{ exhibition.slug }}</td>
-                <td>{{ exhibition.startDate ? exhibition.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
                 <td>{{ exhibition.status ? 'En cours' : 'Archivée' }}</td>
                 {% if exhibition.description is same as (null) %}
                 <td>-</td>
                 {% else %}
-                <td>{{ exhibition.description }}</td>
+                <td style="text-align: justify;">{{ exhibition.description }}</td>
                 {% endif %}
                 
                 <td>
