@@ -207,7 +207,7 @@ class ExhibitionController extends AbstractController
         $exhibitionsList = $exhibitionRepository->findAllForHomeSQL();
 
         //return status 200
-        return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);
+        return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_for_home']);
     }
 
     /**

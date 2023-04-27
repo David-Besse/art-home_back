@@ -37,7 +37,7 @@ class Artwork
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id"})
+     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
      */
     private $picture;
 

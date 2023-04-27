@@ -47,9 +47,10 @@ class ExhibitionRepository extends ServiceEntityRepository
     public function findAllForHomeSQL(): array
     {
         $conn = $this->getEntityManager()->getConnection();
-        $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture` 
+        $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`,`exhibition`.`slug`,`exhibition`.`description`,`artwork`.`picture`, `user`.`firstname`,`user`.`lastname`, `user`.`nickname`
                 FROM `exhibition`
                 INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
+                INNER JOIN `user` ON `user`.`id` = `exhibition`.`artist_id`
                 WHERE `exhibition`.`status` = 1
                 GROUP BY `id`';
         
