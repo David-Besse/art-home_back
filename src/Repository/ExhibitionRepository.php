@@ -42,7 +42,7 @@ class ExhibitionRepository extends ServiceEntityRepository
     }
 
     /**
-     * get exhibitions title and id by artist
+     * Get exhibitions title and id by artist
      */
     public function findTitleAndIdForFormSQL(User $artist)
     {
@@ -50,16 +50,16 @@ class ExhibitionRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = 'SELECT `exhibition`.`id`, `exhibition`.`title`
                 FROM `exhibition`
-                WHERE `exhibition`.`status` = 1 AND`exhibition`.`artist_id` = "'.$id.'"';
-               
-        
+                WHERE `exhibition`.`status` = 1 AND`exhibition`.`artist_id` = "' . $id . '"';
+
+
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery();
 
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
     }
-    
+
 
     /**
      * Get exhibition infos and first picture for carrousel in home page
@@ -72,37 +72,11 @@ class ExhibitionRepository extends ServiceEntityRepository
                 INNER JOIN `artwork` ON `exhibition`.`id` = `artwork`.`exhibition_id`
                 WHERE `exhibition`.`status` = 1
                 GROUP BY `id`';
-        
+
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery();
 
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
     }
-
-
-//    /**
-//     * @return Exhibition[] Returns an array of Exhibition objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Exhibition
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

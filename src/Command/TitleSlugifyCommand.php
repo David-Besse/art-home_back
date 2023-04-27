@@ -35,14 +35,13 @@ class TitleSlugifyCommand extends Command
     {
         $this
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        
+
         //Explanation of what the command do
         $io->info('Mise à jour de nos slugs dans la BDD');
 
@@ -50,10 +49,9 @@ class TitleSlugifyCommand extends Command
         $artworks = $this->artworkRepository->findAll();
 
         //getting all titles and slugify them
-        foreach($artworks as $artwork)
-        {
+        foreach ($artworks as $artwork) {
             $title = $artwork->getTitle();
-            $artwork->setSlug($this->sluggerManager->slugify($title));       
+            $artwork->setSlug($this->sluggerManager->slugify($title));
         }
 
         // push in DB

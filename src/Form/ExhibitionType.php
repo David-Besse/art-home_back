@@ -22,12 +22,12 @@ class ExhibitionType extends AbstractType
             [
                 'label' => 'Titre de l\'exposition *',
                 'help' => 'Le titre ne doit pas dépasser 255 caractères',
-                'empty_data' => ''
             ]
             )
             ->add('description', TextType::class,
             [
-                'label' => 'Description de l\'exposition'
+                'label' => 'Description de l\'exposition',
+                'empty_data' => null
             ])
             ->add('artist', EntityType::class,
             [

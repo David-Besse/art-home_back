@@ -10,7 +10,7 @@ class ArtworkValidateLayout
 
     public function __construct(ArtworkRepository $artworkRepository)
     {
-       $this->artworkRepository = $artworkRepository; 
+        $this->artworkRepository = $artworkRepository;
     }
 
     public function checkIfArtworkToValidate()
@@ -18,6 +18,5 @@ class ArtworkValidateLayout
         $artworksToValidate = $this->artworkRepository->findBy(['status' => false]);
 
         return $artworksToValidate;
-
     }
 }

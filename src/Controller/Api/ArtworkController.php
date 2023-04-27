@@ -109,7 +109,7 @@ class ArtworkController extends AbstractController
         $entityManager->persist($artwork);
         $entityManager->flush();
 
-  
+
         //Return response if created
         return $this->json(
             $exhibitionToDisplay->getArtwork(),
@@ -140,8 +140,7 @@ class ArtworkController extends AbstractController
         //if not, throw an error
         try {
             //Transforming json Content into entity 
-            $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json',['object_to_populate' => $artworkToEdit]);
-
+            $artworkModified = $serializer->deserialize($jsonContent, Artwork::class, 'json', ['object_to_populate' => $artworkToEdit]);
         } catch (NotEncodableValueException $e) {
 
             return $this->json(
@@ -219,16 +218,16 @@ class ArtworkController extends AbstractController
      * Get artworks by exhibition for profile page
      * @Route("api/secure/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository) : Response
+    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository): Response
     {
         //404
         if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-        
+
         // fetching exhibitons for profile page
-        $artworksList = $artworkRepository->findBy(['exhibition' => $exhibition],['title'=>'asc']);
-        
+        $artworksList = $artworkRepository->findBy(['exhibition' => $exhibition], ['title' => 'asc']);
+
 
         // return status 200
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);

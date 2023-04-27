@@ -20,13 +20,13 @@ class ArtworkType extends AbstractType
             ->add('title', TextType::class,
             [
                 'label' => 'Titre de l\'oeuvre *',
-                'empty_data' => '',
                 'help' => 'Le titre ne doit pas dépasser 255 caractères'
                
             ])
             ->add('description', TextareaType::class,
             [
-                'label' => 'Description de l\'oeuvre',               
+                'label' => 'Description de l\'oeuvre', 
+                'empty_data' => null              
             ])
             ->add('picture', UrlType::class,
             [
@@ -36,7 +36,6 @@ class ArtworkType extends AbstractType
 
                 ],
                 'help' => 'Le titre ne doit pas dépasser 255 caractères',
-                'empty_data' => ''
                
             ])
             // ->add('status')

@@ -24,8 +24,7 @@ class UserType extends AbstractType
             ->add('email', EmailType::class,
             [
                 'label' => 'Adresse email *',
-                'help' => 'L\'email ne doit pas dépasser 180 caractères',
-                'empty_data' => ''
+                'help' => 'L\'email ne doit pas dépasser 180 caractères'
             ])
             ->add('roles', ChoiceType::class,
             [
@@ -74,31 +73,25 @@ class UserType extends AbstractType
             [
                 'label'=> 'Nom *',
                 'help' => 'Le nom ne doit pas dépasser 255 caractères',
-                'empty_data' => '',
             ])
             ->add('firstname', TextType::class,
             [
                 'label' => 'Prénom *',
                 'help' => 'Le prénom ne doit pas dépasser 255 caractères',
-                'empty_data' => ''
             ])
             ->add('nickname', TextType::class,
             [
                 'label'=> 'Pseudo',
                 'help' => 'Le pseudo ne doit pas dépasser 255 caractères',
+                'empty_data' => null
             ])
             ->add('dateOfBirth', DateType::class,
             [                
                 'label'=> 'Date de naissance',                
-
                 'years' => range(date('Y')+0, 1900),
                 'placeholder' => 'Choisissez une date',
                 'empty_data' => null               
 
-            ])
-            ->add('presentation', TextareaType::class,
-            [
-                'label' => 'Présentation'
             ])
             ->add('avatar', UrlType::class,
             [
@@ -107,12 +100,13 @@ class UserType extends AbstractType
                 'attr' => [
                     'placeholder' => 'par ex: https://...'
 
-                ]
+                ], 'empty_data' => null
             ])
-            ->add('presentation', TextType::class,
+            ->add('presentation', TextareaType::class,
             [
                 'label' => 'Présentation',
                 'help' => 'La présentation ne doit pas dépasser 800 caractères',
+                'empty_data' => null
             ])
         ;
     }

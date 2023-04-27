@@ -43,7 +43,7 @@ class ExhibitionController extends AbstractController
         if ($exhibition === null) {
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-        
+
         //ftech the artist
         $artist = $exhibition->getArtist();
 
@@ -65,7 +65,7 @@ class ExhibitionController extends AbstractController
      * Create exhibition item
      * @Route("/api/secure/exhibitions/new", name="app_api_exhibition_new", methods={"POST"})
      */
-    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator) : Response
+    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
 
         /** @var \App\Entity\User $user */
@@ -122,7 +122,7 @@ class ExhibitionController extends AbstractController
      * Edit exhibition item
      * @Route("/api/secure/exhibitions/{id<\d+>}/edit", name="app_api_exhibition_edit", methods={"PATCH"})
      */
-    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator) : Response
+    public function editExhibition(Exhibition $exhibitionToEdit = null, Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
         // 404 ?
         if ($exhibitionToEdit === null) {
@@ -135,7 +135,7 @@ class ExhibitionController extends AbstractController
 
         try {
             // Convert Json in doctrine entity
-            $exhibitionModified = $serializer->deserialize($jsonContent, Exhibition::class, 'json',['object_to_populate' => $exhibitionToEdit]);
+            $exhibitionModified = $serializer->deserialize($jsonContent, Exhibition::class, 'json', ['object_to_populate' => $exhibitionToEdit]);
         } catch (NotEncodableValueException $e) {
             // if json getted isn't right, make an alert for client
             return $this->json(
@@ -159,7 +159,7 @@ class ExhibitionController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         // Save entity
         $entityManager = $doctrine->getManager();
         $entityManager->persist($exhibitionModified);
@@ -214,7 +214,7 @@ class ExhibitionController extends AbstractController
      * Get active exhibitions infos by artist to submit artwork form
      * @Route("api/exhibitions/artist/{id<\d+>}/form", name="app_api_exhibitions_artist_form", methods={"GET"})
      */
-    public function getActiveExhibitionsForArtworkForm(ExhibitionRepository $exhibitionRepository, User $artist = null) : Response
+    public function getActiveExhibitionsForArtworkForm(ExhibitionRepository $exhibitionRepository, User $artist = null): Response
     {
         // 404 ?
         if ($artist === null) {

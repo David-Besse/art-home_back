@@ -7,7 +7,9 @@ use App\Entity\User;
 use App\Service\MySlugger;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
-
+/**
+ * Slugify the title of an entity when persist
+ */
 class AutoSluggerCreate
 {
 
@@ -22,17 +24,16 @@ class AutoSluggerCreate
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof User ) {
+        if ($entity instanceof User) {
             return;
         }
-        
+
         $entityManager = $args->getObjectManager();
 
         //slugify
         $slug = $this->slugger->slugify($entity->getTitle());
         $entity->setSlug($slug->toString());
-        
+
         $entityManager->flush();
-        
     }
 }
