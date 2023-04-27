@@ -189,7 +189,7 @@ class ArtworkController extends AbstractController
      *
      * @Route("api/secure/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
      */
-    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager, ArtworkRepository $artworkRepository): Response
+    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager): Response
     {
 
         //404?
@@ -197,13 +197,16 @@ class ArtworkController extends AbstractController
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
+        //fetch exhibiton depending on artwork
         $exhibition = $artwork->getExhibition();
         // remove entity artwork
         $entityManager->remove($artwork);
         $entityManager->flush();
 
+        //fetch artworks of the exhibition
         $newArtworksList = $exhibition->getArtwork();
 
+        //return response 
         return $this->json(
             $newArtworksList,
             Response::HTTP_NO_CONTENT,
@@ -216,7 +219,7 @@ class ArtworkController extends AbstractController
      * Get artworks by exhibition for profile page
      * @Route("api/secure/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository)
+    public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository) : Response
     {
         //404
         if ($exhibition === null) {
