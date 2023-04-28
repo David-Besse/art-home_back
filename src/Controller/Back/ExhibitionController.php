@@ -16,14 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExhibitionController extends AbstractController
 {
     /**
-     * Display all exhibitions
+     * Display all active exhibitions
      * 
      * @Route("/", name="app_exhibition_index", methods={"GET"})
      */
     public function index(ExhibitionRepository $exhibitionRepository): Response
     {
         return $this->render('exhibition/index.html.twig', [
-            'exhibitions' => $exhibitionRepository->findBy([], ['title' => 'ASC']),
+            'exhibitions' => $exhibitionRepository->findBy(['status' => 1], ['title' => 'ASC']),
         ]);
     }
 
@@ -135,5 +135,18 @@ class ExhibitionController extends AbstractController
 
         //redirection
         return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * Get all inactive exhibition
+     *
+     * @param ExhibitionRepository $exhibitionRepository
+     * @Route ("/archive", name="app_exhibitions_archive", methods={"GET"})
+     */
+    public function archiveExhibitions(ExhibitionRepository $exhibitionRepository)
+    {
+        $archiveExhibitions = $exhibitionRepository->findBy(['status' => 0]);
+
+        return $this->render('exhibition/archive.html.twig', ['archiveExhibitions' => $archiveExhibitions]);
     }
 }

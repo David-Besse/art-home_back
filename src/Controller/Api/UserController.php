@@ -189,8 +189,9 @@ class UserController extends AbstractController
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
+
         //Validate entity
-        $errors = $validator->validate($userNewInfos);
+        $errors = $validator->validate($userNewInfos, null, ['registration']);
 
         // Is there some errors ?
         if (count($errors) > 0) {
