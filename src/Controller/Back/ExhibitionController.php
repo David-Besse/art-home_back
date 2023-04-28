@@ -16,14 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExhibitionController extends AbstractController
 {
     /**
-     * Display all exhibitions
+     * Display all active exhibitions
      * 
      * @Route("/", name="app_exhibition_index", methods={"GET"})
      */
     public function index(ExhibitionRepository $exhibitionRepository): Response
     {
         return $this->render('exhibition/index.html.twig', [
-            'exhibitions' => $exhibitionRepository->findBy([], ['title' => 'ASC']),
+            'exhibitions' => $exhibitionRepository->findBy(['status' => 1], ['title' => 'ASC']),
         ]);
     }
 
@@ -135,5 +135,36 @@ class ExhibitionController extends AbstractController
 
         //redirection
         return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * Get all inactive exhibition
+     *
+     * @param ExhibitionRepository $exhibitionRepository
+     * @Route ("/archive", name="app_exhibitions_archive", methods={"GET"})
+     */
+    public function archiveExhibitions(ExhibitionRepository $exhibitionRepository)
+    {
+        //fetching exhibitions with status false
+        $archiveExhibitions = $exhibitionRepository->findBy(['status' => 0]);
+
+        return $this->render('exhibition/archive.html.twig', ['archiveExhibitions' => $archiveExhibitions]);
+    }
+
+    /**
+     * Get related artworks to exhibition
+     *
+     * @param Exhibition $exhibition
+     * @Route ("/{id}/artworks", name="app_exhibitions_artworks", methods={"GET"}, requirements={"id"="\d+"})
+     */
+    public function artworksRelatedToExhibition(Exhibition $exhibition, Request $request)
+    {
+        //fetching related artworks 
+        $relatedArtworks = $exhibition->getArtwork();
+
+        //fetching the BASE URL
+        $baseUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+        
+        return $this->render('exhibition/artworks_related.html.twig', ['relatedArtworks' => $relatedArtworks, 'exhibition' => $exhibition, 'baseUrl' => $baseUrl]);
     }
 }

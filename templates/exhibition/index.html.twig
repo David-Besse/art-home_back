@@ -8,11 +8,11 @@
 <div class="text-center">
     <a href="{{ path('app_exhibition_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une exposition</a>
 </div>
-<table class="table table-striped">
+<table class="table table-striped table-hover">
     <thead>
         <tr class="text-center">
             <th>Id</th>
-            <th>Title</th>
+            <th>Titre</th>
             <th>Fin de l'exposition</th>
             <th>Statut</th>
             <th style="width:40rem">Description</th>
@@ -37,6 +37,8 @@
                     class="btn btn-outline-primary btn-sm">En savoir plus</a>
                 <a href="{{ path('app_exhibition_edit', {'id': exhibition.id}) }}"
                     class="btn btn-outline-warning btn-sm">Modifier</a>
+                    <a href="{{ path('app_exhibitions_artworks',{'id':exhibition.id})}}"
+                    class="btn btn-outline-dark btn-sm">Voir les oeuvres</a>
             </td>
         </tr>
         {% else %}

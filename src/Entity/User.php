@@ -26,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex(
      * pattern= "/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-z]{2,4}$/",
      * message="L'email n'est pas valide")
@@ -47,24 +47,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      * @Assert\NotBlank
      * @Assert\Regex(
-     * pattern= "/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&\/*()_+]{8,}$/",
+     * pattern= "/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/",
      * message= "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, un chiffre et un caractère spécial.")
      * @Groups({"get_user"})
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
      */
