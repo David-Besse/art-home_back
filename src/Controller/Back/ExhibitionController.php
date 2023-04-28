@@ -5,10 +5,15 @@ namespace App\Controller\Back;
 use App\Entity\Exhibition;
 use App\Form\ExhibitionType;
 use App\Repository\ExhibitionRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/exhibition")
@@ -166,5 +171,25 @@ class ExhibitionController extends AbstractController
         $baseUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
         
         return $this->render('exhibition/artworks_related.html.twig', ['relatedArtworks' => $relatedArtworks, 'exhibition' => $exhibition, 'baseUrl' => $baseUrl]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param KernelInterface $kernel
+     * @Route ("/command", name="app_exhibitions_command_check")
+     */
+    public function executeCommand(KernelInterface $kernel)
+    {
+        
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'app:exhibitions:check',
+        ]);
+
+        return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);
+        
     }
 }
