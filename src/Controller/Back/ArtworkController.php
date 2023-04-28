@@ -21,11 +21,13 @@ class ArtworkController extends AbstractController
      * 
      * @Route("/", name="app_artwork_index", methods={"GET"})
      */
-    public function index(ArtworkRepository $artworkRepository): Response
+    public function index(ArtworkRepository $artworkRepository, Request $request): Response
     {
 
+        $keyword = $request->query->get('keyword');
+
         return $this->render('artwork/index.html.twig', [
-            'artworks' => $artworkRepository->findBy(['status' => true], ['id' => 'DESC']),
+            'artworks' => $artworkRepository->getArtworksByTitle($keyword),
         ]);
     }
 
