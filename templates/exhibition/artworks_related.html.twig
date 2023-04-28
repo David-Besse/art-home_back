@@ -1,11 +1,15 @@
 {% extends 'main.html.twig'%}
 {% block sub_body %}
-<div class="d-flex justify-content-end align-items-center">
+<div class="d-flex justify-content-end align-items-center mb-5">
     {% if app.request.headers.get('referer') == baseUrl ~'/exhibition/archive' %}
-    <p><a href="{{ path('app_exhibitions_archive') }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"> ≤ Retour à la liste des expositions</a></p>  
-   {% else %}
-    <p><a href="{{ path('app_exhibition_index') }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"> ≤ Retour à la liste des expositions</a></p>
-    {% endif %}    
+    <p><a href="{{ path('app_exhibitions_archive') }}"
+            class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"> ≤ Retour
+            à la liste des expositions</a></p>
+    {% else %}
+    <p><a href="{{ path('app_exhibition_index') }}"
+            class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"> ≤ Retour
+            à la liste des expositions</a></p>
+    {% endif %}
     <div class="flex-grow-1">
         <h1 class="text-center">Oeuvres de {{ exhibition.title}}</h1>
     </div>
