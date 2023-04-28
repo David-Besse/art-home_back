@@ -149,4 +149,18 @@ class ExhibitionController extends AbstractController
 
         return $this->render('exhibition/archive.html.twig', ['archiveExhibitions' => $archiveExhibitions]);
     }
+
+    /**
+     * Get related artworks to exhibition
+     *
+     * @param Exhibition $exhibition
+     * @Route ("/{id}/artworks", name="app_exhibitions_artworks", methods={"GET"}, requirements={"id"="\d+"})
+     */
+    public function artworksRelatedToExhibition(Exhibition $exhibition, Request $request)
+    {
+        $relatedArtworks = $exhibition->getArtwork();
+
+        $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+        return $this->render('exhibition/artworks_related.html.twig', ['relatedArtworks' => $relatedArtworks, 'exhibition' => $exhibition, 'baseurl' => $baseurl]);
+    }
 }
