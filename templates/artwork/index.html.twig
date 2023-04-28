@@ -9,7 +9,7 @@
     <a href="{{ path('app_artwork_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter une oeuvre</a>
 </div>
 <form class="d-inline-flex mb-5" role="search">
-    <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
+    <input class="form-control me-2" type="search" placeholder="Rechercher" name="keyword" aria-label="Search" value="{{ app.request.query.get('keyword') }}">
     <button class="btn btn-outline-dark" type="submit">Rechercher</button>
   </form>
 <table class="table table-striped table-hover">

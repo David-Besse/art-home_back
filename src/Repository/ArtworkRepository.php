@@ -39,4 +39,24 @@ class ArtworkRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * Fetch artworks by title
+     */
+    public function getArtworksByTitle(?string $keyword)
+    {
+        $qb= $this->createQueryBuilder('a')
+           ->orderBy('a.id', 'ASC')
+           ->where('a.status = TRUE');
+
+            // y'a-t-il une recherche ?
+        if ($keyword !== null) {
+            // on ajoute un condition à la requête
+            $qb->where('a.title LIKE :keyword')
+                ->setParameter('keyword', '%'.$keyword.'%');
+        }
+           return $qb->getQuery()->getResult()
+        ;
+    }
+
 }
