@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -189,7 +190,11 @@ class ExhibitionController extends AbstractController
             'command' => 'app:exhibitions:check',
         ]);
 
-        return $this->redirectToRoute('app_exhibition_index', [], Response::HTTP_SEE_OTHER);
+        $output = new NullOutput();
+        $application->run($input, $output);
+
+        $this->addFlash('success', 'La vérification a été faite');
+        return new RedirectResponse($this->generateUrl('app_exhibition_index'));
         
     }
 }
