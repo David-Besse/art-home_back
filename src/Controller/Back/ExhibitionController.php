@@ -175,7 +175,7 @@ class ExhibitionController extends AbstractController
     }
 
     /**
-     * Undocumented function
+     * Executing command to check exhibitions status 
      *
      * @param KernelInterface $kernel
      * @Route ("/command", name="app_exhibitions_command_check")
@@ -193,7 +193,7 @@ class ExhibitionController extends AbstractController
         $output = new NullOutput();
         $application->run($input, $output);
 
-        $this->addFlash('success', 'La vérification a été faite');
+        $this->addFlash('primary', 'La vérification a été effectuée');
         return new RedirectResponse($this->generateUrl('app_exhibition_index'));
         
     }
