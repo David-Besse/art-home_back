@@ -46,7 +46,7 @@ class ArtworkRepository extends ServiceEntityRepository
     public function getArtworksByTitle(?string $keyword)
     {
         $qb= $this->createQueryBuilder('a')
-           ->orderBy('a.id', 'ASC')
+           ->orderBy('a.id', 'DESC')
            ->where('a.status = TRUE');
 
             // y'a-t-il une recherche ?
