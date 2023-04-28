@@ -145,6 +145,7 @@ class ExhibitionController extends AbstractController
      */
     public function archiveExhibitions(ExhibitionRepository $exhibitionRepository)
     {
+        //fetching exhibitions with status false
         $archiveExhibitions = $exhibitionRepository->findBy(['status' => 0]);
 
         return $this->render('exhibition/archive.html.twig', ['archiveExhibitions' => $archiveExhibitions]);
@@ -158,9 +159,12 @@ class ExhibitionController extends AbstractController
      */
     public function artworksRelatedToExhibition(Exhibition $exhibition, Request $request)
     {
+        //fetching related artworks 
         $relatedArtworks = $exhibition->getArtwork();
 
-        $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
-        return $this->render('exhibition/artworks_related.html.twig', ['relatedArtworks' => $relatedArtworks, 'exhibition' => $exhibition, 'baseurl' => $baseurl]);
+        //fetching the BASE URL
+        $baseUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+        
+        return $this->render('exhibition/artworks_related.html.twig', ['relatedArtworks' => $relatedArtworks, 'exhibition' => $exhibition, 'baseUrl' => $baseUrl]);
     }
 }
