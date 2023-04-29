@@ -26,7 +26,7 @@ class ExhibitionController extends AbstractController
     public function getExhibitions(ExhibitionRepository $exhibitionRepository): Response
     {
         //fetching all exhibitions
-        $exhibitionsList = $exhibitionRepository->findAll();
+        $exhibitionsList = $exhibitionRepository->findBy(['status' => 1]);
 
         // return status 200
         return $this->json($exhibitionsList, Response::HTTP_OK, [], ['groups' => 'get_exhibitions_collection']);

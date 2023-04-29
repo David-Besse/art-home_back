@@ -25,4 +25,12 @@ h1 {
     height : 5rem;
 }
 
+#buttonUp
+{
+    position: fixed;
+    top: 90%;
+    left: 98.5%;
+    color: grey;
+
+}
 
