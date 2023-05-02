@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LegalNoticesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LegalNoticesRepository::class)
@@ -19,6 +20,7 @@ class LegalNotices
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"get_legal_notices"})
      */
     private $content;
 
