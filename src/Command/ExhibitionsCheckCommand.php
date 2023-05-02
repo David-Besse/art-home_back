@@ -40,7 +40,7 @@ class ExhibitionsCheckCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->info('Vérification de la validité de l\'exposition');
 
-        $exhibitions = $this->exhibitionRepository->findAll();
+        $exhibitions = $this->exhibitionRepository->findBy(['status' => 1]);
 
         foreach($exhibitions as $exhibition)
         {
@@ -56,7 +56,7 @@ class ExhibitionsCheckCommand extends Command
         }
 
         $this->entityManager->flush();
-
+        
 
         $io->success('Vérification des expositions effectuées');
 

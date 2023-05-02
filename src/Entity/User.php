@@ -26,6 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"get_exhibitions_collection"})
      * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex(
      * pattern= "/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-z]{2,4}$/",
