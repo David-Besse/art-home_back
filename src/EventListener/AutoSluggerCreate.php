@@ -25,18 +25,38 @@ class AutoSluggerCreate
         //fetching entity
         $entity = $args->getObject();
 
-         //checking if entity is a User entity
-        if ($entity instanceof User) {
-            return;
-        }
-
         //fetching Manager
         $entityManager = $args->getObjectManager();
 
-        //slugify
-        $slug = $this->slugger->slugify($entity->getTitle());
-        $entity->setSlug($slug->toString());
+         //checking if entity is a User entity
+        if ($entity instanceof User) {
 
-        $entityManager->flush();
+            //if nickname is not null
+            // then slugify nickname
+            if ($entity->getNickname() !== null) {
+
+                $slug = $this->slugger->slugify($entity->getNickname());
+                $entity->setSlug($slug);
+
+            } else {
+    
+                //slugifying firstname and lastname
+                $fullname = $entity->getFirstname() . ' ' . $entity->getLastname();
+                $slug = $this->slugger->slugify($fullname);
+                $entity->setSlug($slug);
+            }
+
+            $entityManager->flush();
+            
+        }else{
+
+            //slugify
+            $slug = $this->slugger->slugify($entity->getTitle());
+            $entity->setSlug($slug->toString());
+    
+            $entityManager->flush();
+        }
+
+
     }
 }

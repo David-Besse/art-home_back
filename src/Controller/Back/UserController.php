@@ -43,18 +43,7 @@ class UserController extends AbstractController
 
         //if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
-
-            //slugify nickname or firstname/lastname
-            if ($user->getNickname() !== Null) {
-
-                $slug = $slugger->slugify($user->getNickname());
-                $user->setSlug($slug);
-            } else {
-
-                $fullname = $user->getFirstname() . ' ' . $user->getLastname();
-                $slug = $slugger->slugify($fullname);
-                $user->setSlug($slug);
-            }
+            
             //hashing the password
             $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
             $userRepository->add($user, true);
@@ -108,18 +97,6 @@ class UserController extends AbstractController
 
         // if form is submited
         if ($form->isSubmitted() && $form->isValid()) {
-
-            //slugify nickname or firstname/lastname
-            if ($user->getNickname() !== Null) {
-
-                $slug = $slugger->slugify($user->getNickname());
-                $user->setSlug($slug);
-            } else {
-
-                $fullname = $user->getFirstname() . ' ' . $user->getLastname();
-                $slug = $slugger->slugify($fullname);
-                $user->setSlug($slug);
-            }
 
             $userRepository->add($user, true);
 
