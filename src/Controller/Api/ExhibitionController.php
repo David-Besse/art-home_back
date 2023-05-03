@@ -6,7 +6,6 @@ use App\Entity\Exhibition;
 use App\Entity\User;
 use App\Repository\ArtworkRepository;
 use App\Repository\ExhibitionRepository;
-use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,7 +128,6 @@ class ExhibitionController extends AbstractController
             return $this->json(['error' => 'Exposition non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
-
         //Get Json content
         $jsonContent = $request->getContent();
 
@@ -222,10 +220,9 @@ class ExhibitionController extends AbstractController
         }
 
         //fecthing id and title of exhibitions for submit artwork form
-        $exhibitionsList = $exhibitionRepository->findby(['status'=>1,'artist'=>$artist]);
+        $exhibitionsList = $exhibitionRepository->findby(['status' => 1, 'artist' => $artist]);
 
         // return status 200
         return $this->json($exhibitionsList, Response::HTTP_OK);
     }
-    
 }

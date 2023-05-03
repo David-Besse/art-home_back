@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Entity\Artwork;
 use App\Entity\Exhibition;
 use App\Repository\ArtworkRepository;
-use App\Service\MySlugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,7 +83,6 @@ class ArtworkController extends AbstractController
         }
 
         // Checking the entity : if all fields are well fill
-
         $errors = $validator->validate($artwork);
 
         //Checking if there is any error
@@ -135,7 +133,6 @@ class ArtworkController extends AbstractController
         //Fetch the json content
         $jsonContent = $request->getContent();
 
-
         // Checking if json format is respected
         //if not, throw an error
         try {
@@ -165,7 +162,6 @@ class ArtworkController extends AbstractController
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
 
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
@@ -227,7 +223,6 @@ class ArtworkController extends AbstractController
 
         // fetching exhibitons for profile page
         $artworksList = $artworkRepository->findBy(['exhibition' => $exhibition], ['title' => 'asc']);
-
 
         // return status 200
         return $this->json($artworksList, Response::HTTP_OK, [], ['groups' => 'get_artwork_by_exhibition']);
