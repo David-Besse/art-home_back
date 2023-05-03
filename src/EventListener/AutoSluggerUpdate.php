@@ -27,11 +27,28 @@ class AutoSluggerUpdate
 
         //checking if entity is a User entity
         if ($entity instanceof User) {
-            return;
+
+            //if nickname is not null
+            // then slugify nickname
+            if ($entity->getNickname() !== null) {
+
+                $slug = $this->slugger->slugify($entity->getNickname());
+                $entity->setSlug($slug);
+                
+            } else {
+    
+                //slugifying firstname and lastname
+                $fullname = $entity->getFirstname() . ' ' . $entity->getLastname();
+                $slug = $this->slugger->slugify($fullname);
+                $entity->setSlug($slug);
+            }
+            
+        }else{
+
+            //slugify
+            $slug = $this->slugger->slugify($entity->getTitle());
+            $entity->setSlug($slug->toString());
         }
 
-        //slugify
-        $slug = $this->slugger->slugify($entity->getTitle());
-        $entity->setSlug($slug->toString());
     }
 }

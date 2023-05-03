@@ -140,21 +140,7 @@ class UserController extends AbstractController
 
         //hashing the password
         $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
-
-        //if nickname is not null
-        // then slugify nickname
-        if ($user->getNickname() !== Null) {
-
-            $slug = $slugger->slugify($user->getNickname());
-            $user->setSlug($slug);
-        } else {
-
-            //slugifying firstname and lastname
-            $fullname = $user->getFirstname() . ' ' . $user->getLastname();
-            $slug = $slugger->slugify($fullname);
-            $user->setSlug($slug);
-        }
-
+        
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);
@@ -209,20 +195,6 @@ class UserController extends AbstractController
             };
 
             return $this->json($errorsClean, Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        //if nickname is not null
-        // then slugify nickname
-        if ($userNewInfos->getNickname() !== null) {
-
-            $slug = $slugger->slugify($userNewInfos->getNickname());
-            $user->setSlug($slug);
-        } else {
-
-            //slugifying firstname and lastname
-            $fullname = $userNewInfos->getFirstname() . ' ' . $userNewInfos->getLastname();
-            $slug = $slugger->slugify($fullname);
-            $user->setSlug($slug);
         }
 
         // Save entity
