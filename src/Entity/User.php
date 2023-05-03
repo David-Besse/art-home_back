@@ -98,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Assert\Date(groups={"registration"})
+     * @Groups("get_user")
      */
     private $dateOfBirth;
 
