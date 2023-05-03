@@ -49,9 +49,9 @@ class ArtworkRepository extends ServiceEntityRepository
            ->orderBy('a.id', 'DESC')
            ->where('a.status = TRUE');
 
-            // y'a-t-il une recherche ?
+            // is there any search ? 
         if ($keyword !== null) {
-            // on ajoute un condition à la requête
+            // adding a new field to SQL request
             $qb->where('a.title LIKE :keyword')
                 ->setParameter('keyword', '%'.$keyword.'%');
         }

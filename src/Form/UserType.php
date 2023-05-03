@@ -55,7 +55,7 @@ class UserType extends AbstractType
                     [
                         'label' => 'Mot de passe *',
                         'mapped' => false,
-                        'help' => 'Le mot de passe ne doit pas dépasser 255 caractères',
+                        'help' => 'Le mot de passe doit contenir au minimum 8 caractères, une majuscule, un chiffre et un caractère spécial',
                         'attr' => [
                             'placeholder' => 'Laissez vide si inchangé'
                         ]
@@ -65,7 +65,7 @@ class UserType extends AbstractType
                     $form->add('password', PasswordType::class, 
                     [
                         'label' => 'Mot de passe *',
-                        'help' => 'Le mot de passe ne doit pas dépasser 255 caractères',
+                        'help' => 'Le mot de passe doit contenir au minimum 8 caractères, une majuscule, un chiffre et un caractère spécial',
                     ]);
                 }
             })
@@ -96,7 +96,7 @@ class UserType extends AbstractType
             ->add('avatar', UrlType::class,
             [
                 'label' => 'Photo de profil',
-                'help' => 'L\'url ne doit pas dépasser 255 caractères',
+                'help' => 'Le lien ne doit pas dépasser 255 caractères',
                 'attr' => [
                     'placeholder' => 'par ex: https://...'
 
