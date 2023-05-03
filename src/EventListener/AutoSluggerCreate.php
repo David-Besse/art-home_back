@@ -22,12 +22,15 @@ class AutoSluggerCreate
 
     public function prePersist(LifecycleEventArgs $args): void
     {
+        //fetching entity
         $entity = $args->getObject();
 
+         //checking if entity is a User entity
         if ($entity instanceof User) {
             return;
         }
 
+        //fetching Manager
         $entityManager = $args->getObjectManager();
 
         //slugify

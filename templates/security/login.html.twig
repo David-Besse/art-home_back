@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Se connecter{% endblock %}
 
 {% block body %}
-<div class="mx-5 my-5 px-5 py-5 bg-light">
+<div class="mx-5 my-5 px-5 py-5" style="background-color: rgb(208, 185, 174,0.3);">
     <form method="post">
         {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -16,8 +16,7 @@
         </div>
         {% endif %}
 
-
-        <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+        <h1 class="h2 mb-3 font-weight-normal" style="color:#CC920D">Se connecter</h1>
         <label for="inputEmail">Email</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3"
             autocomplete="email" required autofocus>
@@ -27,7 +26,7 @@
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <button class=" mt-5 btn btn-lg btn-primary" type="submit">
+        <button class=" mt-5 btn" style="background-color: #D0B9AE;" type="submit">
             Se connecter
         </button>
     </form>

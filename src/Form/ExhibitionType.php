@@ -2,16 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\Exhibition;
 use App\Entity\User;
-use DateTime;
-use DateTimeInterface;
+use App\Entity\Exhibition;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ExhibitionType extends AbstractType
 {
@@ -24,7 +23,7 @@ class ExhibitionType extends AbstractType
                 'help' => 'Le titre ne doit pas dépasser 255 caractères',
             ]
             )
-            ->add('description', TextType::class,
+            ->add('description', TextareaType::class,
             [
                 'label' => 'Description de l\'exposition',
                 'empty_data' => null
@@ -41,9 +40,15 @@ class ExhibitionType extends AbstractType
                 },
                 'choice_label' => function (User $user)
                 {
-                    return $user->getFirstname().' '.$user->getLastname();
+                    if($user->getNickname() === null){
+
+                        return $user->getFirstname().' '.$user->getLastname();
+                    }
+                    
+                    return $user->getNickname();
+                    
                 },
-                'placeholder' => 'Choisissez un artiste ', 
+                'placeholder' => 'Choisissez un(e) artiste ', 
                 'attr' => [
                     'class'=> 'form-select'
                 ]               

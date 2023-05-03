@@ -169,7 +169,7 @@ class ExhibitionController extends AbstractController
 
         //fetching the BASE URL
         $baseUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
-        
+
         return $this->render('exhibition/artworks_related.html.twig', ['relatedArtworks' => $relatedArtworks, 'exhibition' => $exhibition, 'baseUrl' => $baseUrl]);
     }
 
@@ -181,19 +181,24 @@ class ExhibitionController extends AbstractController
      */
     public function executeCommand(KernelInterface $kernel)
     {
-        
+        // fetching symfony application
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
+        //selecting command
         $input = new ArrayInput([
             'command' => 'app:exhibitions:check',
         ]);
 
+        //don't need output
         $output = new NullOutput();
+        //running command
         $application->run($input, $output);
 
+        //flash messages
         $this->addFlash('primary', 'La vérification a été effectuée');
+
+        //redirection
         return new RedirectResponse($this->generateUrl('app_exhibition_index'));
-        
     }
 }

@@ -49,8 +49,13 @@ class UserController extends AbstractController
         $presentation = $user->getPresentation();
         $dateOfBirth = $user->getDateOfBirth();
 
+        //fetching exhibitions of user
         $exhibitionFetched = $user->getExhibition();
+
+        //declaring an empty array
         $exhibitions = [];
+
+        //loop on each exhibition
         foreach ($exhibitionFetched as $exhibition) {
             $id = $exhibition->getId();
             $title = $exhibition->getTitle();
@@ -95,7 +100,6 @@ class UserController extends AbstractController
         //Fetch the json content
         $jsonContent = $request->getContent();
 
-
         // Checking if json format is respected
         //if not, throw an error
         try {
@@ -109,6 +113,7 @@ class UserController extends AbstractController
             );
         }
 
+        //checking if email aleady exist in DB
         if ($userRepository->findOneByEmail($user->getEmail()) !== null) {
             return $this->json(
                 ['erreur' => 'L\'email est déjà existant'],

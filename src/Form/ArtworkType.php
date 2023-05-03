@@ -35,7 +35,7 @@ class ArtworkType extends AbstractType
                     'placeholder' => 'par ex: https://...'
 
                 ],
-                'help' => 'Le titre ne doit pas dépasser 255 caractères',
+                'help' => 'Le lien ne doit pas dépasser 255 caractères',
                
             ])
             // ->add('status')

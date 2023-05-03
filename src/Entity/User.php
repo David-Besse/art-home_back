@@ -27,6 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"get_exhibitions_collection"})
+     * @Assert\Email
      * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex(
      * pattern= "/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-z]{2,4}$/",
@@ -79,6 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(groups={"registration"})
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id"})
      */
     private $avatar;
@@ -96,6 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("get_user")
      */
     private $dateOfBirth;
 

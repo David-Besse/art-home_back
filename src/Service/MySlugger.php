@@ -17,7 +17,9 @@ class MySlugger
 
     public function slugify(string $str)
     {
+        // if toLower set to true
         if ($this->toLower) {
+            //transforming string in lowercase
             return $this->slugger->slug($str)->lower();
         }
 

@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArtworkController extends AbstractController
 {
     /**
-     * Displaying all validate artworks
+     * Displaying all validate artworks OR display all artworks with keyword in search bar
      * 
      * @Route("/", name="app_artwork_index", methods={"GET"})
      */
@@ -100,7 +100,7 @@ class ArtworkController extends AbstractController
     {
         //404?
         if ($artwork === null) {
-            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
         // create edit form
