@@ -42,6 +42,7 @@ security:
             custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
+                target: /logout_message
 
        
     role_hierarchy:
