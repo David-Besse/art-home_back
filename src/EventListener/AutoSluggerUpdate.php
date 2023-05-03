@@ -22,13 +22,13 @@ class AutoSluggerUpdate
 
     public function preUpdate(PreUpdateEventArgs $event)
     {
+        //fetching entity
         $entity = $event->getObject();
 
+        //checking if entity is a User entity
         if ($entity instanceof User) {
             return;
         }
-
-        $entityManager = $event->getObjectManager();
 
         //slugify
         $slug = $this->slugger->slugify($entity->getTitle());
