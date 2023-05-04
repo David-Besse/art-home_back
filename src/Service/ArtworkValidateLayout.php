@@ -4,6 +4,9 @@ namespace App\Service;
 
 use App\Repository\ArtworkRepository;
 
+/**
+ * Checking if there is an artwork with status false
+ */
 class ArtworkValidateLayout
 {
     private $artworkRepository;

@@ -4,6 +4,9 @@ namespace App\Service;
 
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+/**
+ * Allows to slugify a word or sentence
+ */
 class MySlugger
 {
     private $slugger;
