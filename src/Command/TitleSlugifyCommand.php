@@ -12,6 +12,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Slugify title of artworks
+ */
 class TitleSlugifyCommand extends Command
 {
     protected static $defaultName = 'app:title:slugify';
