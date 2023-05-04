@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Entity\Artwork;
 use App\Entity\Exhibition;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

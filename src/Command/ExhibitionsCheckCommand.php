@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Checking if exhibitions are prsent for more than a month
+ * Checking if exhibitions are present for more than a month
  * Changing status of exhibition
  */
 class ExhibitionsCheckCommand extends Command

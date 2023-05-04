@@ -12,7 +12,7 @@ use DateTime;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 
 class AppFixtures extends Fixture
