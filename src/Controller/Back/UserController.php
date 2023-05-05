@@ -84,7 +84,7 @@ class UserController extends AbstractController
      * 
      * @Route("/{id}/edit", name="app_user_edit", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
-    public function edit(Request $request, User $user = null, UserRepository $userRepository, MySlugger $slugger): Response
+    public function edit(Request $request, User $user = null, UserRepository $userRepository): Response
     {
         //404?
         if ($user === null) {
