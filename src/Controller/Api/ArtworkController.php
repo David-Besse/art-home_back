@@ -9,65 +9,40 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
-
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ArtworkController extends AbstractController
 {
     /**
-     * Get all artworks entity
-     * @Route("/api/artworks", name="app_api_artwork", methods={"GET"})
-     */
-    public function getArtworks(ArtworkRepository $artworkRepository): Response
-    {
-        // fetch all artworks
-        $artworks = $artworkRepository->findAll();
-
-        // transform data in json format
-        return $this->json(
-            $artworks,
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'get_artwork_by_exhibition']
-        );
-    }
-
-    /**
-     * Get an artwork entity
-     *
-     * @Route("/api/artworks/{id}", name="app_api_artwork_by_id", requirements={"id"="\d+"}, methods={"GET"})
-     */
-    public function getArtworkById(Artwork $artwork = null): Response
-    {
-
-        // 404 ?
-        if ($artwork === null) {
-            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
-        }
-
-        // transform entity Artwork into json 
-        return $this->json(
-            $artwork,
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'get_artwork']
-        );
-    }
-
-    /**
      * Create an artwork entity
      *
+     * @param Request $request
+     * @param ManagerRegistry $doctrine
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @return Response
      * @Route("/api/secure/artworks/new", name="app_api_artwork_new", methods={"POST"})
      */
-    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator): Response
+    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         //Fetch the json content
         $jsonContent = $request->getContent();
 
+        // Get CSRF Token
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // Check CSRF Token
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
 
         // Checking if json format is respected
         //if not, throw an error
@@ -120,16 +95,30 @@ class ArtworkController extends AbstractController
     /**
      * Edit artwork entity
      *
+     * @param Request $request
+     * @param ManagerRegistry $doctrine
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @param Artwork|null $artworkToEdit
+     * @return Response
      * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PATCH"})
      */
-
-    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
 
         // 404 ?
         if ($artworkToEdit === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
+
+        // Get CSRF Token
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // Check CSRF Token
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
+
         //Fetch the json content
         $jsonContent = $request->getContent();
 
@@ -175,43 +164,47 @@ class ArtworkController extends AbstractController
             $artworkModified,
             Response::HTTP_OK,
             [],
-            ['groups' => 'get_artwork']
+            ['groups' => 'get_artwork_by_exhibition']
         );
     }
 
     /**
      * Remove an entity
      *
+     * @param Artwork|null $artwork
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      * @Route("api/secure/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
      */
-    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager): Response
+    public function deleteArtwork(Request $request, Artwork $artwork = null, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
-
         //404?
         if ($artwork === null) {
-            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
-        //fetch exhibiton depending on artwork
-        $exhibition = $artwork->getExhibition();
+        // Get CSRF Token
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // Check CSRF Token
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
+
         // remove entity artwork
         $entityManager->remove($artwork);
         $entityManager->flush();
 
-        //fetch artworks of the exhibition
-        $newArtworksList = $exhibition->getArtwork();
-
         //return response 
-        return $this->json(
-            $newArtworksList,
-            Response::HTTP_NO_CONTENT,
-            [],
-            ['groups' => 'get_artwork_by_exhibition']
-        );
+        return $this->json(Response::HTTP_OK);
     }
 
     /**
      * Get artworks by exhibition for profile page
+     *
+     * @param Exhibition|null $exhibition
+     * @param ArtworkRepository $artworkRepository
+     * @return Response 
      * @Route("api/secure/artworks/exhibitions/{id}/profile", name="app_api_artwork_profile",requirements={"id"="\d+"}, methods={"GET"})
      */
     public function getArtworksByExhibition(Exhibition $exhibition = null, ArtworkRepository $artworkRepository): Response

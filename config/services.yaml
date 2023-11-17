@@ -34,7 +34,10 @@ services:
         arguments:
         # parameters name
             $toLower: true
-
+    
+    App\Service\ArtworkValidateLayout:
+        public: true
+    
     App\EventListener\AutoSluggerCreate:
         tags:
             -
@@ -47,5 +50,3 @@ services:
                 name: 'doctrine.event_listener'
                 event: 'preUpdate'
     
-    App\Service\ArtworkValidateLayout:
-        public: true

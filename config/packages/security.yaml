@@ -43,9 +43,11 @@ security:
             logout:
                 path: app_logout
                 target: /logout_message
+            
 
        
     role_hierarchy:
+        ROLE_ARTIST: ROLE_USER
         ROLE_MODERATOR: ROLE_ARTIST
         ROLE_ADMIN: [ROLE_MODERATOR, ROLE_ARTIST]
             # activate different ways to authenticate

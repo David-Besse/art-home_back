@@ -19,22 +19,40 @@ class UserController extends AbstractController
 {
     /**
      * Display all users
+     * Process sorting depending on role
      * 
-     * @Route("/", name="app_user_index", methods={"GET"})
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @return Response
+     * @Route("/", name="app_user_index", methods={"GET", "POST"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, Request $request): Response
     {
+        $role = $request->request->get('role');
+
+        if(isset($role) && $role != "ROLES"){
+
+            $users = $userRepository->getUsersListOnRole($role);
+        }else if($role === "ROLES" || !isset($role)){
+            
+            $users = $userRepository->findAll();
+        }
+      
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users
         ]);
     }
 
     /**
      * Display new form and process new form
      * 
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @return Response
      * @Route("/new", name="app_user_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, UserRepository $userRepository, MySlugger $slugger, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         // create new entity and new form
         $user = new User();
@@ -65,6 +83,8 @@ class UserController extends AbstractController
     /**
      * Display an entity
      * 
+     * @param User|null $user 
+     * @return Response
      * @Route("/{id}", name="app_user_show", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function show(User $user = null): Response
@@ -82,6 +102,10 @@ class UserController extends AbstractController
     /**
      * Display edit form and process edit form
      * 
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param User|null $user 
+     * @return Response
      * @Route("/{id}/edit", name="app_user_edit", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, User $user = null, UserRepository $userRepository): Response
@@ -117,6 +141,10 @@ class UserController extends AbstractController
     /**
      * Delete item
      * 
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param User|null $user 
+     * @return Response
      * @Route("/{id}", name="app_user_delete", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function delete(Request $request, User $user = null, UserRepository $userRepository): Response

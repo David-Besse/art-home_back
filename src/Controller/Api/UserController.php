@@ -3,43 +3,38 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Service\MySlugger;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class UserController extends AbstractController
 {
     /**
      * Get information artist and exhibitions for profile page
+     * 
+     * @return Response
      * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})
      */
-    public function getInformationForProfile(): Response
+    public function getInformationForProfile(CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         // getting the logged user
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        // setting an empty array
-        $data = [];
-
-        // setting a string depending on the role and return this string
-        if (implode(',', $user->getRoles()) == 'ROLE_ARTIST') {
-            $role = 'Artiste';
-        } else if (implode(',', $user->getRoles()) == 'ROLE_ADMIN') {
-            $role = 'Administrateur';
-        } else {
-            $role = 'Modérateur';
-        }
-
-
+        
         //fetching information about logged user
         $nickname = $user->getNickname();
         $firstname = $user->getFirstname();
@@ -48,13 +43,14 @@ class UserController extends AbstractController
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
         $dateOfBirth = $user->getDateOfBirth();
-
+        $role = $user->getRoles();
+        
         //fetching exhibitions of user
         $exhibitionFetched = $user->getExhibition();
-
+        
         //declaring an empty array
         $exhibitions = [];
-
+        
         //loop on each exhibition
         foreach ($exhibitionFetched as $exhibition) {
             $id = $exhibition->getId();
@@ -66,32 +62,64 @@ class UserController extends AbstractController
                 'description' => $description
             ];
         }
+        
+        $favorites = $user->getFavorites();
+        $favoritesArray =[];
+        foreach($favorites as $favorite)
+        {
+            
+            $id = $favorite->getId();
+            $favoritesArray[] = $id;
+        }
+
+        //creating cookie
+        $csrfToken = $csrfTokenManager->getToken('csrfToken')->getValue();
+        $cookie = Cookie::create(
+            'csrfToken', // Name of the cookie
+            $csrfToken, // value
+            0, // Expiration (session)
+            '/', // Main path to main server
+            null, // Domain name
+            false, // HTTPS only
+            true, // Only available in HTTP protocol
+            false, // secure cookie
+            'strict' // SameSite: Strict
+        );
+     
+        // setting an empty array
+        $data = [];
+
         // putting the informations in the empty array
         $data = [
             'nickname' => $nickname,
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,
-            'dateOfBirth' => $dateOfBirth,
+            'birthday' => $dateOfBirth,
             'avatar' => $avatar,
             'presentation' => $presentation,
             'role' => $role,
-            'exhibitions' => $exhibitions
-
+            'exhibitions' => $exhibitions,
+            'favorites' => $favoritesArray,
         ];
 
         //sending the response with all data
-        return $this->json(
-            $data,
-            Response::HTTP_OK
-
-        );
+        $response = $this->json($data, Response::HTTP_OK);
+        $response->headers->setCookie($cookie);
+        return $response;
     }
 
     /**
      * Create a new user
      *
      * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @param ManagerRegistry $doctrine
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param MySlugger $slugger
+     * @param UserRepository $userRepository
+     * @return Response
      * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
      */
     public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger, UserRepository $userRepository): Response
@@ -140,7 +168,7 @@ class UserController extends AbstractController
 
         //hashing the password
         $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
-        
+
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);
@@ -150,22 +178,33 @@ class UserController extends AbstractController
         return $this->json(
             [],
             Response::HTTP_CREATED,
-            [],
-            ['groups' => 'get_user']
         );
     }
 
     /**
      * Edit profile
      *
+     * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @param ManagerRegistry $doctrine
+     * @return Response
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
-    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger): Response
+    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
 
         // getting the logged user
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
+
+        // Get CSRF token in request
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // check CSRF token 
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
 
         //Get Json content
         $jsonContent = $request->getContent();

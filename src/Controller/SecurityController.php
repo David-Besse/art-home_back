@@ -14,9 +14,6 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -38,7 +35,7 @@ class SecurityController extends AbstractController
      * @Route("/logout_message", name="logout_message")
      */
     public function logoutMessage()
-    {
+    {  
         $this->addFlash('success', "Vous avez été déconnecté, au revoir!");
         return $this->redirectToRoute('app_home_backoffice');
     }
