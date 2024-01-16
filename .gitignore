@@ -25,3 +25,5 @@
 ###< lexik/jwt-authentication-bundle ###
 
 gacp.bat
+
+script.sql
