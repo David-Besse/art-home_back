@@ -24,3 +24,4 @@
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 
+gacp.bat
