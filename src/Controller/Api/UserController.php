@@ -80,9 +80,9 @@ class UserController extends AbstractController
             0, // Expiration (session)
             '/', // Main path to main server
             null, // Domain name
-            false, // HTTPS only
+            true, // HTTPS only
             true, // Only available in HTTP protocol
-            false, // secure cookie
+            true, // secure cookie
             'strict' // SameSite: Strict
         );
      
