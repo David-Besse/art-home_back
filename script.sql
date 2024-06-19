@@ -173,20 +173,6 @@ INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`
 (149,	'Promenade sur le bord du lac',	'Cette peinture réaliste représente un canard voguant sur un lac. Les détails de l\'animal et de la végétation aux alentours sont très minutieux et les coups de pinceaux très réfléchis. Les couleurs sont neutres et instaurent donc une ambiance calme et sereine.',	'https://cdn.pixabay.com/photo/2013/02/13/16/53/robert-padley-81327_640.jpg',	'promenade-sur-le-bord-du-lac',	1,	8),
 (150,	'La fleur d\'ivresse',	'Il s\'agit d\'une peinture de fleurs colorées. Les couleurs sont très prononcés et vives, ce qui apporte un sentiment de joie et de vivacité à l\'oeuvre. Les effets de bavures donnent un petit côté négligé qui est tout de même réfléchi. Les fleurs sont placées sur un fond blanc ce qui fait ressortir les couleurs intenses des pétales.',	'https://cdn.pixabay.com/photo/2017/09/04/22/40/flowers-2715804_640.jpg',	'la-fleur-d-ivresse',	1,	7);
 
-CREATE TABLE `artwork_user` (
-  `artwork_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`artwork_id`,`user_id`),
-  KEY `IDX_3975B07DB8FFA4` (`artwork_id`),
-  KEY `IDX_3975B07A76ED395` (`user_id`),
-  CONSTRAINT `FK_3975B07A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_3975B07DB8FFA4` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-TRUNCATE `artwork_user`;
-INSERT INTO `artwork_user` (`artwork_id`, `user_id`) VALUES
-(15,	3);
-
 CREATE TABLE `contact` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -298,5 +284,19 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`,
 (7,	'arcadien@orange.fr',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Girard',	'Louis',	'Arcadien',	'https://cdn.pixabay.com/photo/2022/08/02/01/33/man-7359262_640.jpg',	'arcadien',	'1991-02-12',	'Gérard est un artiste libre, indépendant et non-conformiste, qui vit et travaille en France. Je suis connu pour mon style unique et mon approche non-conventionnelle de l\'art.\r\nJ\'ai commencé à expérimenter avec l\'art dès mon plus jeune âge, et ma passion pour la création m\'a conduit à explorer une variété de médiums, tels que la peinture, la sculpture et la photographie. Au fil du temps, j\'ai développé mon propre style distinctif, qui se caractérise par des couleurs vives, des formes abstraites et des textures riches.Mon art est souvent inspiré par la nature, les émotions humaines et la condition humaine en général.'),
 (8,	'seb.lemaitre@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Lemaitre',	'Sébastien',	NULL,	'https://picsum.photos/id/26/50/50',	'sebastien-lemaitre',	NULL,	'je suis laurent, coucou c\'est moi laurent j\'adore la psicine et la plage. Mon plat préféré c\'est les grenouilles miaaaaaaaaaammmmmmmm'),
 (9,	'chromatix@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Rossi',	'Maurice',	'Chromatix',	'https://cdn.pixabay.com/photo/2021/01/21/16/44/model-5937809_640.jpg',	'chromatix',	'1956-04-21',	'Je suis un artiste dévoué et passionné qui travaille dans une variété de médiums, notamment la peinture, la sculpture et la photographie. Originaire de France, j\'ai commencé à m\'intéresser à l\'art dès mon plus jeune âge et ai rapidement découvert ma passion pour la création. Au fil du temps, j\'ai développé mon propre style distinctif qui se caractérise par une palette de couleurs riches et vibrantes et une esthétique élégante et sophistiquée. J\'utilise souvent des formes géométriques et des motifs abstraits pour créer des œuvres d\'art qui sont à la fois intrigantes et captivantes.');
+
+CREATE TABLE `artwork_user` (
+  `artwork_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`artwork_id`,`user_id`),
+  KEY `IDX_3975B07DB8FFA4` (`artwork_id`),
+  KEY `IDX_3975B07A76ED395` (`user_id`),
+  CONSTRAINT `FK_3975B07A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_3975B07DB8FFA4` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+TRUNCATE `artwork_user`;
+INSERT INTO `artwork_user` (`artwork_id`, `user_id`) VALUES
+(15,	3);
 
 -- 2023-05-16 12:37:49

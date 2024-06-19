@@ -1,0 +1,33 @@
+# Activation du module de réécriture
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirection vers public/index.php si ce n'est pas déjà fait
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Interdire l'accès à certains fichiers sensibles
+<FilesMatch "^(config\.php|\.env|\.htaccess)">
+    Deny from all
+</FilesMatch>
+
+# Forcer HTTPS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Configuration des directives PHP pour la sécurité
+<IfModule mod_php7.c>
+    php_value display_errors Off
+    php_value date.timezone Europe/Paris
+</IfModule>
+
+<IfModule !mod_php7.c>
+    <IfModule mod_php5.c>
+        php_value display_errors Off
+        php_value date.timezone Europe/Paris
+    </IfModule>
+</IfModule>
